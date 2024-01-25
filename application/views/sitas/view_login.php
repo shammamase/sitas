@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <title>Log-In</title>
+    <link href="<?= base_url() ?>asset/favicon.png" rel="icon">
     <link href="<?= base_url() ?>asset/lte31/plugins/bootstrap/css_2020/bootstrap.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>asset/lte31/plugins/bootstrap/css_2020/font-awesome.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>asset/lte31/plugins/bootstrap/css_2020/style.css" rel="stylesheet">
-
-    <title>Log-In</title>
   </head>
   <body style="background-color:#D8857D">
     <section style="background:url(<?= base_url() ?>asset/gambar/bsip_tas.jpg);background-size:cover;background-repeat:no-repeat;background-position:center;position:relative;z-index:2;overflow:hidden;">
