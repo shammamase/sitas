@@ -13,15 +13,15 @@ class Sijuara extends CI_Controller {
 				$this->session->set_userdata(array('username'=>$row['username']));
 				redirect('sijuara/homex');
 			}else{
-				$data['title'] = 'SIMANTEP &rsaquo; Log In';
-				$this->load->view('sijuara/view_login_cltr2',$data);
+				$data['title'] = 'BSIP TAS &rsaquo; Log In';
+				$this->load->view('sitas/view_login',$data);
 			}
 		}else{
 			if ($this->session->username != ''){
 				redirect('sijuara/homex');
 			}else{
-				$data['title'] = 'SIMANTEP &rsaquo; Log In';
-				$this->load->view('sijuara/view_login_cltr2',$data);
+				$data['title'] = 'BSIP TAS &rsaquo; Log In';
+				$this->load->view('sitas/view_login',$data);
 			}
 		}
 	}
