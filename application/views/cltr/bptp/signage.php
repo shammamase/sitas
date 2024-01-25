@@ -1,0 +1,4 @@
+<!--<div class="animate__animated animate__flipInX animate__infinite animate__slow" style="margin-top:10px;margin-bottom:10px;text-align:center"><img src="<?php echo base_url(); ?>template/<?php echo template_cltr(); ?>/assets/img/core-img/kementa2.png" alt=""></div>-->
+<div style="margin-top:10px;margin-bottom:10px;text-align:center"><img src="<?php echo base_url(); ?>template/<?php echo template_cltr(); ?>/assets/img/core-img/kementa2.png" alt=""></div>
+<div class="youtube-embed-wrapper" style="height:0; overflow:hidden; padding-bottom:56.25%; padding-top:30px; position:relative"><iframe allow=";" allowfullscreen="" frameborder="0" height="480" src="https://www.youtube.com/embed/YXn3ZTTiXW4" style="position:absolute;top:0;left:0;width:100%;height:100%" width="640"></iframe></div>
+<iframe src="https://new.gorontalo.litbang.pertanian.go.id/web" width="540" height="480" title="Iframe Example"></iframe>

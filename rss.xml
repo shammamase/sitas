@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+  <rss version="2.0"><channel> 
+				<title>RSS Nama Website</title> 
+				<description>situs web ini adalah</description>
+				<link>http://localhost/lokomedia</link> 
+				<language>id-id</language><item>
+						                <title>Looping dalam Looping Disertai Kasus</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/looping-dalam-looping-disertai-kasus</link>
+						                <description>Dalam logika pemrograman, looping (perulangan) digunakan untuk mengulang suatu proses. Namun, dalam tutorial kali ini, saya tidak akan membahas dasar-dasar looping (perulangan), jadi saya langsung aja ke permasalahannya mengapa diperlukan looping didalam looping? Dalam kasus tertentu, looping saja tidaklah cukup, misalnya membuat rekap data yang kompleks dari beberapa tabel dan menampilkan masing-masing berita dalam suatu kategori. Dalam kedua kasus tersebut diperlukan looping didalam looping (while didalam while).
+
+Agar tidak tambah bingung, saya akan berikan contohnya secara bertahap, biasanya dalam menampilkan data dalam suatu tabel kategori hanya diperlukan satu looping, contoh skripnya sebagai berikut:
+
+
+Daftar Kategori";
+
+$kategori=mysql_query("select * from kategori");
+
+while($k=mysql_fetch_array($kategori)){
+  echo "
+
+
+	$k[nama_kategori]
+	"; } ?>
+	Apabila dijalankan di browser, maka hasilnya dapat dilihat pada gambar berikut:
+
+	 
+
+	Selanjutnya, kita akan menampilkan beberapa berita didalam masing-masing kategori. Logikanya, setelah looping (while) untuk menampilkan kategori, maka perlu diselipkan satu looping lagi untuk menampilkan berita didalam looping kategori. Dan tentu saja, berita yang tampil haruslah berhubungan dengan kategorinya.
+
+	Untuk itu, coba perhatikan dulu relasi antara tabel kategori dengan tabel berita pada gambar berikut:
+
+	 
+
+	Kemudian baru kita bikin skripnya sebagai berikut:
+
+	
+$k[nama_kategori]";
+  
+  $berita=mysql_query("select * from 
+  kategori, berita 
+  where kategori.id_kategori=berita.id_kategori 
+  and berita.id_kategori=&#39;$k[id_kategori]&#39;");
+
+// looping untuk menampilkan judul berita 
+// yang berhubungan dengan kategori masing-masing
+  while($b=mysql_fetch_array($berita)){
+    echo "
+
+	
+		$b[judul]
+		"; } // end while looping berita } // end while looping kategori ?>
+		Sekarang coba jalankan di browser, maka hasilnya dapat dilihat pada gambar berikut:
+
+		 
+
+		Saya juga telah mengimplementasikan teknik looping didalam looping di CMS Lokomedia pada templates eL jQuery ala Yahoo, silahkan buka file kiri.php pada folder templates/eljquery-yahoo. Hasilnya dapat dilihat pada gambar berikut:
+
+		 
+
+		Oke, demikianlah sekilas kegunaan teknik looping dalam looping. Untuk mendownload skrip dan database latihannya, silahkan Klik Disini
+		
+	
+	
+
+</description>
+					                </item><item>
+						                <title>Angry Birds Hadirkan Budaya Indonesia</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/angry-birds-siap-hadirkan-budaya-indonesia</link>
+						                <description>Game mobile Angry Birds yang tengah digandrungi, rencananya akan masuk pasar Indonesia. Tim game Rovio ingin menggaet developer tanah air. Mereka mengaku mengharapkan kelahiran Angry Birds yang khas Indonesia.
+"Kami mengerti (keinginan) itu. Siapa tahu nantinya Angry Birds ala Indonesia akan memakai batik," ungkap Chief Marketing Officer Rovio, Peter Vesterbacka, saat ditemui di Hotel Kempinski, Jakarta, Rabu (25/1). "Tapi kami ingin menyelami lebih dalam. Apa saja yang bisa digali dari Indonesia."
+Peter juga mengungkapkan telah menerima banyak masukan untuk menghadirkan wayang, batik, garuda dan Bali di game tersebut. Untuk itu, Rovio bersama Nokia kemudian menggelar kompetisi. Diharapkan dari situ akan lahir Angry Birds yang "Indonesia Banget".
+Sayangnya, Peter enggan menyebutkan kapan tepatnya rencana itu akan direalisasikan. Namun ini tetap menjadi kabar baik untuk developer lokal untuk semakin berkibar. "Pengembang aplikasi di Indonesia memiliki potensi dan talenta untuk dikembangkan," lanjut Peter yakin.
+(sumber: wowkeren.com)</description>
+					                </item><item>
+						                <title>Terima Kasih Gayus Tambunan</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/terima-kasih-gayus-tambunan</link>
+						                <description>
+Sekali lagi, terima kasih Gayus Tambunan! Kita semua mesti berterima 
+kasih pada pegawai Pajak golongan III A  ini.
+Gara-gara aksinya terbongkar, semua mata kini memandang ke kasus  
+penggelapan pajak yang menimpanya. 25 Milyar rupiah bukan jumlah yang  
+sedikit. Apalagi dimiliki seorang pegawai negeri sipil yang gaji per  
+bulan plus tunjangan ini itu 12 jutaan.
+
+
+Berterima kasihlah pada Gayus. Karena berkat jasanya lah kasus  Century 
+jadi temaram. Siapa yang peduli dengan kasus 6,7 trilyun yang  tak jelas
+kemana itu. Setidaknya kini media massa ramai-ramai berdendang  lagu 
+GAYUS. Lupakan huru hara di panggung paripurna DPR bulan lalu.  Lupakan 
+pula rekomendasi yang meminta penon aktifan dua petinggi negara,  Wapres
+Boediono dan Menteri Keuangan Sri Mulyani.
+
+
+Kini arahkan pandangan kita pada rumah megah Gayus di Kelapa Gading.  
+Saya sendiri hanya berdecak kaget. Wow, darimana ya si Gayus yang masih 
+30 tahunan itu bisa membangun istana semegah itu?
+
+
+Benarkah itu tilepan pajak rakyat? Atau suap para  pengemplang 
+pajak agar cuma bayar pajak dalam jumlah kecil. Entahlah.
+
+
+Yang jelas saya ingin berucap terima kasih pada Gayus, karena berkat  
+kasusnya KPK, kepolisian, kejaksaan, atau para pengacara kondang bakal  
+dapat job menggiurkan. Ya siapa tahu kecipratan 25 M!
+
+
+Gayus, di tangan saya masih ada form SPT yang baru terisi separuhnya.  
+Saya berencana menyerahkan form ini sebelum “D” day 31 Maret mendatang. 
+Tapi hati saya galau. Sebagai warga negara yang baik saya biasanya taat
+bayar pajak. Karena saya sadar pajak itu akan kembali pada kita 
+sebagai  warga dalam bentuk layanan dan fasilitas publik.
+
+
+Tapi, kelakuanmu Gayus, membuat saya dan juga pembayar pajak yang  taat 
+terluka. Apalah artinya laporan pajak saya yang &#39;cuma&#39; beberapa  juta 
+rupiah ini, jika ternyata uang pajak yang mestinya disalurkan  
+dikemplang pegawainya sendiri?
+
+
+Haruskah saya bayar pajak, Gayus? (sumber:www.kompas.com)
+
+</description>
+					                </item><item>
+						                <title>Hantam Laos 6-0, Indonesia Semifinal</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/hantam-laos-60-indonesia-semifinal</link>
+						                <description>
+Indonesia menang meyakinkan atas Laos. Enam
+gol mereka lesakkan, membuat mereka lolos ke semifinal dengan status 
+juara Grup A. Di stadion Gelora Bung Karno, Sabtu (4/12/2010), 
+Indonesia langsung menekan sejak awal laga. Lewat sebuah serangan balik,
+Indonesia mengancam pertahanan Laos melalui M. Ridwan di sisi sayap 
+kanan. Tapi umpan silang Ridwan masih bisa dihalau. Sepak pojok untuk 
+Indonesia.
+
+
+Pada menit ketujuh, Ridwan kembali mencoba 
+peruntungannya. Tapi tendangan kaki kananannya dari luar kotak penalti 
+membentur tubuh pemain Laos. Kembali, Indonesia mendapatkan sepak pojok.
+
+Semenit
+berselang, umpan silang Firman Utina di sayap kiri diterima oleh Hamka 
+Hamzah di tiang jauh. Sial bagi Hamka, sundulannya masih melenceng 
+tipis.
+
+Ooh! Laos mendapatkan kesempatan emas pertamanya dalam 
+laga ini. Sepakan Kaysone Soukhavong dari luar kotak penalti membentur 
+tiang gawang Indonesia. Nyaris.
+
+Penalti untuk Indonesia! Cristian
+Gonzales dijatuhkan di dalam kotak penalti ketika memggiring bola di 
+dalam kotak penalti.
+
+Firman Utina maju menjadi eksekutornya, dan 
+kapten Indonesia ini berhasil mengecoh kiper Sengphachan Bounthisanh 
+untuk membawa Indonesia unggul 1-0.
+
+Gol lagi untuk Indonesia! 
+Aksi Ridwan, usai memanfaatkan blunder operan Kitsada, membawa Indonesia
+unggul 2-0 atas Laos.
+
+Ridwan membawa bola sendirian ke dalam 
+kotak penalti, ia mengecoh kiper Bounthisanh, dan menceploskan bola ke 
+dalam gawang, meski sempat terpeleset. 
+
+Indonesia memulai babak 
+kedua dengan baik, dan tepat pada menit 49 &#39;Garuda&#39; kembali membobol 
+jala Laos. Kembali Firman yang menjadi pencetak golnya.
+
+Gol 
+tersebut diawali oleh operan satu-dua dengan Ridan di luar kotak 
+penalti. Begitu kembali menerima bola, Firman melepaskan sepakan kaki 
+kanan ke tiang jauh. Indonesia unggul 3-0.
+
+Keunggulan Indonesia 
+bertambah besar menjadi 4-0 di menit 51 dan yang menjadi pendulangnya 
+adalah Irfan Bachdim. Ini adalah gol keduanya dalam turnamen ini.
+
+Gol
+keempat Indonesia itu tercipta setelah Irfan melakukan operan satu-dua 
+dengan Cristian Gonzales. Lewat satu sepakan kaki kanan ke tiang jauh, 
+Irfan pun membobol jala Laos.
+
+Tekanan Indonesia ke pertahana Laos
+akhirnya kembali berbuah hasil di menit 76. Berawal dari umpan lambung 
+Firman, terjadi kemelut di dalam kotak penalti Laos.
+
+Sepakan 
+Hamka masih bisa ditepis Bounthisanh, tapi bola disambar oleh Arief 
+Suyono dan terciptalah gol kelima Indonesia. Ini adalah gol kedua Arief 
+dalam turnamen ini.
+
+Gol lagi! Indonesia unggul jauh 6-0 atas Laos
+di menit 80 dengan diawali oleh umpan terobosan Irfan kepada Okto 
+Maniani. Lewat kecepatannya, Okto mengungguli dua pemain Laos dan 
+melepaskan tendangan kaki kiri ke tiang dekat. Si pemain nomor 10 ini 
+akhirnya mencetak gol.
+
+Aksi Okto itu kemudian menjadi gol penutup
+dalam pertandingan ini. Indonesia menang enam gol tanpa balas dan 
+berhak melaju ke semifinal dengan status juara Grup A. 
+
+</description>
+					                </item><item>
+						                <title>Saat Raja Belajar Bertutur Kata</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/saat-raja-belajar-bertutur-kata</link>
+						                <description>Ini dia film yang meraih perolehan nominator terbanyak dalam acara Academy Awards ke 83. Dari 24 jumlah nominasi yang ada, The King's Speech berhasil meraih setengahnya dan menjadikan film produksi See Saw Films dan Bedlam Productions itu merajai Oscar 2011 yang merupakan ajang perfilman paling bergengsi di dunia.  Setelah kematian ayahandanya, raja George V (Michael Gambon), pangeran Albert (Colin Firth) akhirnya dinobatkan sebagai raja. Diangkatnya ayah dua anak ini menjadi raja baru Inggris karena sang kakak, pangeran Edward VIII (Guy Pearce) yang seharusnya berkuasa, rela turun tahta karena lebih memilih seorang janda keturunan Amerika untuk dinikahinya.   Tapi apa jadinya jika seorang raja menderita kesulitan berbicara?terutama pada saat berpidato. Karena sebelum dinobatkan sebagai Raja, beberapa kali Bertie (panggilan pangeran Albert dari orang-orang terdekatnya) harus mewakili pidato ayahnya yang sakit, baik secara langsung maupun melalui siaran radio dan hasilnya sangat mengecewakan bagi siapa saja yang mendengarnya.  Dibantu sang istri tercinta, Elizabeth (Helena Bonham Carter), Raja George VI menemui ahli terapi bicara bersama Lionel Logue (Geoffrey Rush) yang eksentrik. Pertemuan keduanya walau diawali dengan perseteruan, keduanya akhirnya menjalani program terapi dan akhirnya membentuk ikatan yang tak terpisahkan.  Masalah raja George VI ternyata bukan hanya dari dalam dirinya saja, dengan keadaan negara yang diambang peperangan, raja baru itu akhirnya melakukan pidato pertamanya di radio BBC untuk rakyat dan negaranya. Dengan dukungan dari Lionel, keluarga, pemerintah dan Winston Churchill (Timothy Spall), mampukah raja baru ini menginspirasi seluruh Inggris untuk bersiap melawan kebrutalan tentara Jerman.   Kejeniusan sang sutradara mengemas film akhirnya memberikan jaminan The King's Speech menjadi tontonan yang sangat menarik. Anda akan merasakan emosi sekaligus tertawa saat melihat Colin Firth yang sangat mendalami karakter raja George VI. Akting Geoffrey Rush sebagai ahli bicara membuktikan dirinya memang jago berbicara, bahkan di hadapan seorang Raja.</description>
+					                </item><item>
+						                <title>Taufik Berada di Grup Maut Kejuaran Bulutangkis</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/taufik-berada-di-grup-maut-kejuaran-dunia-bulutangkis</link>
+						                <description>
+Taufik Hidayat akan menghadapi pemain China, Bao Chunlai, di babak awal pertadingan Grup A 
+kejuaraan World Super Series Masters Finals, Rabu (2/11).
+
+Taufik,
+yang merupakan satu-satunya pemain tunggal putra asal Indonesia,
+bergabung di Grup A bersama peringkat satu dunia Lee Chong Wei, Bao
+Chunlai, serta pemain China Taipei, Hsieh Yu Hsin.
+
+Memakai
+sistem pertandingan round robin, Taufik akan menghadapi Chunlai,
+sedangkan Chong Wei bertemu dengan Hsieh Yu Hsin dalam pertandingan
+lainnya, Rabu (2/11).
+
+Grup A dianggap sebagai grup neraka atau
+maut, sedangkan Grup B terdiri dari dua pemain Denmark, Peter Hoeg Gade
+dan Jan O Jorgensen, serta pemain Thailand, Boonsak Ponsana.
+
+Taufik
+sendiri menjadi satu-satunya pemain tunggal asal Indonesia setelah Sony
+Dwi Kuncoro dan Simon Santoso absen karena diprioritaskan bermain di
+ajang SEA Games, Laos, Desember ini.
+
+Peraih medali emas
+Olimpiade Atlanta 2004 ini mengaku siap menghadapi tantangan di grup
+yang berat ini. Di jejaring sosial Facebook, ia menulis, "Death Group?"
+Tantangan berat di Johor Bahru, tapi harus memberi yang terbaik! Let&#39;s
+Go!
+
+
+
+Grup A
+1 [MAS] LEE Chong Wei
+1 [CHN] BAO Chunlai 
+1 [INA] HIDAYAT Taufik
+1 [TPE] HSIEH Yu Hsin
+
+Grup B
+1 [DEN] GADE Peter Hoeg
+1 [KOR] PARK Sung Hwan 
+1 [DEN] O JORGENSEN Jan
+1 [THA] PONSANA Boonsak
+
+
+(sumber: beritajitu.com) 
+
+</description>
+					                </item><item>
+						                <title>Film My Name is Khan Cetak Rekor di Amerika</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/film-my-name-is-khan-cetak-rekor-di-amerika</link>
+						                <description>Dengan US 1,86 juta pada box office di minggu pertamanya, film My Name is Khan yang dibintangi Shah Rukh Khan telah memecahkan rekor sebagai film India dengan pendapatan terbanyak yang diputar di Amerika Utara.
+
+Film arahan Karan Johar ini diperkirakan menghasilkan US15.500 dari 120 bioskop di AS dan Kanada pada akhir pekan 12-14 Februari 2009. Rekor sebelumnya dipegang film musikal yang juga dibintangi Shah Rukh, Om Shanti Om, dengan pendapatan US1,76 juta dari 114 bioskop saat dirilis pada 2007.
+
+Saat diluncurkan Jumat (12/2), My Name is Khan langsung mendapatkan US444 ribu, lalu langsung meningkat 65% menjadi US734.000 Sabtu (13/2). Tapi, film ini lalu menurun sebanyak 7% menjadi US682 ribu pada Minggu (14/2) yang bertepatan dengan Hari Valentine.
+
+Terlebih lagi, My Name is Khan mendapatkan pujian dari kritikus AS. Publikasi surat kabar Hollywood Reporter mengatakan, "Ini sepadan untuk perjalanan selama 162 menit. Shah Rukh Khan datang ke Amerika (walau melalui film Bollywood) dan telah menunjukkan bahwa dirinya adalah megabintang India," tambahnya.
+
+"Yang khas dari bintang Bollywood adalah mereka tidak hanya aktor yang berkualitas, tapi juga memiliki kharisma. Jadi, tidak mengejutkan bila menemukan megabintang Shah Rukh Khan dalam My Name is Khan. Tampaknya ia sedang menantang dirinya sendiri untuk meningkatkan kemampuan aktingnya dan memperluas jaringan penggemar internasionalnya."
+
+"Dengan arahan sutradara andal Karan Johar dan musik pengiring yang menggugah oleh Shankar, Ehsaan & Loy, Khan membuat kita mudah meneteskan air mata seraya mengajarkan kita mengenai Islam dan toleransi," kata surat kabar Times.
+
+Di dalam negeri sendiri, pada saat rilis perdananya, Jumat (12/2), hanya 13 bioskop yang memutarnya dari awal rencana 63 bioskop. Tapi, pada Sabtu (13/2), semua bioskop di Mumbai, Pune, dan Maharashra telah menayangkannya. Terakhir, pendapatan film tersebut di seluruh dunia telah mencapai US18 juta.
+
+(sumber: mediaindonesia.com)
+</description>
+					                </item><item>
+						                <title>Penanganan Gempa Berjalan Cepat, SBY Puas</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/penanganan-gempa-berjalan-cepat-presiden-sby-puas</link>
+						                <description>
+Presiden
+Susilo Bambang Yudhoyono (SBY) mengaku puas atas reaksi
+instansi-instansi terkait dalam menangani gempa di Nanggroe Aceh
+Darussalam dan beberapa daerah di Sumatera pada Rabu (7/4) pukul 05.15
+WIB. Menurut Presiden, sistem reaksi cepat penanggulangan bencana telah
+berjalan dengan baik.
+
+"Saya juga senang bahwa sistem telah
+berjalan karena begitu diterima gempa, satuan reaksi cepat
+penanggulangan bencana siap di Halim," kata Presiden di Bandara Halim
+Perdanakusuma, Rabu (7/4). Presiden menyampaikan hal itu sebelum
+bertolak menuju Hanoi, Vietnam untuk menghadiri KTT ASEAN hingga Sabtu
+(10/4).
+
+Presiden mengatakan, dirinya langsung berkomunikasi
+Ketua Badan Nasional Penanggulangan Bencana (BNPB), Gubernur NAD, dan
+Gubernur Sumatera Utara. Melalui komunikasi itu, Presiden mendapat
+informasi bahwa kerusakan yang ditimbulkan tergolong ringan dan
+pemadaman listrik sudah berakhir. Presiden mengucapkan terima kasih
+atas kerja sigap instansi terkait.
+
+Dalam kesempatan sama,
+Menteri Sosial, Salim Segaf Aljufri, mengatakan, dampak dari gempa di
+Aceh itu tergolong ringan, tidak banyak bangunan yang rusak berat.
+"Luka berat empat orang, seluruhnya 12 orang yang dirawat di rumah
+sakit," kata mantan Dubes RI di Arab Saudi ini.
+
+Salim
+mengatakan, gempa itu juga masih bisa ditangani oleh pemerintah daerah.
+Alasannya, stok bantuan bahan pangan di daerah masih mencukupi,
+khususnya beras dan lauk pauk. "Buffer stock kita di provinsi cukup,
+beras ada 50 ton," ujar Salim. Penyaluran bantuan pun belum ada kendala
+berarti.
+
+
+(sumber: republika.co.id) 
+
+</description>
+					                </item><item>
+						                <title>Lionel Messi 'Berlumuran' Rekor Gol</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/lionel-messi-berlumuran-rekor-gol</link>
+						                <description>
+Tanpa ampun Lionel Messi menggelontor gawang Arsenal dengan empat gol
+di Camp Nou. Dengan gol-gol itu, si andalan Barcelona pun bikin
+sejumlah raihan positif.
+
+Di hadapan sekitar 95 ribu penonton yang memadati Camp Nou, Rabu (7/4/2010) dinihari WIB, Barca memastikan laju ke semifinal usai Messi menjebol gawang Manuel Almunia pada menit 21,
+37, 42 dan 88. Arsenal sendiri hanya sempat membalas lewat gol Nicklas
+Bendtner pada menit 18.
+
+Dengan penampilan apik berbuah gol-gol
+tersebut, Messi dicatat situs Barca membuat sejumlah capaian. Berikut
+capaian-capaian tersebut:
+
+
+	
+	Ini adalah kali pertama Messi bikin
+	empat gol dalam satu pertandingan untuk Barca. Sebelumnya, si pemain
+	Argentina itu "cuma" bisa bikin lima hat-trick dan 18 kali membuat
+	sepasang gol dalam satu laga.
+	Messi menjadi pemain pertama musim ini yang berhasil membuat empat gol dalam satu laga di Liga Champions.
+	Messi menjadi satu dari enam pemain di dalam sejarah kompetisi ini
+	untuk membuat empat gol di satu partai. Sebelumnya telah ada Marco Van
+	Basten (AC Milan), Simone Inzaghi (Lazio), Dado Prso (Mònaco), Ruud Van
+	Nistelroy (M. United) dan Andriy Shevchenko (AC Milan). Artinya, Messi
+	juga menjadi pemain pertama Barca yang melakukannya.
+	Berkat
+	tiga gol di paruh pertama, Messi menjadi satu dari sembilan pemain yang
+	mampu bikin hat-trick di babak pertama partai Liga Champions. Messi
+	adalah pemain pertama yang melakukannya musim ini.
+	Tambahan
+	empat gol ke gawang Arsenal membuat total gol Messi di Liga Champions
+	menjadi 25 gol. Ini menyamai pundi gol mantan pemain Barca, Rivaldo,
+	yang juga topskorer Barca dalam kompetisi tersebut.
+	Dengan
+	empat gol ke gawang Arsenal di satu partai, Messi membuat klub London
+	tersebut menjadi tim yang paling banyak dia bobol gawangnya di Eropa.
+	Sevilla dan Atletico Madrid adalah lumbung gol kesukaan Messi di La
+	Liga Primera dengan tujuh gol.
+	Dengan tambahan empat gol,
+	Messi kini menjadi topskorer sementara Liga Champions dengan delapan
+	gol. Pesaing terdekatnya adalah andalan Real Madrid --yang sudah
+	tersingkir-- Cristiano Ronaldo (tujuh gol) dan bintang Manchester
+	United Wayne Rooney (lima gol).
+	Messi sudah mengoleksi total
+	39 gol musim ini. Jumlah itu lebih banyak satu gol ketimbang musim
+	lalu. Messi kini bahkan melakukannya hanya dalam 42 laga, delapan
+	partai lebih sedikit dibandingkan musim lalu.
+	Empat gol ke
+	gawang Arsenal juga menambah catatan gol Messi di kandang Barca, yang
+	kini menjadi 67 gol. Sejumlah 52 gol lain dia buat di laga tandang.
+	
+
+
+(sumber: detiksport.com) 
+
+</description>
+					                </item><item>
+						                <title>Jadwal Lengkap Sepakbola Piala Dunia 2010</title>
+						                <link>http://localhost/lokomedia_ci/berita/detail/jadwal-lengkap-sepakbola-piala-dunia-2010</link>
+						                <description>
+Perhelatan akbar piala dunia 2010 yang diselenggrakan di Afsel (Afrika Selatan) akan jatuh pada bulan Juni nanti, walaupun pada piala dunia kali saya kurang antusias karena pemain pujaan tidak lagi bertanding, Zinedine Zidane, tapi tetep berusaha meyakinkan diri bahwa Perancis setidaknya dapat berbicara banyak nanti.
+
+Berikut ini adalah jadwal piala dunia 2010 berserta jam tayang, tanggal dan bulan, yang akan ditayangkan di ke 2 stasiun TV swasta yakni RCTI dan Global TV karena mereka yang dapat hak siar
+
+Keterangan: Waktu untuk pertandingan ialah GMT+1, yang perlu dilakukan untuk sesuaikan dengan waktu Indonesia cukup memajukan 6 jam saja karena Indonesia termasuk kedalam waktu GMT+7
+
+Grup A
+
+Jumat, 11 Juni 2010
+Afrika Selatan v Meksiko, 15:00
+Uruguay v Perancis, 19:30
+
+Rabu, 16 Juni 2010
+Afrika Selatan v Uruguay, 19:30
+
+Kamis, 17 Juni 2010
+France v Meksiko, 12:30
+
+Selasa, 22 Juni 2010
+France v Afrika Selatan, 15:00
+Meksiko v Uruguay, 15:00
+
+Grup B
+
+Sabtu, 12 Juni 2010
+Argentina v Nigeria, 12:30
+Korea Selatan v Yunani, 15:00
+
+Kamis, 17 Juni 2010
+Argentina v Korea Selatan, 19:30
+Yunani v Nigeria, 15:00
+
+Selasa, 22 Juni 2010
+Yunani v Argentina, 19:30
+Nigeria v Korea Selatan, 19:30
+
+Grup C
+
+Sabtu, 12 Juni 2010
+England v USA, 19:30
+
+Minggu, 13 Juni 2010
+Algeria v Slovenia, 12:30
+
+Jumat, 18 Juni 2010
+England v Aljazair, 19:30
+Slovenia v USA, 15:00
+
+Rabu, 23 Juni 2010
+Slovenia v England, 15:00
+USA v Aljazair, 15:00
+
+Grup D
+
+Minggu, 13 Juni 2010
+Jerman v Australia, 15:00
+Serbia v Ghana, 19:30
+
+Jumat, 18 Juni 2010
+Jerman v Serbia, 12:30
+
+Sabtu, 19 Juni 2010
+Ghana v Australia, 12:30
+
+Rabu, 23 Juni 2010
+Australia v Serbia, 19:30
+Ghana v Germany, 19:30
+
+Grup E
+
+Senin, 14 Juni 2010
+Jepang v Kamerun, 15:00
+Belanda v denmark, 12:30
+
+Sabtu, 19 Juni 2010
+Kamerun v denmark, 19:30
+Belanda v Jepang, 15:00
+
+Kamis, 24 Juni 2010
+Kamerun v Belanda, 19:30
+Denmark v Jepang, 19:30
+
+Grup F
+
+Senin, 14 Juni 2010
+Italia v Paraguay, 19:30
+
+Selasa, 15 Juni 2010
+Selandia Baru v Slowakia, 12:30
+
+Minggu, 20 Juni 2010
+Italia v Selandia Baru, 15:00
+Paraguay v Slowakia, 12:30
+
+Kamis, 24 Juni 2010
+Paraguay v Selandia Baru, 15:00
+Slovakia v Italia, 15:00
+
+Grup G
+
+Selasa, 15 Juni 2010
+Brasil v Korea Utara, 19:30
+Pantai Gading v portugal, 15:00
+
+Minggu, 20 Juni 2010
+Brasil v Pantai Gading, 19:30
+
+Senin, 21 Juni 2010
+Portugal v Korea Utara, 12:30
+
+Jumat, 25 Juni 2010
+Korea Utara v Pantai Gading, 15:00
+Portugal v Brazil, 15:00
+
+Grup H
+
+Rabu, 16 Juni 2010
+Honduras v Chili, 12:30
+Spanyol v Swiss, 15:00
+
+Senin, 21 Juni 2010
+Chili v Swiss, 15:00
+Spanyol v Honduras, 19:30
+
+Jumat, 25 Juni 2010
+Chili v Spanyol, 19:30
+Swiss v Honduras, 19:30
+
+
+(sumber: pialadunia2010com.com) 
+
+</description>
+					                </item></channel>
+  	</rss>
