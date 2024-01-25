@@ -17,21 +17,21 @@
         <div class="row">
           <div class="col-md-12">
             <div class="_lk_de">
+              <form method="post" action="">
               <div class="form-03-main">
                 <div style="text-align:center">
                   <img src="<?= base_url() ?>asset/gambar/bsip_tas_ic.png">
                 </div>
                 <div class="form-group">
-                  <input type="email" name="email" class="form-control _ge_de_ol" type="text" placeholder="Enter Email" required="" aria-required="true">
+                  <input type="text" name="a" class="form-control _ge_de_ol" type="text" placeholder="Enter Email" required="" aria-required="true">
                 </div>
 
                 <div class="form-group">
-                  <input type="password" name="password" class="form-control _ge_de_ol" type="text" placeholder="Enter Password" required="" aria-required="true">
+                  <input type="password" name="b" class="form-control _ge_de_ol" type="text" placeholder="Enter Password" required="" aria-required="true">
                 </div>
+                <input type="hidden" name="c" value="2024">
                 <div class="form-group">
-                  <div style="background-color:#D8857D" class="_btn_04">
-                    <a href="#"><b>Login</b></a>
-                  </div>
+                    <button style="background-color:#D8857D" type="submit" name="submit" class="btn btn-outline-danger btn-block text-white"><b>Login</b></button>
                 </div>
 
                 <div class="form-group nm_lk">&nbsp;</div>
@@ -44,6 +44,7 @@
                   </div>
                 </div>
               </div>
+              </form>
             </div>
           </div>
         </div>

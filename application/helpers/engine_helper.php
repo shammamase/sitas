@@ -11,7 +11,7 @@
         $ci = & get_instance();
         $session = $ci->session->userdata('username');
         if ($session == ''){
-            redirect(base_url().'sijuara');
+            redirect(base_url().'primer');
         }
     }
 
