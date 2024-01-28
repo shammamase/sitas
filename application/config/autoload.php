@@ -132,4 +132,5 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('model_shoutbox','model_sekilasinfo','model_polling','model_hubungi','model_utama','model_berita','model_halaman','model_menu','model_iklan','model_users','model_modul','model_identitas','model_template','model_slider','model_utama_cltr','model_more');
+//$autoload['model'] = array('model_shoutbox','model_sekilasinfo','model_polling','model_hubungi','model_utama','model_berita','model_halaman','model_menu','model_iklan','model_users','model_modul','model_identitas','model_template','model_slider','model_utama_cltr','model_more');
+$autoload['model'] = array('model_sitas');
