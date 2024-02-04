@@ -213,13 +213,6 @@ class Model_more extends CI_model{
         $tujx = substr($tuju,0,-1);
         return $this->db->query("update sijuara_surat_keluar set tujuan_surat = '$tujx', perihal = '$z' where id_spt = $y");
     }
-    
-    function daftar_spt(){
-        //$thn = date('Y');
-        $thn = $this->uri->segment(3);
-        return $this->db->query("select * from sijuara_spt where tanggal like '%$thn%' order by id_spt desc");
-    }
-    
     function daftar_lap_spt(){
         //$thn = date('Y');
         $thn = $this->uri->segment(3);
@@ -270,62 +263,12 @@ class Model_more extends CI_model{
     function get_sub_arsip($x){
         return $this->db->query("select * from klasifikasi_sub_arsip where id_sub_arsip = '$x'");
     }
-    
-    function get_pj_ttd($x){
-        return $this->db->query("select a.nip,a.nama,a.no_hp,a.ttd,c.username,b.for_ttd,b.jabatan from t_biodata a 
-                                    inner join sijuara_pejabat b on a.id_bio=b.id_bio
-                                    inner join sijuara_pj bb on b.id_bio=bb.id_bio
-                                    inner join sijuara_user c on bb.id_pj=c.id_pj
-                                    inner join sijuara_level d on c.id_user=d.id_user
-                                    where b.id_pejabat = '$x'");
-    }
-    
-    function get_klas_arsip(){
-        return $this->db->query("select a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip 
-                                from klasifikasi_sub_arsip a
-                                inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip");
-    }
-    
-    function get_kode_sub_arsip($x){
-        return $this->db->query("select a.kode_sub_arsip,a.sub_arsip,b.arsip 
-                                from klasifikasi_sub_arsip a
-                                inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip
-                                where a.kode_sub_arsip = '$x'");
-    }
-    
     function get_id_sub_arsip($x){
         return $this->db->query("select a.kode_sub_arsip,a.sub_arsip,b.arsip 
                                 from klasifikasi_sub_arsip a
                                 inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip
                                 where a.id_sub_arsip = '$x'");
     }
-    
-    function cek_no_surat(){
-        if(isset($_GET['spt'])){
-            $uris = $_GET['spt'];
-            $pc_ur = explode("/",$uris);
-            $uri3 = $pc_ur[1];
-        } else {
-            $uri3 = $this->uri->segment(3);
-        }
-        
-        $query = $this->db->query("select max(substr(no_surat_keluar,3,8) * 1) as nos from sijuara_surat_keluar where tanggal like '%$uri3%'");
-        $hasil = $query->row();
-        return $hasil->nos;
-    }
-    
-    function daftar_surat_keluar(){
-        //$thn = date('Y');
-        $thn = $this->uri->segment(3);
-        return $this->db->query("select * from sijuara_surat_keluar where tanggal like '%$thn%' order by id_surat_keluar desc");
-    }
-    
-    function daftar_surat_masuk(){
-        //$thn = date('Y');
-        $thn = $this->uri->segment(3);
-        return $this->db->query("select * from sijuara_surat_masuk where tanggal like '%$thn%' order by id_surat_masuk desc");
-    }
-    
     function get_surat_masuk_id($x){
         return $this->db->query("select * from sijuara_surat_masuk where id_surat_masuk = '$x'")->row();
     }

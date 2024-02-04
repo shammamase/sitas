@@ -1,9 +1,4 @@
 <div class="container-fluid">
-    <?php
-        $uri3 = $this->uri->segment(3);
-        $lev = $this->model_more->get_user_level($this->session->username)->row();
-        if($lev->id_stakeholder=="8"){
-    ?>
     <div class="row">
       
       <div class="col-12 col-md-12 col-lg-12">
@@ -13,7 +8,8 @@
           </div>
           <div class="card-body">
             <!-- Date -->
-            <form method="post" action="<?= base_url() ?>sijuara/save_surat_masuk" enctype="multipart/form-data">
+            <!--<form method="post" action="<?= base_url() ?>sijuara/save_surat_masuk" enctype="multipart/form-data">-->
+            <form method="post" action="#">
             <div class="form-group">
               <label>No Surat Masuk :</label>
               <input type="text" class="form-control" name="no_surat_masuk" value="<?= $no_surat_masuk ?>">
@@ -61,7 +57,6 @@
       </div>
     </div>
     <!-- /.row -->
-    <?php } ?>
     
     <div class="card card-success">
   <div class="card-header">
@@ -89,7 +84,7 @@
         if($rec){
         foreach ($rec->result() as $row){
             $links = base_url()."sijuara/disposisi_detail/".$row->id_surat_masuk;
-            $pesan = "*Layanan SIMANTEP* Ada Surat Masuk, lebih detailnya silahkan klik link $links";
+            $pesan = "*Layanan Aplikasi* Ada Surat Masuk, lebih detailnya silahkan klik link $links";
      ?>
       <tr>
         <td><?php echo $no ?></td>

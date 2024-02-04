@@ -144,8 +144,8 @@
                                 <div class="icon">
                                   <i class="ion ion-email-unread"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>sijuara/buat_surat_masuk" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/buat_surat_masuk" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-6">
@@ -158,8 +158,8 @@
                                 <div class="icon">
                                   <i class="ion ion-email"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>sijuara/buat_surat_keluar" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/buat_surat_keluar" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-6">
@@ -172,8 +172,8 @@
                                 <div class="icon">
                                   <i class="ion ion-ios-briefcase"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>sijuara/daftar_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/daftar_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-6">

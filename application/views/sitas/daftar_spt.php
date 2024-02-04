@@ -23,9 +23,9 @@
         $no = 1;
         $no_hp = $kabalai->no_hp;
         $no_wa = substr_replace("$no_hp","62",0,1);
-        foreach ($rec->result() as $row){
+        foreach ($rec as $row){
             $links = base_url()."sijuara/verif_spt_detail/".$row->id_spt;
-            $pesan = "*Layanan SIMANTEP* Mohon untuk mengecek pengajuan SPT, silahkan klik link $links";
+            $pesan = "*Layanan Aplikasi* Mohon untuk mengecek pengajuan SPT, silahkan klik link $links";
             $kpda = $this->model_more->get_peg_spt($row->id_spt);
             $no_surat = $this->model_more->get_surat_spt($row->id_spt);
             if($no_surat){

@@ -756,15 +756,6 @@ class Sijuara extends CI_Controller {
 	    }
 	    redirect('sijuara/daftar_spt');
 	}
-	
-	function daftar_spt(){
-	    cek_session_admin1();
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-		$data['rec'] = $this->model_more->daftar_spt();
-		$data['kabalai'] = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-        $this->template->load('sijuara/persuratan/spt/template_form','sijuara/persuratan/spt/daftar_spt',$data);
-	}
-	
 	function verif_spt(){
 	    cek_session_admin1();
 	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
@@ -952,128 +943,7 @@ class Sijuara extends CI_Controller {
             echo "zonk";
         }
     }
-    
-    function buat_surat_keluar(){
-        $no_surat = $this->model_more->cek_no_surat();
-        $no_urut = substr($no_surat,0,5);
-        $no_surat_now = $no_urut + 1;
-        $no_suratx = "B-".sprintf("%03s", $no_surat_now);
-        $data['no_surat'] = $no_suratx;
-        $data['tujuan_surat'] = "";
-        $data['tanggal'] = "";
-        $data['perihal'] = "";
-        $data['id_surat_keluar'] = "";
-        $data['status'] = "save";
-        $data['read'] = "";
-        $data['arsip'] = "";
-        $data['arsip_val'] = "--";
-        //$data['nsx'] = $no_surat;
-        
-        if(isset($_GET['id_sk'])){
-            $id_sk = $_GET['id_sk'];
-            $qw = $this->db->query("select * from sijuara_surat_keluar where id_surat_keluar = '$id_sk'")->row();
-            if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_more->get_kode_sub_arsip($no_arsip)->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $qw->no_surat_keluar;
-            $data['tujuan_surat'] = $qw->tujuan_surat;
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = $qw->id_surat_keluar;
-            $data['status'] = "edit";
-            $data['read'] = "readonly";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
-        
-        if(isset($_GET['copy'])){
-            $id_skc = $_GET['copy'];
-            $qw = $this->db->query("select * from sijuara_surat_keluar where id_surat_keluar = '$id_skc'")->row();
-             if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_more->get_kode_sub_arsip($no_arsip)->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $qw->no_surat_keluar;
-            $data['tujuan_surat'] = "";
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = "";
-            $data['status'] = "save";
-            $data['read'] = "";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
-        
-        if(isset($_GET['spt'])){
-            $id_spt = $_GET['spt'];
-            $qw = $this->db->query("select * from sijuara_surat_keluar where id_spt = '$id_spt'")->row();
-            if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_more->get_kode_sub_arsip($no_arsip)->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $no_suratx;
-            $data['tujuan_surat'] = $qw->tujuan_surat;
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = $qw->id_surat_keluar;
-            $data['status'] = "edit";
-            $data['read'] = "";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
-        
-        if(isset($_GET['srt'])){
-            $id_srt = $_GET['srt'];
-            $qw = $this->db->query("select * from sijuara_surat_keluar where id_buat_surat = '$id_srt'")->row();
-            if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_more->get_kode_sub_arsip($no_arsip)->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $no_suratx;
-            $data['tujuan_surat'] = $qw->tujuan_surat;
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = $qw->id_surat_keluar;
-            $data['status'] = "edit";
-            $data['read'] = "";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
-        
-        $data['rec'] = $this->model_more->daftar_surat_keluar();
-        $data['ars'] = $this->model_more->get_klas_arsip();
-        $user = $this->session->username;
-		$get_us = $this->db->query("select id_user from sijuara_user where username = '$user'")->row();
-		$get_sk = $this->db->query("select * from sijuara_level where id_user = '$get_us->id_user' and id_stakeholder = 8")->num_rows();
-		if($get_sk > 0){
-		    $this->template->load('sijuara/persuratan/surat_keluar/template_form','sijuara/persuratan/surat_keluar/buat',$data);
-		} else {
-		    echo "Anda Tidak Memiliki Akses";
-		}
-        
-    }
-    
+
     function save_surat_keluar(){
 	    $status = $this->input->post('status');
 	    if($status=="save"){
@@ -1091,58 +961,6 @@ class Sijuara extends CI_Controller {
 	    redirect('sijuara/buat_surat_keluar');
 	}
 	
-	function buat_surat_masuk(){
-        $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-        $data['no_surat_masuk'] = "";
-        $data['asal_surat'] = "";
-        $data['tanggal_masuk'] = date('Y-m-d');
-        $data['tanggal'] = date('Y-m-d');
-        $data['perihal'] = "";
-        $data['id_surat_masuk'] = "";
-        $data['status'] = "save";
-        $data['read'] = "";
-        $data['file_pdf'] = "";
-        $data['nama_file'] = "";
-        
-        if(isset($_GET['id_sm'])){
-            $id_sm = $_GET['id_sm'];
-            $qw = $this->db->query("select * from sijuara_surat_masuk where id_surat_masuk = '$id_sm'")->row();
-            $data['no_surat_masuk'] = $qw->no_surat_masuk;
-            $data['asal_surat'] = $qw->asal_surat;
-            $data['tanggal_masuk'] = $qw->tanggal_masuk;
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_masuk'] = $qw->id_surat_masuk;
-            $data['status'] = "edit";
-            $data['read'] = "";
-            if(!empty($qw->file_pdf)){
-                $data['file_pdf'] = "<a class='btn btn-warning btn-xs' title='PDF' target='_blank' href='".base_url()."asset/file_lainnya/surat_masuk/".$qw->file_pdf."'><i class='fas fa-file-pdf'></i> Lihat PDF</a>";
-            } else {
-                $data['file_pdf'] = "";
-            }
-            
-            $data['nama_file'] = $qw->file_pdf;
-        }
-        
-        if(isset($_GET['copy'])){
-            $id_skm = $_GET['copy'];
-            $qw = $this->db->query("select * from sijuara_surat_masuk where id_surat_masuk = '$id_skm'")->row();
-            $data['no_surat_masuk'] = $qw->no_surat_masuk;
-            $data['asal_surat'] = $qw->asal_surat;
-            $data['tanggal_masuk'] = date('Y-m-d');
-            $data['tanggal'] = date('Y-m-d');
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_masuk'] = $qw->id_surat_masuk;
-            $data['status'] = "save";
-            $data['read'] = "";
-            $data['file_pdf'] = "";
-            $data['nama_file'] = "";
-        }
-        $data['kabalai'] = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-        $data['rec'] = $this->model_more->daftar_surat_masuk();
-        $this->template->load('sijuara/persuratan/surat_keluar/template_form','sijuara/persuratan/surat_keluar/buat_masuk',$data);
-    }
-    
     function save_surat_masuk(){
 	    $status = $this->input->post('status');
 	    if($status=="save"){

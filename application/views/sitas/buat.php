@@ -1,9 +1,4 @@
 <div class="container-fluid">
-    <?php
-        $uri3 = $this->uri->segment(3);
-        $lev = $this->model_more->get_user_level($this->session->username)->row();
-        if($lev->id_stakeholder=="8"){
-    ?>
     <div class="row">
       
       <div class="col-12 col-md-12 col-lg-12">
@@ -13,7 +8,8 @@
           </div>
           <div class="card-body">
             <!-- Date -->
-            <form method="post" action="<?= base_url() ?>sijuara/save_surat_keluar">
+            <!--<form method="post" action="<?= base_url() ?>sijuara/save_surat_keluar">-->
+            <form method="post" action="#">
             <div class="form-group">
               <label>No Surat :</label>
               <input type="text" class="form-control" name="no_surat_keluar" value="<?= $no_surat ?>" <?= $read ?>>
@@ -40,7 +36,7 @@
               <select class="form-control select2" name="arsip" style="width: 100%;">
                     <option value="<?= $arsip ?>"><?= $arsip_val ?></option>
                     <?php
-                        foreach($ars->result() as $ar){
+                        foreach($ars as $ar){
                         ?>
                         <option value="<?= $ar->kode_sub_arsip ?>"><?= $ar->kode_sub_arsip ?> - <?= $ar->arsip ?> - <?= $ar->sub_arsip ?></option>
                         <?php
@@ -60,7 +56,6 @@
       </div>
     </div>
     <!-- /.row -->
-    <?php } ?>
     
     <div class="card card-success">
   <div class="card-header">
@@ -83,7 +78,7 @@
       <?php 
         $no = 1;
         if($rec){
-        foreach ($rec->result() as $row){
+        foreach ($rec as $row){
      ?>
       <tr>
         <td><?php echo $no ?></td>

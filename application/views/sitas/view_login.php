@@ -23,11 +23,11 @@
                   <img src="<?= base_url() ?>asset/gambar/bsip_tas_ic.png">
                 </div>
                 <div class="form-group">
-                  <input type="text" name="a" class="form-control _ge_de_ol" type="text" placeholder="Enter Email" required="" aria-required="true">
+                  <input type="text" name="a" class="form-control _ge_de_ol" type="text" placeholder="Username" required="" aria-required="true">
                 </div>
 
                 <div class="form-group">
-                  <input type="password" name="b" class="form-control _ge_de_ol" type="text" placeholder="Enter Password" required="" aria-required="true">
+                  <input type="password" name="b" class="form-control _ge_de_ol" type="text" placeholder="Password" required="" aria-required="true">
                 </div>
                 <input type="hidden" name="c" value="2024">
                 <div class="form-group">
