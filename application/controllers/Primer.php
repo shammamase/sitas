@@ -264,6 +264,7 @@ class Primer extends CI_Controller {
 	function buat_spt(){
 	    cek_session_admin1();
 		//$id = $this->uri->segment(3);
+		$tahun = $this->session->tahun;
 		if (isset($_GET['buat_tgl'])){
 		    $tgl = $this->input->get('tanggal');
 		    $ex_tgl = explode("-",$tgl);
@@ -298,11 +299,11 @@ class Primer extends CI_Controller {
 			$data['tanggal'] = $tgl;
 			$data['tanggal_input'] = date('Y-m-d');
 			$data['lama_hari'] = $lama;
-			$data['surat_masuk'] = $this->model_more->list_surat_masuk();
+			$data['surat_masuk'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$tahun%'","id_surat_masuk desc limit 10");
 			if(!empty($id_pegw)){
-			    $data['peg'] = $this->model_more->list_peg($id_pegw);    
+				$data['peg'] = $this->model_sitas->listDataBy("*","peserta_spt","id_pegawai not in ($id_pegw)","id_peserta asc");  
 			} else {
-			    $data['peg'] = $this->model_more->list_peg_all();
+				$data['peg'] = $this->model_sitas->listData("*","peserta_spt","id_peserta asc");
 			}
 			
 			$data['tgl_no'] = $tglm;
@@ -311,7 +312,7 @@ class Primer extends CI_Controller {
 			$data['id_spt'] = "";
 			$data['kunci_id_spt'] = "disabled";
 			$data['status'] = "save";
-			$this->template->load('sijuara/persuratan/spt/template_form','sijuara/persuratan/spt/buat_spt',$data);
+			$this->template->load('sitas/template_form','sitas/buat_spt',$data);
 		}else{
 		    $data['verif'] = 0;
 		    $data['menimbang'] = "";
@@ -332,7 +333,7 @@ class Primer extends CI_Controller {
 			$data['id_spt'] = "";
 			$data['kunci_id_spt'] = "disabled";
 			$data['status'] = "";
-            $this->template->load('sijuara/persuratan/spt/template_form','sijuara/persuratan/spt/buat_spt',$data);
+            $this->template->load('sitas/template_form','sitas/buat_spt',$data);
 		}
 	}
     function logout(){

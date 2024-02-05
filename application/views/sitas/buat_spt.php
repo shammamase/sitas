@@ -1,7 +1,3 @@
-<?php 
-$lev = $this->model_more->get_user_level($this->session->username)->row();
-if($lev->id_stakeholder==8){
-?>
 <div class="container-fluid">
     <div class="row">
       <div class="col-12 col-md-6 col-lg-6">
@@ -43,7 +39,8 @@ if($lev->id_stakeholder==8){
           </div>
           <div class="card-body">
             <!-- Date -->
-            <form method="post" action="<?= base_url() ?>sijuara/save_spt">
+            <!--<form method="post" action="<?= base_url() ?>sijuara/save_spt">-->
+            <form method="post" action="#">
             <div class="form-group">
               <label>Menimbang :</label>
               <textarea class="form-control" name="menimbang"><?= $menimbang ?></textarea>
@@ -84,7 +81,7 @@ if($lev->id_stakeholder==8){
                         <label for="checkboxPrimary1">
                         </label>
                   </div>
-                  <label>DIPA BPTP Gorontalo Tahun <?= date('Y') ?></label>
+                  <label>DIPA BPSI TAS Tahun <?= date('Y') ?></label>
             </div>
             <div class="form-group">
               <label>Tanggal Input:</label>
@@ -115,5 +112,3 @@ if($lev->id_stakeholder==8){
     <!-- /.row -->
   </div>
   <!-- /.container-fluid -->
-<?php } else { echo "Anda Tidak Memiliki Hak Akses Membuat SPT"; }
-?>

@@ -97,21 +97,6 @@ class Model_more extends CI_model{
                                 inner join sijuara_trs_alokasi j on i.id_alokasi=j.id_alokasi
                                 where j.ta = '$tahun'");
     }
-    
-    function list_surat_masuk(){
-        $tahun = date('Y');
-        return $this->db->query("select * from sijuara_surat_masuk
-                                where tanggal like '%$tahun%' order by id_surat_masuk desc limit 10");
-    }
-    
-    function list_peg($x){
-        return $this->db->query("select * from ms_peg where id_peg not in ($x) order by urt asc");
-    }
-    
-    function list_peg_all(){
-        return $this->db->query("select * from ms_peg order by urt asc");
-    }
-    
     function save_spt(){
         $peg = $this->input->post('peg');
         $tanggal_akhir = $this->input->post('tanggal_akhir');
