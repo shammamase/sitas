@@ -140,16 +140,14 @@
                       </p>
                     </a>
                   </li>
-                  <!--
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/laporan_spt" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/buat_cuti" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
-                        Rekap Laporan
+                        Cuti
                       </p>
                     </a>
                   </li>
-                  -->
                   <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/ganti_password" class="nav-link">
                       <i class="fa fa-key"></i>

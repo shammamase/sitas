@@ -246,4 +246,47 @@ class Model_sitas extends CI_model{
         }
         return $nomornya;
     }
+    function save_all_wa($dt,$tb,$idx){
+        $arrs = array();
+        $arrx = "";
+        foreach($dt as $in){
+            $pc_in = explode("#",$in);
+            $dty = $pc_in[0];
+            if($pc_in[1] == 0){
+                $varx = $this->input->post($dty);
+                if(is_array($varx)){
+                    foreach($varx as $vrx){
+                        if($vrx!=""){
+                            $arrx .= $vrx."!@#";    
+                        }
+                    }
+                    $sub_arx = substr($arrx,0,-3);
+                    $arrs[$dty] = $sub_arx;
+                } else {
+                   $arrs[$dty] = strip_tags($varx);
+                }
+                
+            } else {
+                $varx = $this->input->post($dty);
+                if(is_array($varx)){
+                    foreach($varx as $vrx){
+                        if($vrx!=""){
+                            $arrx .= $vrx."!@#";    
+                        }
+                    }
+                    $sub_arx = substr($arrx,0,-3);
+                    $arrs[$dty] = $sub_arx;
+                } else {
+                   $arrs[$dty] = $varx;
+                }
+            }
+        }
+        $datadb = $arrs;
+        if(empty($arrs[$idx])){
+            $this->db->insert($tb,$datadb);
+        } else {
+            $this->db->where($idx,$arrs[$idx]);
+            $this->db->update($tb,$datadb);
+        }
+    }
 }

@@ -202,8 +202,8 @@
                                 <div class="icon">
                                   <i class="fa fa-toggle-off"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>sijuara/buat_lap_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/buat_cuti" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-6">
