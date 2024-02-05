@@ -80,8 +80,8 @@
                               <div class="icon">
                                 <i class="ion ion-ios-paper"></i>
                               </div>
-                              <!--<a href="<?= base_url() ?>sijuara/verif_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                              <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                              <a href="<?= base_url() ?>primer/verif_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                              <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                           </div>
                         </div>
                         <div class="col-lg-3 col-md-3 col-6">
@@ -216,8 +216,8 @@
                                 <div class="icon">
                                   <i class="fa fa-folder"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>page/drive" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/drive" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-6">
@@ -244,8 +244,8 @@
                                 <div class="icon">
                                   <i class="ion ion-clipboard"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>sijuara/logbook" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/logbook" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             

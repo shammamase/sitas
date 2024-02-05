@@ -441,6 +441,93 @@ class Primer extends CI_Controller {
             $this->template->load('sitas/template_form','sitas/view_ini',$data);
         }
     }
+    public function drive(){
+	    $uri3 = $this->uri->segment(3);
+	    $thn = $this->session->thn_agr;
+	    if(empty($uri3)){
+	        $folder_utama = array('kepala-balai#Kepala Balai','tata-usaha#Tata Usaha','tim-kerja-layanan-pengujian#Tim Kerja Layanan Pengujian','tim-kerja-program-dan-evaluasi#Tim Kerja Program dan Evaluasi');
+	        $data['title'] = "BSIP TAS";
+	        $data['buat_folder'] = "";
+	        $data['upload_file'] = "";
+	        $data['kembali'] = "";
+	        $data['folder'] = $folder_utama;
+	        $data['file'] = array();
+	        $data['uri3'] = $uri3;
+	        $data['thn'] = $thn;
+	        $data['vw_hapus'] = "display:none";
+	    } else {
+	        $id_folder = $this->db->query("select id_folder from folder where url = '$uri3'")->row();
+	        $qw_folder = $this->db->query("select folder,url from folder where root = $id_folder->id_folder")->result();
+	        $qw_surat_keluar = $this->db->query("select id_surat_keluar,perihal,no_surat_keluar from surat_keluar where tanggal like '%$thn%' order by id_surat_keluar desc")->result();
+	        $qw_file = $this->db->query("select * from file where id_folder = $id_folder->id_folder and tahun='$thn'")->result();
+	        $pc_url = explode("_",$uri3);
+	        $panjang_url = count($pc_url);
+	        $akhir = $panjang_url - 1;
+	        $akhir_url = $pc_url[$akhir];
+	        if($panjang_url == 1){
+	            $urix = "drive";
+	        } else {
+	            $urix = "drive/".substr(substr($uri3, 0, strpos($uri3,$akhir_url)),0,-1);
+	        }
+	        $folder_utama = array();
+	        foreach($qw_folder as $qf){
+	            array_push($folder_utama,$qf->url."#".$qf->folder);
+	        }
+	        $judul = str_replace("_"," > ",$uri3);
+	        $judull = str_replace("-"," ",$judul);
+	        $judulll = ucwords($judull);
+	        $data['title'] = $judulll;
+	        $data['buat_folder'] = "<button type='button' class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModalFolder'><b><i class='fa fa-folder-open'></i> Buat Folder</b></button>";
+	        $data['upload_file'] = "<button type='button' class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModalFile'><b><i class='fa fa-upload'></i> Upload File</b></button>";
+	        $data['kembali'] = "<a style='color:black' href='".base_url('primer/').$urix."' class='btn btn-warning btn-xs'><b><i class='fa fa-reply'></i> Kembali</b></a>";
+	        $data['folder'] = $folder_utama;
+	        $data['file'] = $qw_file;
+	        $data['uri3'] = $uri3;
+	        $data['root'] = $id_folder->id_folder;
+	        $data['thn'] = $thn;
+	        $data['surat_keluar'] = $qw_surat_keluar;
+	        $data['vw_hapus'] = "display:";
+	    }
+	    $this->template->load('sitas/template_form','sitas/folder',$data);
+	}
+    function logbook(){
+	    cek_session_admin1();
+	    $user = $this->session->username;
+	    $data['bio'] = $this->db->query("select a.* from pegawai a 
+	                                    inner join user b on a.id_pegawai=b.id_pegawai
+	                                    where b.username='$user'")->row();
+	    $data['bulan'] = array("Januari"=>"01","Februari"=>"02","Maret"=>"03",
+	                            "April"=>"04","Mei"=>"05","Juni"=>"06",
+	                            "Juli"=>"07","Agusutus"=>"08","September"=>"09",
+	                            "Oktober"=>"10","November"=>"11","Desember"=>"12");
+	    $data['thn'] = $this->session->tahun;
+	    $data['user'] = $user;
+        $this->template->load('sitas/template_form','sitas/logbook',$data);
+	}
+	function logbook_detail(){
+	    $waktu = $this->uri->segment(3);
+	    $user = $this->uri->segment(4);
+	    $data['waktu'] = $waktu;
+	    $data['username'] = $user;
+	    $data['bio'] = $this->db->query("select a.* from pegawai a 
+	                                    inner join user b on a.id_pegawai=b.id_pegawai
+	                                    where b.username='$user'")->row();
+	    $this->template->load('sitas/template_form','sitas/logbook_detail',$data);
+	}
+    function verif_spt(){
+	    cek_session_admin1();
+        $thn = $this->session->tahun;
+	    $id_pjs = $this->db->query("select * from pejabat_verifikator where level = 'akhir'")->row();
+        $kabalai = $this->model_sitas->rowDataBy("a.nip,a.nama,a.no_hp,b.username","pegawai a inner join user b on a.id_pegawai=b.id_pegawai","a.id_pegawai = $id_pjs->id_pegawai")->row();
+	    $user_vr = $this->session->username;
+	    if($kabalai->username==$user_vr){
+	        $data['rec'] = $this->model_sitas->listDataBy("*","spt","id_verif = 0","id_spt asc");
+    		$data['kabalai'] = $kabalai;
+            $this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/daftar_spt',$data);    
+	    } else {
+	        $this->load->view('sitas/verif_surat/no_akses');
+	    }
+	}
     function logout(){
 		$this->session->sess_destroy();
 		redirect('primer');

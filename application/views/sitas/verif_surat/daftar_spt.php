@@ -21,9 +21,10 @@
       <?php 
         $no = 1;
         
-        foreach ($rec->result() as $row){
-            $kpda = $this->model_more->get_peg_spt($row->id_spt);
-            $no_surat = $this->model_more->get_surat_spt($row->id_spt);
+        foreach ($rec as $row){
+            $kpda = $this->model_sitas->listDataBy("a.*,b.nama","anggota_spt a 
+                                  inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$row->id_spt","a.id_anggota asc");
+            $no_surat = $this->model_sitas->rowDataBy("*","surat_keluar","id_spt = $row->id_spt")->row();
             if($no_surat){
                 $no_sr = $no_surat->no_surat_keluar;
             } else {

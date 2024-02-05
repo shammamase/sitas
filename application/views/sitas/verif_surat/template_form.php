@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SIMANTEP</title>
+  <title>SITAS</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -55,26 +55,26 @@
     <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>sijuara/homex"><i class="fa fa-home"></i> Menu Utama </a>
+                <a href="<?php echo base_url(); ?>primer/home"><i class="fa fa-home"></i> Menu Utama </a>
               </li>
               <li class="nav-item">
                 <a href="#">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </a>
               </li>
               <li class="nav-item">
-                <a href="<?php echo base_url(); ?>sijuara/logout"><i class="fa fa-power-off"></i> Logout</a>
+                <a href="<?php echo base_url(); ?>primer/logout"><i class="fa fa-power-off"></i> Logout</a>
               </li>
             </ul>
           </nav>
     <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <?php $users = $this->model_users->users_edit_sijuara($this->session->username)->row_array(); ?>
+  <?php $users = $this->model_sitas->get_user(); ?>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
         
-            <a href="<?php echo site_url('sijuara/home') ?>" class="brand-link">
+            <a href="<?php echo site_url('primer/home') ?>" class="brand-link">
               <img src="<?php echo base_url(); ?>asset/lte31/dist/img/AdminLTELogo.png" alt="Sijuara Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-              <span class="brand-text font-weight-light">SIMANTEP</span>
+              <span class="brand-text font-weight-light">SITAS</span>
             </a>
         
             <!-- Sidebar -->
@@ -82,10 +82,10 @@
               <!-- Sidebar user panel (optional) -->
               <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
-                  <img src="<?php echo base_url(); ?>/asset/admin/dist/img/users.gif" class="img-circle elevation-2" alt="User Image">
+                  <img src="<?php echo base_url(); ?>/asset/users.gif" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                  <a href="#" class="d-block"><?php echo $users['nama']; ?></a>
+                  <a style="font-size:15px" href="#" class="d-block"><?php echo $users->nama; ?></a>
                 </div>
               </div>
         
@@ -94,7 +94,7 @@
                   <!-- Add icons to the links using the .nav-icon class
                        with font-awesome or any other icon font library -->
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/homex" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/home" class="nav-link">
                       <i class="fa fa-home"></i>
                       <p>
                         Menu Utama
@@ -102,7 +102,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/disposisi" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/disposisi" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Disposisi Surat
@@ -110,7 +110,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/verif_surat" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/verif_surat" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Verifikasi Surat
@@ -118,7 +118,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/verif_spt" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/verif_spt" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Verifikasi SPT
@@ -126,7 +126,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/verif_lap_spt" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/verif_lap_spt" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Verifikasi Laporan SPT
@@ -134,7 +134,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/ganti_password" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/ganti_password" class="nav-link">
                       <i class="fa fa-key"></i>
                       <p>
                         Ganti Password
@@ -142,7 +142,7 @@
                     </a>
                  </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/logout" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/logout" class="nav-link">
                       <i class="fa fa-power-off"></i>
                       <p>
                         Logout

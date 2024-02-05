@@ -149,6 +149,22 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>primer/drive" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Drive
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>primer/logbook" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        LogBook
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/ganti_password" class="nav-link">
                       <i class="fa fa-key"></i>
                       <p>

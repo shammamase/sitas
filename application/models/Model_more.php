@@ -205,27 +205,9 @@ class Model_more extends CI_model{
         $thn = $this->uri->segment(3);
         return $this->db->query("select * from sijuara_lap_spt where tanggal_input like '%$thn%' order by id_lap_spt desc");
     }
-    
-    function daftar_spt_kabalai(){
-        $thn = date('Y');
-        return $this->db->query("select * from sijuara_spt where verif_kabalai = 0 order by id_spt asc");
-    }
-    
     function get_spt_id($x){
         return $this->db->query("select * from sijuara_spt where id_spt='$x'")->row();
     }
-    
-    function get_peg_spt($x){
-        return $this->db->query("select a.*,b.nama 
-                                from sijuara_pelaku_spt a 
-                                inner join ms_peg b on a.id_peg=b.id_peg
-                                where a.id_spt='$x'")->result();
-    }
-    
-    function get_surat_spt($x){
-        return $this->db->query("select * from sijuara_surat_keluar where id_spt = '$x'")->row();
-    }
-    
     function get_surat_buat($x){
         return $this->db->query("select * from sijuara_surat_keluar where id_buat_surat = '$x'")->row();
     }

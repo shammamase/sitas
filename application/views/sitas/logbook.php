@@ -18,7 +18,7 @@
       <tr>
         <td><?php echo $x." ".$thn ?></td>
         <td>
-            <a class='btn btn-danger btn-xs' title='Detail' target="_blank" href="<?php echo base_url() ?>sijuara/logbook_detail/<?= $thn."-".$x_val ?>/<?= $user ?>"><i class='fas fa-file'></i> Detail</a>
+            <a class='btn btn-danger btn-xs' title='Detail' target="_blank" href="<?php echo base_url() ?>primer/logbook_detail/<?= $thn."-".$x_val ?>/<?= $user ?>"><i class='fas fa-file'></i> Detail</a>
         </td>
       </tr>
       <?php } ?>
