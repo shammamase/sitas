@@ -336,6 +336,29 @@ class Primer extends CI_Controller {
             $this->template->load('sitas/template_form','sitas/buat_spt',$data);
 		}
 	}
+	function buat_lap_spt(){
+		cek_session_admin1();
+		$thn = $this->session->tahun;
+		$id_pjs = $this->model_sitas->rowDataBy("*","pejabat_verifikator","level = 'akhir'")->row();
+		$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
+	    $data['rec'] = $this->model_sitas->listDataBy("a.*,b.no_surat_keluar","spt a 
+								inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar","a.tanggal like '%$thn%'",
+								"a.id_spt desc");
+	    $this->template->load('sitas/template_form','sitas/lap_spt',$data);
+	}
+	function ganti_password(){
+	    cek_session_admin1();
+		$user = $this->session->username;
+		if(isset($_POST['submit'])){
+		    $pass = md5($_POST['password']);
+		    $this->db->query("update user set password = '$pass' where username = '$user'");
+		    echo "<script>alert('Berhasil Mengubah Password')</script>";
+		    echo "<script>window.location.href='".base_url()."/primer/ganti_password'</script>";
+		} else {
+		 $data["user"] = $user;
+		 $this->template->load('sitas/template_form','sitas/view_password',$data);   
+		}
+	}
     function logout(){
 		$this->session->sess_destroy();
 		redirect('primer');

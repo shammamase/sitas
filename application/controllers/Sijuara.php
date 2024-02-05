@@ -471,21 +471,6 @@ class Sijuara extends CI_Controller {
 	    $this->db->query("delete from sijuara_rincian where id_subdetil = '$uri4' and status_ajukan = 0");
 	    redirect('sijuara/pengajuan/'.$uri3);    
 	}
-	
-	function ganti_password(){
-	    cek_session_admin1();
-		$user = $this->session->username;
-		if(isset($_POST['submit'])){
-		    $pass = md5($_POST['password']);
-		    $this->db->query("update sijuara_user set password = '$pass' where username = '$user'");
-		    echo "<script>alert('Berhasil Mengubah Password')</script>";
-		    echo "<script>window.location.href='".base_url()."/sijuara/ganti_password'</script>";
-		} else {
-		 $data["user"] = $user;
-		 $this->template->load('sijuara/template_cltr','sijuara/view_password',$data);   
-		}
-	}
-	
 	// buat spt
 	function buat_spt(){
 	    cek_session_admin1();
@@ -1337,20 +1322,11 @@ class Sijuara extends CI_Controller {
             echo "zonk";
         }
     }
-	
 	function save_pejabat(){
 	    $id_pejabat = $_POST['id_pejabat'];
 	    $this->db->query("update sijuara_pejabat_ttd set id_pejabat = '$id_pejabat' where id_pjs = 1");
 	    redirect('sijuara/pejabat_tanda_tangan');
 	}
-	
-	function buat_lap_spt(){
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $data['kabalai'] = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-	    $data['rec'] = $this->model_more->daftar_lap_spt();
-	    $this->template->load('sijuara/persuratan/spt/template_form','sijuara/persuratan/spt/lap_spt',$data);
-	}
-	
 	function lap_spt(){
 	    $id_spt = $this->uri->segment(3);
 	    $spt_id = $this->model_more->spt_no_id($id_spt)->row();

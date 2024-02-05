@@ -17,7 +17,7 @@
             <div class="card-body">
                 <?php
                 $attributes = array('class'=>'form-horizontal','role'=>'form');
-                      echo form_open('sijuara/ganti_password',$attributes);
+                      echo form_open('primer/ganti_password',$attributes);
                 ?>
                   <!--<input type="hidden" name="uriss" value="<?php echo $uris ?>">-->
                   <input type="text" class="form-control" name="user" value="<?php echo $user ?>" disabled><br>

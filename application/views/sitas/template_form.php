@@ -133,7 +133,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/buat_lap_spt" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/buat_lap_spt" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Laporan SPT
@@ -151,7 +151,7 @@
                   </li>
                   -->
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>sijuara/ganti_password" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/ganti_password" class="nav-link">
                       <i class="fa fa-key"></i>
                       <p>
                         Ganti Password

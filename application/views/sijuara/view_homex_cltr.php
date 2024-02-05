@@ -186,8 +186,8 @@
                                 <div class="icon">
                                   <i class="ion ion-images"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>sijuara/buat_lap_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/buat_lap_spt" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             

@@ -22,9 +22,9 @@
         $no = 1;
         $no_hp = $kabalai->no_hp;
         $no_wa = substr_replace("$no_hp","62",0,1);
-        foreach ($rec->result() as $row){
+        foreach ($rec as $row){
             $links = base_url()."sijuara/verif_lap_spt_detail/".$row->id_spt;
-            $pesan = "*Layanan SIMANTEP* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
+            $pesan = "*Layanan Aplikasi* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
             $lap_id_spt = $this->model_more->lap_spt_id_spt($row->id_spt)->row();
             if($lap_id_spt){
                 $lpi = $lap_id_spt->id_spt;

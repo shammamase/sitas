@@ -198,14 +198,7 @@ class Model_more extends CI_model{
         $tujx = substr($tuju,0,-1);
         return $this->db->query("update sijuara_surat_keluar set tujuan_surat = '$tujx', perihal = '$z' where id_spt = $y");
     }
-    function daftar_lap_spt(){
-        //$thn = date('Y');
-        $thn = $this->uri->segment(3);
-        return $this->db->query("select a.*,b.no_lengkap 
-                                    from sijuara_spt a 
-                                    inner join sijuara_surat_keluar b on a.id_spt=b.id_spt 
-                                    where a.tanggal like '%$thn%' order by a.id_spt desc");
-    }
+    
     
     function daftar_lap_spt2(){
         //$thn = date('Y');
