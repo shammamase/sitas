@@ -21,11 +21,17 @@ class Model_sitas extends CI_model{
     function updateDataWithFile($tabel,$kol,$val_kol,$data,$folder){
         $row = $this->rowDataBy("file_pdf",$tabel,"$kol = $val_kol")->row();
         if ($_FILES['file_pdf']['name']) {
-            $this->hapus_surat_masuk($row->file_pdf);
+            $path = "./".$folder."/";
+            $this->hapus_pdf($path,$row->file_pdf);
             $data['file_pdf'] = $this->upload_surat_masuk($folder);
         }
         $this->db->where($kol, $val_kol);
         $this->db->update($tabel, $data);
+    }
+    public function deleteDataWithFile($tabel,$were,$path){
+        $row = $this->rowDataBy("file_pdf",$tabel,$were)->row();
+        $this->hapus_pdf($path,$row->file_pdf);
+        $this->db->query("delete from $tabel where $were");
     }
     function deleteDataWithFotoKtp($tabel,$were){
         $row = $this->rowDataBy("foto_ktp",$tabel,$were)->row();
@@ -50,6 +56,12 @@ class Model_sitas extends CI_model{
         }
         $this->db->where($kol, $val_kol);
         $this->db->update($tabel, $data);
+    }
+    public function hapus_pdf($pathx,$pdfx) {
+        $path = $pathx.$pdfx;
+        if (file_exists($path)) {
+            unlink($path);
+        }
     }
     function distinct_all($kol,$tabel){
         return $this->db->query("select distinct $kol from $tabel")->result();

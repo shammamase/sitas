@@ -221,3 +221,27 @@ function cek_terakhir($datetime, $full = false) {
      }  
      return $difftext;  
 	}
+
+function _POST($par)
+{
+    $ci = &get_instance();
+    $par = $ci->input->post($par);
+    $par = htmlspecialchars($par);
+    $par = str_replace("'", "", $par);
+    return $par;
+}
+
+function _view($view, $data = array())
+{
+    $ci = &get_instance();
+    $ci->load->view($view, $data);
+}
+
+function _GET($par)
+{
+    $ci = &get_instance();
+    $par = $ci->input->get($par);
+    $par = htmlspecialchars($par);
+    $par = str_replace("'", "", $par);
+    return $par;
+}

@@ -957,67 +957,6 @@ class Sijuara extends CI_Controller {
 		redirect('sijuara/buat_surat_masuk');
 	}
 	
-	function delete_surat_masuk(){
-	    $id = $this->uri->segment(3);
-	    $qw_fl =  $this->db->query("select file_pdf from sijuara_surat_masuk where id_surat_masuk='$id'")->row();
-	    $nm_fl = $qw_fl->file_pdf;
-	    unlink("./asset/file_lainnya/surat_masuk/$nm_fl");
-	    $this->db->query("delete from sijuara_surat_masuk where id_surat_masuk='$id'");
-	    redirect('sijuara/buat_surat_masuk');
-	}
-	
-	function disposisi(){
-	    cek_session_admin1();
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $kabalai = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-	    $user_vr = $this->session->username;
-	    if($kabalai->username==$user_vr){
-	        $data['rec'] = $this->model_more->daftar_surat_masuk_kabalai();
-    		$data['kabalai'] = $kabalai;
-            $this->template->load('sijuara/persuratan/verif_surat/template_form','sijuara/persuratan/verif_surat/daftar_surat_masuk',$data);   
-	    } else {
-	        echo "Anda Tidak Memiliki Akses !!!";   
-	    }
-	}
-	
-	function disposisi_detail(){
-	    cek_session_admin1();
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $kabalai = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-	    $user_vr = $this->session->username;
-	    if($kabalai->username==$user_vr){
-    	    $id_sm = $this->uri->segment(3);
-    	    $qw_sm = $this->model_more->get_surat_masuk_id($id_sm);
-	        $data['sm'] = $qw_sm;
-    	    $data['kabalai'] = $kabalai;
-    	    $data['ss'] = $this->session->username;
-    	    $data['peg'] = $this->model_identitas->biodata();
-    	    $this->template->load('sijuara/persuratan/verif_surat/template_form','sijuara/persuratan/verif_surat/disposisi',$data);
-	    } else {
-	        echo "Anda Tidak Memiliki Akses !!!";
-	    }
-	}
-	
-	function kirim_disposisi(){
-	    $id_surat_masuk = $_POST['id_surat_masuk'];
-	    $links = base_url()."sijuara/sm_detail/".$id_surat_masuk;
-	    $pesan = "*Layanan SiMantep* Disposisi Surat, $links ";
-	    $diteruskan = $_POST['diteruskan'];
-	    $isi_disposisi = $_POST['isi_disposisi'];
-	    $pegawai = $_POST['pegawai'];
-	    $pc_pg = explode("-",$pegawai);
-	    $this->db->query("update sijuara_surat_masuk set verif_kabalai = 1, disposisi = '$pc_pg[0]', diteruskan = '$diteruskan', isi_disposisi = '$isi_disposisi' where id_surat_masuk = '$id_surat_masuk'");
-	    redirect('https://api.whatsapp.com/send?phone='.$pc_pg[1].'&text='.$pesan);
-	}
-	
-	function sm_detail(){
-	    cek_session_admin1();
-	    $id_sm = $this->uri->segment(3);
-	    $qw_sm = $this->model_more->get_surat_masuk_id($id_sm);
-        $data['sm'] = $qw_sm;
-	    $this->template->load('sijuara/persuratan/surat_keluar/template_form','sijuara/persuratan/surat_keluar/sm_detail',$data);
-	}
-	
 	function pejabat_tanda_tangan(){
 	    $lev = $this->model_more->get_user_level($this->session->username)->row();
 	    if($lev->id_stakeholder==8){

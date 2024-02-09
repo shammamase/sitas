@@ -229,10 +229,6 @@ class Model_more extends CI_model{
                                 inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip
                                 where a.id_sub_arsip = '$x'");
     }
-    function get_surat_masuk_id($x){
-        return $this->db->query("select * from sijuara_surat_masuk where id_surat_masuk = '$x'")->row();
-    }
-    
     function save_surat_keluar(){
         $no_surat = $this->db->escape_str($this->input->post('no_surat_keluar'));
         $tanggal = $this->input->post('tanggal');
@@ -326,11 +322,6 @@ class Model_more extends CI_model{
                         );
         $this->db->where('id_surat_masuk',$id_surat_masuk);
         $this->db->update('sijuara_surat_masuk',$datadb);
-    }
-    
-    function daftar_surat_masuk_kabalai(){
-        $thn = date('Y');
-        return $this->db->query("select * from sijuara_surat_masuk where verif_kabalai = 0 order by id_surat_masuk asc");
     }
     
     function save_surat(){

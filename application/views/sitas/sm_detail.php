@@ -153,6 +153,10 @@
     <div class="col-md-9 col-9 no_srt"><p>: <?= tgl_indoo($sm->tanggal_masuk) ?></p></div>
     <div class="col-md-3 col-3 no_srt"><p>Nomor Surat</p></div>
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->no_surat_masuk ?></p></div>
+    <div class="col-md-3 col-3 no_srt"><p>Disposisi</p></div>
+    <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->disposisi ?></p></div>
+    <div class="col-md-3 col-3 no_srt"><p>Catatan Penyelesaian</p></div>
+    <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->catatan ?></p></div>
     <!--
     <div class="col-md-12 col-12" style="margin-bottom:10px">
         <a target="_blank" class="btn btn-success" href="">Buat SPT</a>
@@ -160,7 +164,10 @@
     </div>
     -->
     <div class="col-md-12 col-12">
-        <iframe src="<?= base_url() ?>asset/file_lainnya/surat_masuk/<?= $sm->file_pdf ?>"></iframe>
+        <iframe src="<?= base_url() ?>asset/surat_masuk/<?= $sm->file_pdf ?>"></iframe>
+    </div>
+    <div class="col-md-12 col-12">
+        <iframe src="<?= base_url() ?>primer/file_disposisi/<?= $sm->id_surat_masuk ?>"></iframe>
     </div>
 </div>
 

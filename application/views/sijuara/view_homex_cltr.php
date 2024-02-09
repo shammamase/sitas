@@ -119,8 +119,8 @@
                             <div class="icon">
                               <i class="ion ion-share"></i>
                             </div>
-                            <!--<a href="<?= base_url() ?>sijuara/disposisi" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                            <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="<?= base_url() ?>primer/disposisi" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                            <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                           </div>
                         </div>
                         </div>

@@ -155,7 +155,7 @@
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->no_surat_masuk ?></p></div>
     <div class="col-md-12 col-12" style="margin-bottom:10px"><button class="btn btn-success" data-target="#dispo" data-toggle="modal">Disposisi</button></div>
     <div class="col-md-12 col-12">
-        <iframe src="<?= base_url() ?>asset/file_lainnya/surat_masuk/<?= $sm->file_pdf ?>"></iframe>
+        <iframe src="<?= base_url() ?>asset/surat_masuk/<?= $sm->file_pdf ?>"></iframe>
     </div>
 </div>
 
@@ -174,7 +174,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="" method="post" action="<?= base_url() ?>sijuara/kirim_disposisi">
+          <form onsubmit="return validateForm();" class="" method="post" action="<?= base_url() ?>primer/kirim_disposisi">
               <input type="hidden" name="id_surat_masuk" value="<?= $sm->id_surat_masuk ?>">
               <div class="form-group">
                   <div class="row">
@@ -182,58 +182,54 @@
                   <div class="col-md-12"><b>Diteruskan Kepada :</b></div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Kepala Sub Bagian Tata Usaha">Kepala Sub Bagian Tata Usaha
-                      </label>
-                      <ol type="a">
-                          <li>Urusan Keuangan</li>
-                          <li>Urusan Kepegawaiaan dan Rumah Tangga</li>
-                          <li>Urusan Umum dan Perlengkapan</li>
-                      </ol>
-                    </div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Kepala Seksi Pelayanan Pengkajian">Kepala Seksi Pelayanan Pengkajian
-                      </label>
-                      <ol type="a">
-                          <li>Unit Kerjasama dan Pelayanan Pengkajian </li>
-                          <li>Unit Media Informasi Publikasi dan Diseminasi</li>
-                          <li>Unit Pengelola Benih Sumber (UPBS)</li>
-                          <li>Unit Kebun Percobaan</li>
-                          <li>Unit Laboratorium Tanah dan Jaringan Tanaman</li>
-                      </ol>
-                    </div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Koordinasi Program dan Evaluasi">Koordinasi Program dan Evaluasi
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Kepala Balai">Kepala Balai
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Ketua Kelji">Ketua Kelji
-                      </label>
-                      <ol type="a">
-                          <li>Sumber Daya dan Sosok Pertanian</li>
-                          <li>Sistem Usaha Pertanian</li>
-                      </ol>
-                    </div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Pejabat Pembuat Komitmen">Pejabat Pembuat Komitmen
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Kepala Sub Bagian Tata Usaha">Kepala Sub Bagian Tata Usaha
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Bendahara Pengeluaran">Bendahara Pengeluaran
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi">Ketua Tim Kerja Program, Evaluasi, dan Penyebarluasan Hasil Standardisasi
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="Bendahara Penerima">Bendahara Penerima
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar">Ketua Tim Kerja Layanan Pengujian dan Penilaian Standar
                       </label>
                     </div>
-                  <div class="form-check">
+                    <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" name="diteruskan" value="ULP dan Pejabat Pengadaan">ULP dan Pejabat Pengadaan
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="IP2SIP">IP2SIP
+                      </label>
+                    </div>
+                    <!--
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="IP2SIP Bajeng">IP2SIP Bajeng
+                      </label>
+                    </div>
+                    -->
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Manajer UPBS">Manajer UPBS
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Manajer Laboratorium">Manajer Laboratorium
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Manajer Keuangan">Manajer Keuangan
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Jabatan Fungsional">Jabatan Fungsional
                       </label>
                     </div>
                   </div>
@@ -242,46 +238,52 @@
                   <div class="col-md-12"><b>Isi Disposisi :</b></div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio2">
-                        <input type="radio" class="form-check-input" name="isi_disposisi" value="Untuk Diketahui">Untuk Diketahui
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Untuk Diketahui">Untuk Diketahui
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio2">
-                        <input type="radio" class="form-check-input" name="isi_disposisi" value="Untuk Penyelesaian Selanjutnya">Untuk Penyelesaian Selanjutnya
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Untuk Penyelesaian Selanjutnya">Untuk Penyelesaian Selanjutnya
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio2">
-                        <input type="radio" class="form-check-input" name="isi_disposisi" value="Harap Saran/Pertimbangan">Harap Saran/Pertimbangan
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Harap Saran/Pertimbangan">Harap Saran/Pertimbangan
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio2">
-                        <input type="radio" class="form-check-input" name="isi_disposisi" value="Untuk dibicarakan dengan saya">Untuk Dibicarakan dengan saya
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Untuk dibicarakan dengan saya">Untuk Dibicarakan dengan saya
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio2">
-                        <input type="radio" class="form-check-input" name="isi_disposisi" value="Harap Mewakili Saya">Harap Mewakili Saya
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Harap Mewakili Saya">Harap Mewakili Saya
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio2">
-                        <input type="radio" class="form-check-input" name="isi_disposisi" value="Konsutasi/diskusi dengan">Konsutasi/diskusi dengan
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Konsutasi/diskusi dengan">Konsutasi/diskusi dengan
                       </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Siapkan Bahan">Siapkan Bahan
+                      </label>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Catatan:</label>
+                      <textarea name="catatan" class="form-control"></textarea>
                     </div>
                   </div>
                   
                   <div style="margin-top:20px" class="col-md-12 col-12">
-                      <select name="pegawai" class="form-control select2">
-                        <option value="">-- Pilih Pegawai --</option>
+                      <select multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2" required>
                         <?php
-                        $no_wa = "";
-                        foreach($peg->result() as $pg){
-                            $no_hp = $pg->no_hp;
-                            $no_wa = substr_replace("$no_hp","62",0,1);
+                        foreach($peg as $pg){
                         ?>
-                        <option value="<?= $pg->nama ?>-<?= $no_wa ?>"><?= $pg->nama ?></option>
+                        <option value="<?= $pg->id_pegawai ?>"><?= $pg->nama ?></option>
                         <?php
                         }
                         ?>
@@ -298,3 +300,32 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+
+  <script>
+    function validateForm() {
+            var diteruskanCheckboxes = document.getElementsByName('diteruskan[]');
+            var untukCheckboxes = document.getElementsByName('isi_disposisi[]');
+
+            var diteruskanChecked = false;
+            var untukChecked = false;
+
+            for (var i = 0; i < diteruskanCheckboxes.length; i++) {
+                if (diteruskanCheckboxes[i].checked) {
+                    diteruskanChecked = true;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < untukCheckboxes.length; i++) {
+                if (untukCheckboxes[i].checked) {
+                    untukChecked = true;
+                    break;
+                }
+            }
+
+            if (!diteruskanChecked || !untukChecked) {
+                alert("Minimal satu checkbox dari kedua grup harus dicentang.");
+                return false;
+            }
+        }
+  </script>

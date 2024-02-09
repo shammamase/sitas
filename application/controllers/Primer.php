@@ -34,12 +34,13 @@ class Primer extends CI_Controller {
 
 	function home(){
 		cek_session_admin1();
-		$data['thn'] = $this->session->thn_agr;
+		$thn = $this->session->tahun;
+		$data['thn'] = $thn;
 		$data['jml_v1'] = 0;//$this->model_more->daftar_spt_kabalai()->num_rows();
 		$data['jml_v2'] = 0;//$this->model_more->daftar_surat_kabalai()->num_rows();
-		$data['jml_v3'] = 0;//$this->model_more->daftar_surat_masuk_kabalai()->num_rows();
+		$data['jml_v3'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","id_verifikasi = 0");
 		$data['jml_v4'] = 0;//$this->model_more->daftar_lap_spt_kabalai()->num_rows();
-		$data['jml_surat_masuk'] = 0;//$this->model_more->daftar_surat_masuk()->num_rows();
+		$data['jml_surat_masuk'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","tanggal_masuk like '%$thn%'");
 		$data['jml_surat_keluar'] = 0;//$this->model_more->daftar_surat_keluar()->num_rows();
 		$data['jml_surat'] = 0;//$this->model_more->daftar_surat()->num_rows();
 		$data['jml_spt'] = 0;//$this->model_more->daftar_spt()->num_rows();
@@ -67,22 +68,34 @@ class Primer extends CI_Controller {
 		cek_session_admin1();
 		$thn = $this->session->tahun;
 		$id_pjs = $this->model_sitas->rowDataBy("*","pejabat_verifikator","level = 'akhir'")->row();
-        $data['no_surat_masuk'] = "";
+		$list_kode = $this->model_sitas->listData("*","klasifikasi_sub_arsip","id_sub_arsip");
+		$agenda = $this->model_sitas->rowDataDesc("no_agenda","surat_masuk","id_surat_masuk");
+		if(empty($agenda->no_agenda)){
+            $no_agenda = 1;
+        } else {
+            $no_agenda = $agenda->no_agenda + 1;
+        }
+        $data['no_agenda'] = $no_agenda;
+		$data['no_surat_masuk'] = "";
         $data['asal_surat'] = "";
         $data['tanggal_masuk'] = date('Y-m-d');
         $data['tanggal'] = date('Y-m-d');
         $data['perihal'] = "";
-        $data['id_surat_masuk'] = "";
+        $data['id_surat_masuk'] = 0;
         $data['status'] = "save";
         $data['read'] = "";
         $data['file_pdf'] = "";
         $data['nama_file'] = "";
+		$data['id_sub_arsip'] = "";
+        $data['kode_klasifikasi'] = "Pilih Klasifikasi";
 		$data['uri3'] = $this->uri->segment(3);
-        
+        $data['list_kode'] = $list_kode;
         if(isset($_GET['id_sm'])){
             $id_sm = $_GET['id_sm'];
 			$qw = $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk = $id_sm")->row();
-            $data['no_surat_masuk'] = $qw->no_surat_masuk;
+			$kode_kl = $this->model_sitas->rowDataBy("kode_sub_arsip,sub_arsip","klasifikasi_sub_arsip","id_sub_arsip = $qw->id_sub_arsip")->row();
+            $data['no_agenda'] = $qw->no_agenda;
+			$data['no_surat_masuk'] = $qw->no_surat_masuk;
             $data['asal_surat'] = $qw->asal_surat;
             $data['tanggal_masuk'] = $qw->tanggal_masuk;
             $data['tanggal'] = $qw->tanggal;
@@ -91,41 +104,72 @@ class Primer extends CI_Controller {
             $data['status'] = "edit";
             $data['read'] = "";
             if(!empty($qw->file_pdf)){
-                $data['file_pdf'] = "<a class='btn btn-warning btn-xs' title='PDF' target='_blank' href='".base_url()."asset/file_lainnya/surat_masuk/".$qw->file_pdf."'><i class='fas fa-file-pdf'></i> Lihat PDF</a>";
+                $data['file_pdf'] = "<a class='btn btn-warning btn-xs' title='PDF' target='_blank' href='".base_url()."asset/surat_masuk/".$qw->file_pdf."'><i class='fas fa-file-pdf'></i> Lihat PDF</a>";
             } else {
                 $data['file_pdf'] = "";
             }
             
             $data['nama_file'] = $qw->file_pdf;
+			$data['id_sub_arsip'] = $qw->id_sub_arsip;
+            $data['kode_klasifikasi'] = $kode_kl->kode_sub_arsip." - ".$kode_kl->sub_arsip;
         }
         
         if(isset($_GET['copy'])){
             $id_skm = $_GET['copy'];
 			$qw = $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk = $id_skm")->row();
-            $data['no_surat_masuk'] = $qw->no_surat_masuk;
+			$kode_kl = $this->model_sitas->rowDataBy("kode_sub_arsip,sub_arsip","klasifikasi_sub_arsip","id_sub_arsip = $qw->id_sub_arsip")->row();
+            $data['no_agenda'] = $no_agenda;
+			$data['no_surat_masuk'] = $qw->no_surat_masuk;
             $data['asal_surat'] = $qw->asal_surat;
             $data['tanggal_masuk'] = date('Y-m-d');
             $data['tanggal'] = date('Y-m-d');
             $data['perihal'] = $qw->perihal;
-            $data['id_surat_masuk'] = $qw->id_surat_masuk;
+            $data['id_surat_masuk'] = 0;
             $data['status'] = "save";
             $data['read'] = "";
             $data['file_pdf'] = "";
             $data['nama_file'] = "";
+			$data['id_sub_arsip'] = $qw->id_sub_arsip;
+            $data['kode_klasifikasi'] = $kode_kl->kode_sub_arsip." - ".$kode_kl->sub_arsip;
         }
-		/*
-		select a.nip,a.nama,a.no_hp,a.ttd,c.username,b.for_ttd,b.jabatan from t_biodata a 
-                                    inner join sijuara_pejabat b on a.id_bio=b.id_bio
-                                    inner join sijuara_pj bb on b.id_bio=bb.id_bio
-                                    inner join sijuara_user c on bb.id_pj=c.id_pj
-                                    inner join sijuara_level d on c.id_user=d.id_user
-                                    where b.id_pejabat = '$x'
-		*/
 		$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
-		$data['rec'] = $this->model_sitas->rowDataBy("*","surat_masuk","tanggal like '%$thn%' order by id_surat_masuk desc")->row();
-        $this->template->load('sitas/template_form','sitas/buat_surat_masuk',$data);
+		$data['rec'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$thn%'","id_surat_masuk desc");
+		$this->template->load('sitas/template_form','sitas/buat_surat_masuk',$data);
     }
-	function buat_surat_keluar(){
+	public function save_surat_masuk(){
+        date_default_timezone_set('Asia/Jakarta');
+		$id_surat_masuk = $this->input->post('id_surat_masuk');
+        $get_pjb_ttd = $this->model_sitas->rowDataBy("b.no_hp","pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.level = 'akhir'")->row();
+        $no_hp = $get_pjb_ttd->no_hp;
+        $links = base_url('verif/surat/masuk');
+        $no_wa = substr_replace("$no_hp","62",0,1);
+        $pesan = "*Layanan BSIP TAS* Ada surat masuk, silahkan klik link berikut $links ";
+        $data = [
+            'id_sub_arsip' => $this->input->post('id_sub_arsip'),
+            'no_agenda' => $this->input->post('no_agenda'),
+            'no_surat_masuk' => $this->input->post('no_surat_masuk'),
+            'asal_surat' => $this->input->post('asal_surat'),
+            'tanggal_masuk' => $this->input->post('tanggal_masuk'),
+            'tanggal' => $this->input->post('tanggal'),
+            'perihal' => $this->input->post('perihal'),
+            'user' => $this->session->username,
+            'tanggal_input' => date('Y-m-d H:i:s')
+        ];
+        if($id_surat_masuk == 0){
+            //(tabel,data,folder_tujuan,folder_tujuan_compres)
+            $this->model_sitas->saveDataWithFile("surat_masuk",$data,"asset/surat_masuk","");
+        } else {
+            $this->model_sitas->updateDataWithFile("surat_masuk","id_surat_masuk",$id_surat_masuk,$data,"asset/surat_masuk");
+        }
+        //$this->model_sitas->kirim_wa($no_wa,$pesan);
+        redirect('primer/buat_surat_masuk');
+  }
+  public function hapus_surat_masuk(){
+    $uri = $this->uri->segment(3);
+    $this->model_sitas->deleteDataWithFile("surat_masuk","id_surat_masuk = '$uri'","./asset/surat_masuk/");
+    redirect('primer/buat_surat_masuk');
+  }
+  function buat_surat_keluar(){
 		cek_session_admin1();
 		$thn = $this->session->tahun;
         $no_surat = $this->model_sitas->cek_no_surat();
@@ -528,6 +572,111 @@ class Primer extends CI_Controller {
 	        $this->load->view('sitas/verif_surat/no_akses');
 	    }
 	}
+	function disposisi(){
+	    cek_session_admin1();
+	    $thn = $this->session->tahun;
+	    $id_pjs = $this->db->query("select * from pejabat_verifikator where level = 'akhir'")->row();
+        $kabalai = $this->model_sitas->rowDataBy("a.nip,a.nama,a.no_hp,b.username","pegawai a inner join user b on a.id_pegawai=b.id_pegawai","a.id_pegawai = $id_pjs->id_pegawai")->row();
+	    $user_vr = $this->session->username;
+	    if($kabalai->username==$user_vr){
+	        $data['rec'] = $this->model_sitas->listDataBy("*","surat_masuk","id_verifikasi = 0","id_surat_masuk asc");
+    		$data['kabalai'] = $kabalai;
+            $this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/daftar_surat_masuk',$data);   
+	    } else {
+	        $this->load->view('sitas/verif_surat/no_akses'); 
+	    }
+	}
+	function disposisi_detail(){
+	    cek_session_admin1();
+	    $id_pjs = $this->db->query("select * from pejabat_verifikator where level = 'akhir'")->row();
+        $kabalai = $this->model_sitas->rowDataBy("a.nip,a.nama,a.no_hp,b.username","pegawai a inner join user b on a.id_pegawai=b.id_pegawai","a.id_pegawai = $id_pjs->id_pegawai")->row();
+	    $user_vr = $this->session->username;
+	    if($kabalai->username==$user_vr){
+    	    $id_sm = $this->uri->segment(3);
+    	    $qw_sm = $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk=$id_sm")->row();
+	        $data['sm'] = $qw_sm;
+    	    $data['kabalai'] = $kabalai;
+    	    $data['ss'] = $this->session->username;
+    	    $data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
+    	    $this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/disposisi',$data);
+	    } else {
+	        $this->load->view('sitas/verif_surat/no_akses');
+	    }
+	}
+	function kirim_disposisi(){
+		date_default_timezone_set('Asia/Jakarta');
+		$user = $this->model_sitas->get_user();
+		$peg = implode(",",$this->input->post('pegawai'));
+		$arr_peg = explode(",",$peg);
+		$penerima = implode(",",$this->input->post('diteruskan'));
+		$id_surat_masuk = _POST('id_surat_masuk');
+		$links = base_url('primer/sm_detail/').$id_surat_masuk;
+		$pesan = "*Layanan Aplikasi BSIP TAS* Disposisi Surat kepada $penerima , silahkan klik link berikut $links ";
+		$row_peg = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai in ($peg)","id_pegawai asc")->result();
+		
+		$ls_peg = $this->model_sitas->listDataBy("nama","pegawai","id_pegawai in ($peg)","id_pegawai asc");
+		$nm_peg = "";
+		foreach($ls_peg as $pegx){
+		  $nm_peg .= $pegx->nama.",";
+		}
+		$nm_peg_fix = substr($nm_peg,0,-1);
+		$data = [
+			'id_verifikasi' => $user->id_pegawai,
+			'waktu_verifikasi' => date('Y-m-d H:i:s'),
+			'disposisi' => $nm_peg_fix,
+			'id_pegawai_disposisi' => $peg,
+			'diteruskan' => $penerima,
+			'isi_disposisi' => implode(",",$this->input->post('isi_disposisi')),
+			'catatan' => _POST('catatan')
+		];
+		$this->model_sitas->update_data("surat_masuk","id_surat_masuk",$id_surat_masuk,$data);
+		/*
+		foreach($row_peg as $rp){
+		  $no_hp = $rp->no_hp;
+		  $no_wa = substr_replace("$no_hp","62",0,1);
+		  $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		}
+		*/
+		redirect('primer/disposisi');
+	}
+	function sm_detail(){
+	    cek_session_admin1();
+	    $id_sm = $this->uri->segment(3);
+	    $qw_sm =  $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk=$id_sm")->row();
+        $data['sm'] = $qw_sm;
+	    $this->template->load('sitas/template_form','sitas/sm_detail',$data);
+	}
+	function file_disposisi(){
+		ob_start();    
+		$uri3 = $this->uri->segment(3);
+		$rowx = $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk = $uri3")->row();
+		 $data['spt'] =$rowx;
+		 $data['kode_arsip'] = $this->model_sitas->rowDataBy("*","klasifikasi_sub_arsip","id_sub_arsip = $rowx->id_sub_arsip")->row();
+		 $data['dispo'] = array("Kepala Balai",
+								 "Kepala Sub Bagian Tata Usaha",
+								 "Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi",
+								 "Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar",
+								 "IP2SIP",
+								 "Manajer UPBS",
+								 "Manajer Laboratorium",
+								 "Manajer Keuangan",
+								 "Jabatan Fungsional");
+		 $data['ket'] = array("Untuk Penyelesaian Selanjutnya",
+								 "Harap Saran/Pertimbangan",
+								 "Untuk Diketahui",
+								 "Untuk dibicarakan dengan saya",
+								 "Harap Mewakili Saya",
+								 "Konsutasi/diskusi dengan",
+								 "Siapkan Bahan");
+		 $this->load->view('sitas/file_disposisi',$data);
+		 $html = ob_get_contents();        
+		 ob_end_clean();            
+		 require './asset/html2pdf_v5.2-master/vendor/autoload.php';        
+		 $pdf = new Spipu\Html2Pdf\Html2Pdf('P','A4','en');    
+		 $pdf->WriteHTML($html);    
+		 $pdf->Output();
+		 //$pdf->Output('Tes.pdf', 'D');
+	 }
     function logout(){
 		$this->session->sess_destroy();
 		redirect('primer');

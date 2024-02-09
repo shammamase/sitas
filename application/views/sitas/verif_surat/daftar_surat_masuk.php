@@ -11,8 +11,7 @@
         <th style="width:18%">Asal Surat</th>
         <th style="width:10%">Tanggal Masuknya Surat</th>
         <th style="width:10%">Tanggal Surat</th>
-        <th style="width:20%">Perihal Surat</th>
-        <th style="width:10%">Disposisi</th>
+        <th style="width:30%">Perihal Surat</th>
         <th style="width:20%">Action</th>
       </tr>
       </thead>
@@ -20,7 +19,7 @@
       <?php 
         $no = 1;
         if($rec){
-        foreach ($rec->result() as $row){
+        foreach ($rec as $row){
      ?>
       <tr>
         <td><?php echo $no ?></td>
@@ -29,9 +28,8 @@
         <td><?= tgl_indoo($row->tanggal_masuk) ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
         <td><?= $row->perihal ?></td>
-        <td><?= $row->disposisi ?></td>
         <td>
-            <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>sijuara/disposisi_detail/<?php echo $row->id_surat_masuk ?>"><i class='fas fa-file'></i> Lihat</a>
+            <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>primer/disposisi_detail/<?php echo $row->id_surat_masuk ?>"><i class='fas fa-file'></i> Lihat</a>
         </td>
       </tr>
      <?php
