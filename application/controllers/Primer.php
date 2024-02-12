@@ -723,7 +723,7 @@ class Primer extends CI_Controller {
 		$arr_peg = explode(",",$peg);
 		$penerima = implode(",",$this->input->post('diteruskan'));
 		$id_surat_masuk = _POST('id_surat_masuk');
-		$links = base_url('primer/sm_detail/').$id_surat_masuk;
+		$links = base_url('primer?redir=sm_detail/').$id_surat_masuk;
 		$pesan = "*Layanan Aplikasi BSIP TAS* Disposisi Surat kepada $penerima , silahkan klik link berikut $links ";
 		$row_peg = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai in ($peg)","id_pegawai asc")->result();
 		$ls_peg = $this->model_sitas->listDataBy("nama","pegawai","id_pegawai in ($peg)","id_pegawai asc");
