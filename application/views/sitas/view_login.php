@@ -30,6 +30,7 @@
                   <input type="password" name="b" class="form-control _ge_de_ol" type="text" placeholder="Password" required="" aria-required="true">
                 </div>
                 <input type="hidden" name="c" value="2024">
+                <input type="hidden" name="d" value="<?= $redir ?>">
                 <div class="form-group">
                     <button style="background-color:#D8857D" type="submit" name="submit" class="btn btn-outline-danger btn-block text-white"><b>Login</b></button>
                 </div>

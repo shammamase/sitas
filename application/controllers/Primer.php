@@ -6,21 +6,42 @@ class Primer extends CI_Controller {
 			$username = strip_tags($this->input->post('a'));
 			$password = md5($this->input->post('b'));
             $tahun = strip_tags($this->input->post('c'));
+			$redir = strip_tags($this->input->post('d'));
 			$cek = $this->model_sitas->cek_login_sijuara($username,$password);
 		    $row = $cek->row_array();
 		    $total = $cek->num_rows();
 			if ($total > 0){
 				$this->session->set_userdata('upload_image_file_manager',true);
 				$this->session->set_userdata(array('username'=>$row['username'],'tahun'=>$tahun));
-				redirect('primer/home');
+				if($redir != ""){
+					redirect('primer/'.$redir);
+				} else {
+					redirect('primer/home');
+				}
 			}else{
+				if(!empty($_GET['redir'])){
+					$redir = $_GET['redir'];
+				} else {
+					$redir = "";
+				}
+				$data['redir'] = $redir;
 				$data['title'] = 'BSIP TAS &rsaquo; Log In';
 				$this->load->view('sitas/view_login',$data);
 			}
 		}else{
+			if(!empty($_GET['redir'])){
+				$redir = $_GET['redir'];
+			} else {
+				$redir = "";
+			}
 			if ($this->session->username != ''){
-				redirect('primer/home');
+				if($redir != ""){
+					redirect('primer/'.$redir);
+				} else {
+					redirect('primer/home');
+				}
 			}else{
+				$data['redir'] = $redir;
 				$data['title'] = 'BSIP TAS &rsaquo; Log In';
 				$this->load->view('sitas/view_login',$data);
 			}
@@ -141,7 +162,7 @@ class Primer extends CI_Controller {
 		$id_surat_masuk = $this->input->post('id_surat_masuk');
         $get_pjb_ttd = $this->model_sitas->rowDataBy("b.no_hp","pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.level = 'akhir'")->row();
         $no_hp = $get_pjb_ttd->no_hp;
-        $links = base_url('primer/disposisi');
+        $links = base_url('primer?redir=disposisi');
         $no_wa = substr_replace("$no_hp","62",0,1);
         $pesan = "*Layanan BSIP TAS* Ada surat masuk, silahkan klik link berikut $links ";
         $data = [
