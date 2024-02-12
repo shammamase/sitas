@@ -36,6 +36,14 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>asset/lte31/plugins/summernote/summernote-bs4.min.css">
   <!-- jQuery -->
   <script src="<?php echo base_url(); ?>asset/lte31/plugins/jquery/jquery.min.js"></script>
+  <!-- Summernote -->
+  <script src="<?php echo base_url(); ?>asset/lte31/plugins/summernote/summernote-bs4.min.js"></script>
+  <script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+</script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -109,12 +117,33 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>primer/buat_surat_keluar" class="nav-link">
+                    <a href="#" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Surat Keluar
+                        <i class="fas fa-angle-left right"></i>
                       </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>primer/buat_surat" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Buat Surat 1</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Buat Surat 2</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>primer/buat_surat_keluar" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Surat Keluar</p>
+                        </a>
+                      </li>
+                    </ul>
                   </li>
                   <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/buat_spt" class="nav-link">
@@ -251,8 +280,9 @@
 <script src="<?php echo base_url(); ?>asset/lte31/plugins/dropzone/min/dropzone.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo base_url(); ?>asset/lte31/dist/js/adminlte.min.js"></script>
-<!-- Summernote -->
+<!-- Summernote 
 <script src="<?php echo base_url(); ?>asset/lte31/plugins/summernote/summernote-bs4.min.js"></script>
+-->
 
 <!-- AdminLTE for demo purposes
 <script src="<?php echo base_url(); ?>asset/lte31/dist/js/demo.js"></script>
@@ -409,13 +439,6 @@
     myDropzone.removeAllFiles(true)
   }
   // DropzoneJS Demo Code End
-</script>
-
-<script>
-  $(function () {
-    // Summernote
-    $('#summernote').summernote()
-  })
 </script>
 
 <script type="text/javascript">

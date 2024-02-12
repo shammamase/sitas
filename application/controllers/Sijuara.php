@@ -1024,18 +1024,6 @@ class Sijuara extends CI_Controller {
 	    }
 	    $this->template->load('sijuara/persuratan/surat_keluar/template_form','sijuara/persuratan/surat_keluar/buat_surat',$data);
 	}
-	
-	function save_surat(){
-	    $status = $this->input->post('status');
-	    if($status=="save"){
-	        $this->model_more->save_surat();    
-	    } else {
-	        $this->model_more->update_surat();
-	    }
-		
-		redirect('sijuara/daftar_surat');
-	}
-	
 	function delete_surat(){
 	    $id = $this->uri->segment(3);
 	    $this->db->query("delete from sijuara_buat_surat where id_buat_surat='$id'");

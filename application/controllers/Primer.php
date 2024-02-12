@@ -141,7 +141,7 @@ class Primer extends CI_Controller {
 		$id_surat_masuk = $this->input->post('id_surat_masuk');
         $get_pjb_ttd = $this->model_sitas->rowDataBy("b.no_hp","pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.level = 'akhir'")->row();
         $no_hp = $get_pjb_ttd->no_hp;
-        $links = base_url('verif/surat/masuk');
+        $links = base_url('primer/disposisi');
         $no_wa = substr_replace("$no_hp","62",0,1);
         $pesan = "*Layanan BSIP TAS* Ada surat masuk, silahkan klik link berikut $links ";
         $data = [
@@ -161,13 +161,105 @@ class Primer extends CI_Controller {
         } else {
             $this->model_sitas->updateDataWithFile("surat_masuk","id_surat_masuk",$id_surat_masuk,$data,"asset/surat_masuk");
         }
-        //$this->model_sitas->kirim_wa($no_wa,$pesan);
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
         redirect('primer/buat_surat_masuk');
   }
   public function hapus_surat_masuk(){
     $uri = $this->uri->segment(3);
     $this->model_sitas->deleteDataWithFile("surat_masuk","id_surat_masuk = '$uri'","./asset/surat_masuk/");
     redirect('primer/buat_surat_masuk');
+  }
+  function buat_surat(){
+	date_default_timezone_set("Asia/Jakarta");
+	$qw_surat_masuk = $this->model_sitas->listData("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
+						"surat_masuk","id_surat_masuk desc limit 50");
+	$data['list_sm'] = $qw_surat_masuk;
+	$data['tanggal'] = date('Y-m-d');
+	$data['lampiran'] = "";
+	$data['hal'] = "";
+	$data['kepada'] = "";
+	$data['lokasi_kepada'] = "";
+	$data['isi_surat'] = "";
+	$data['status'] = "save";
+	$data['id_buat_surat'] = "";
+	$data['tembusan'] = "";
+	$data['arsip'] = "";
+	$data['arsip_val'] = "--";
+	$data['sifat'] = "";
+	$data['sifat_val'] = "--";
+	$data['id_surat_masuk'] = "0";
+	$data['ars'] = $this->model_sitas->listData("a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip",
+						"klasifikasi_sub_arsip a inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip","a.id_sub_arsip asc");
+	$data['sif'] = $this->model_sitas->listData("*","sifat_surat","id_sifat asc");
+	if(isset($_GET['id_bs'])){
+		$id_bs = $_GET['id_bs'];
+		$qw_id = $this->model_sitas->rowDataBy("a.*,b.*,c.arsip","surat_keluar a
+							inner join klasifikasi_sub_arsip b on a.id_arsip=b.id_sub_arsip 
+							inner join klasifikasi_arsip c on b.id_arsip=c.id_arsip","a.id_surat_keluar = $id_bs")->row();
+		$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw_id->sifat")->row();
+		$data['list_sm'] = $qw_surat_masuk;
+		$data['tanggal'] = $qw_id->tanggal;
+		$data['lampiran'] = $qw_id->lampiran;
+		$data['hal'] = $qw_id->hal;
+		$data['kepada'] = $qw_id->kepada;
+		$data['lokasi_kepada'] = $qw_id->lokasi_kepada;
+		$data['isi_surat'] = $qw_id->isi_surat;
+		$data['status'] = "edit";
+		$data['id_buat_surat'] = $qw_id->id_surat_keluar;
+		$data['tembusan'] = $qw_id->tembusan;
+		$data['arsip'] = $qw_id->id_sub_arsip;
+		$data['arsip_val'] = $qw_id->kode_sub_arsip." - ".$qw_id->arsip." - ".$qw_id->sub_arsip;
+		$data['sifat'] = $qw_id->sifat;
+		$data['sifat_val'] = $qw_sf->sifat;
+		$data['id_surat_masuk'] = $qw_id->id_surat_masuk;
+	}
+	if(isset($_GET['cs'])){
+		$cs = $_GET['cs'];
+		$qw_id = $qw_id = $this->model_sitas->rowDataBy("a.*,b.*,c.arsip","surat_keluar a
+							inner join klasifikasi_sub_arsip b on a.id_arsip=b.id_sub_arsip 
+							inner join klasifikasi_arsip c on b.id_arsip=c.id_arsip","a.id_surat_keluar = $cs")->row();
+		$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw_id->sifat")->row();
+		$data['list_sm'] = $qw_surat_masuk;
+		$data['tanggal'] = date('Y-m-d');
+		$data['lampiran'] = $qw_id->lampiran;
+		$data['hal'] = $qw_id->hal;
+		$data['kepada'] = $qw_id->kepada;
+		$data['lokasi_kepada'] = $qw_id->lokasi_kepada;
+		$data['isi_surat'] = $qw_id->isi_surat;
+		$data['status'] = "save";
+		$data['id_buat_surat'] = $qw_id->id_surat_keluar;
+		$data['tembusan'] = $qw_id->tembusan;
+		$data['arsip'] = $qw_id->id_sub_arsip;
+		$data['arsip_val'] = $qw_id->kode_sub_arsip." - ".$qw_id->arsip." - ".$qw_id->sub_arsip;
+		$data['sifat'] = $qw_id->sifat;
+		$data['sifat_val'] = $qw_sf->sifat;
+		$data['id_surat_masuk'] = "0";
+	}
+	$this->template->load('sitas/template_form','sitas/buat_surat',$data);
+  }
+  function save_surat1(){
+	$status = _POST('status');
+	$id_surat_keluar = _POST('id_buat_surat');
+	$data = [
+		'id_surat_masuk'=>_POST('id_surat_masuk'),
+		'id_sub_arsip'=>_POST('arsip'),
+		'tujuan_surat'=>_POST('kepada'),
+		'lokasi_tujuan_surat'=>_POST('lokasi_kepada'),
+		'tanggal'=>_POST('tanggal'),
+		'sifat'=>_POST('sifat'),
+		'lampiran'=>_POST('lampiran'),
+		'perihal'=>_POST('hal'),
+		'isi_surat'=>$this->input->post('isi_surat'),
+		'user'=>$this->session->username,
+		'tanggal_input'=>date('Y-m-d H:i:s'),
+		'tembusan'=>_POST('tembusan')
+	];
+	if($status=="save"){
+		$this->model_sitas->saveData("surat_keluar",$data);
+	} else {
+		$this->model_sitas->update_data("surat_keluar","id_surat_keluar",$id_surat_keluar,$data);
+	}
+	redirect('primer/buat_surat_keluar');
   }
   function buat_surat_keluar(){
 		cek_session_admin1();
@@ -613,7 +705,6 @@ class Primer extends CI_Controller {
 		$links = base_url('primer/sm_detail/').$id_surat_masuk;
 		$pesan = "*Layanan Aplikasi BSIP TAS* Disposisi Surat kepada $penerima , silahkan klik link berikut $links ";
 		$row_peg = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai in ($peg)","id_pegawai asc")->result();
-		
 		$ls_peg = $this->model_sitas->listDataBy("nama","pegawai","id_pegawai in ($peg)","id_pegawai asc");
 		$nm_peg = "";
 		foreach($ls_peg as $pegx){
@@ -630,13 +721,11 @@ class Primer extends CI_Controller {
 			'catatan' => _POST('catatan')
 		];
 		$this->model_sitas->update_data("surat_masuk","id_surat_masuk",$id_surat_masuk,$data);
-		/*
 		foreach($row_peg as $rp){
 		  $no_hp = $rp->no_hp;
 		  $no_wa = substr_replace("$no_hp","62",0,1);
 		  $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		}
-		*/
 		redirect('primer/disposisi');
 	}
 	function sm_detail(){

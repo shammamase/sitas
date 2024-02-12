@@ -86,7 +86,7 @@
         <td><?= $row->tujuan_surat ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
         <td><?= $row->perihal ?></td>
-        <td><?= $row->no_lengkap ?></td>
+        <td></td>
         <td>
             <?php
             if($row->verif_kabalai==1){

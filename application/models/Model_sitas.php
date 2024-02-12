@@ -97,7 +97,7 @@ class Model_sitas extends CI_model{
     function kirim_wa($no_hp,$pesan){
         redirect('https://api.whatsapp.com/send?phone='.$no_hp.'&text='.$pesan);
     }
-    /*
+    
     function kirim_wa_gateway($no_target,$pesanx){
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -109,7 +109,7 @@ class Model_sitas extends CI_model{
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => 'token=acgA1qRgEq2di6oV9GFmjtFWBaa66Wqxbk3k7EnFdrdEAsC6UV&number='.$no_target.'&message='.$pesanx.'&messageid=',
+          CURLOPT_POSTFIELDS => 'token=SRqi6SGp3MZDdPfPqZrVkrtueFa9HJbXBK5GVk1U9g7oWsfu7C&number='.$no_target.'&message='.$pesanx.'&messageid=',
           CURLOPT_HTTPHEADER => array(
             'Content-Type: application/x-www-form-urlencoded',
             'Cookie: ci_session=i1sn26deepc97hpgmfo3oei7noo80nhd'
@@ -119,7 +119,7 @@ class Model_sitas extends CI_model{
         curl_close($curl);
         //echo $response;
     }
-    */
+    
     public function upload_foto_base64($folder_tujuan,$nama_file,$img){
         //$folderPath = "eviden_apel_pagi/";
         $folderPath = $folder_tujuan;
