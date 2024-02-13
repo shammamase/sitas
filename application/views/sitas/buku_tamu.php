@@ -131,8 +131,10 @@
             <a href="<?= base_url('nonlogin/buku_tamu') ?>"><img src="<?= base_url() ?>asset/logo_kementan.png" alt="" style="margin-left:-30px; width: 150px; height: auto;"></a>
             <h3 style="margin-left:-30px">Selamat Datang</h3>
             <a href="<?= base_url('nonlogin/buku_tamu') ?>"><h3 style="margin-left:-30px;text-decoration: none; color: white; font-weight: bold">di BSIP TAS</h3></a>
+            <!--
             <br>
             <a href="<?= base_url('nonlogin/list_buku_tamu') ?>" style="margin-left:-30px" class="btn btn-warning">Buku Tamu</a>
+            -->
             <?php
             $satu_hari = mktime(0,0,0,date("n"),date("j"),date("Y"));
             function tglIndonesia($str){

@@ -49,7 +49,7 @@ class Nonlogin extends CI_Controller
         $this->db->insert('buku_tamu',$datadb);
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
         echo "<script>alert('Registrasi Tamu Berhasil')</script>";
-        echo "<script>window.location.href='".base_url()."home/buku_tamu'</script>";   
+        echo "<script>window.location.href='".base_url()."nonlogin/buku_tamu'</script>";   
         //redirect('home/buku_tamu');
         //$this->load->view('sweetalert/buku_tamu');
   }
