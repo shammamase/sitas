@@ -54,12 +54,14 @@ class Nonlogin extends CI_Controller
         //$this->load->view('sweetalert/buku_tamu');
   }
   public function list_buku_tamu(){
+    cek_session_admin1();
     date_default_timezone_set('Asia/Jakarta');
     $wkt = date('Y-m');
     $data['listx'] = $this->model_sitas->listDataBy("a.*,b.nama as nm","buku_tamu a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.waktu like '%$wkt%'","a.id_tamu asc");
     $this->load->view('sitas/list_buku_tamu',$data);
   }
   public function lap_buku_tamu(){
+    cek_session_admin1();
     $tahun = $_POST['tahun'];
     $bulan = "-".$_POST['bulan'];
     $tgl = "-".$_POST['tgl'];

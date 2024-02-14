@@ -109,6 +109,14 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>primer/pejabat_tanda_tangan" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Pejabat Verifikator
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/buat_surat_masuk" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
@@ -182,6 +190,14 @@
                       <i class="fa fa-list"></i>
                       <p>
                         Drive
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>primer/tamu" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Tamu
                       </p>
                     </a>
                   </li>

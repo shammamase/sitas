@@ -223,15 +223,15 @@
                             <div class="col-lg-3 col-md-3 col-6">
                               <div class="small-box bg-success">
                                 <div class="inner">
-                                  <h3><?= $jml_drive ?></h3>
+                                  <h3><?= $jml_tamu ?></h3>
 
                                   <p>Daftar Tamu</p>
                                 </div>
                                 <div class="icon">
                                   <i class="fa fa-smile"></i>
                                 </div>
-                                <!--<a href="<?= base_url() ?>page/drive" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
-                                <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="<?= base_url() ?>primer/tamu" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                                <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                               </div>
                             </div>
                             <div class="col-lg-3 col-md-3 col-6">

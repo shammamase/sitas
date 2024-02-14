@@ -75,7 +75,7 @@
           $pc_ket = explode(",",$spt->isi_disposisi);
           foreach($dispo as $ds){
               if(in_array($ds, $pc_dispo)){
-                  $bgx = "#cccccc";
+                  $bgx = "#fcc203";
               } else {
                   $bgx = "#ffffff";
               }
@@ -87,7 +87,7 @@
               <?php if($nos<=7) {
                   $nol++;
                   if(in_array($ket[$nol], $pc_ket)){
-                        $bgw = "#cccccc";
+                        $bgw = "#fcc203";
                     } else {
                         $bgw = "#ffffff";
                     }
@@ -103,7 +103,7 @@
           ?>
           <tr>
                <td style="border:1px solid black"><?= $nos+1; ?>. <b><?= wordwrap($spt->disposisi,40,"<br />"); ?></b></td>
-              <td><div style="height:15px;width:20px;border:1px solid black;background:<?php if($spt->disposisi!=NULL){ echo "#cccccc"; } else { echo "#ffffff";} ?>"></div></td>
+              <td><div style="height:15px;width:20px;border:1px solid black;background:<?php if($spt->disposisi!=NULL){ echo "#fcc203"; } else { echo "#ffffff";} ?>"></div></td>
           </tr>
           <tr><td colspan="2">&nbsp;</td><td colspan="2">Malang, <br> Kepala Balai</td></tr>
           <tr><td colspan="4">&nbsp;</td></tr>
@@ -113,17 +113,19 @@
         <div style="border:1px solid black">
         <table style="margin-left:3%;margin-top:5px;width:90%" border="0">
           <tr>
-              <td style="width:50%;text-align:center">Paraf Penerima</td>
-              <td style="width:50%;text-align:center">Catatan Penyelesaian</td>
+              <!--<td style="width:50%;text-align:center">Paraf Penerima</td>-->
+              <td style="width:100%;text-align:justify">Catatan Penyelesaian</td>
           </tr>
           <tr>
-              <td style="height:15%;text-align:center">&nbsp;</td>
-              <td style="text-align:center"><b>"<?= wordwrap($spt->catatan,48,"<br />\n") ?>"</b></td>
+              <!--<td style="height:15%;text-align:center">&nbsp;</td>-->
+              <td style="text-align:justify"><b>"<?= wordwrap($spt->catatan,48,"<br />\n") ?>"</b></td>
           </tr>
+          <!--
           <tr>
               <td style="width:50%;text-align:center"><b><?= $ketua_paraf->nama ?></b></td>
               <td style="width:50%;text-align:center">&nbsp;</td>
           </tr>
+          -->
         </table>
         </div>
      	</body>

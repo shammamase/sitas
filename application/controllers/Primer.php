@@ -82,6 +82,7 @@ class Primer extends CI_Controller {
 		$data['jml_drive'] = 0;//$this->db->query("select id_file from sijuara_file where tahun = '$thn'")->num_rows();
 		$data['list_x_perjadin'] = 0;//$this->model_more->daftar_belum_buat_perjadin();
 		$data['jml_list_x_perjadin'] = 0;//$this->model_more->daftar_belum_buat_perjadin_jml();
+		$data['jml_tamu'] = $this->model_sitas->jmlDataBy("id_tamu","buku_tamu","waktu like '%$thn%'");
 		$this->template->load('sijuara/templatex','sijuara/view_homex_cltr',$data);
 	}
 
@@ -766,6 +767,7 @@ class Primer extends CI_Controller {
 								 "Kepala Sub Bagian Tata Usaha",
 								 "Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi",
 								 "Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar",
+								 "Pejabat Pembuat Komitmen",
 								 "IP2SIP",
 								 "Manajer UPBS",
 								 "Manajer Laboratorium",
@@ -787,6 +789,30 @@ class Primer extends CI_Controller {
 		 $pdf->Output();
 		 //$pdf->Output('Tes.pdf', 'D');
 	 }
+	function tamu(){
+		cek_session_admin1();
+		$thn = $this->session->tahun;
+	    $data['rec'] = $this->model_sitas->listDataBy("*","buku_tamu","waktu like '%$thn%'","id_tamu desc");
+        $this->template->load('sitas/template_form','sitas/tamu',$data);
+	}
+	function pejabat_tanda_tangan(){
+		cek_session_admin1();
+	    $data['akhir'] = $this->model_sitas->rowDataBy("a.id_pegawai,b.nama",
+							"pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.level = 'akhir'")->row();
+		$data['awal'] = $this->model_sitas->rowDataBy("a.id_pegawai,b.nama",
+							"pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.level = 'awal'")->row();
+		$data['pjb'] = $this->model_sitas->listData("a.id_pegawai,a.struktur,b.nama",
+							"struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+							"a.id_struktur asc");
+	    $this->template->load('sitas/template_form','sitas/verif_surat/pj_ttd',$data);
+	}
+	function save_pejabat(){
+	    $id_pejabat1 = _POST('id_pejabat1');
+		$id_pejabat2 = _POST('id_pejabat2');
+	    $this->db->query("update pejabat_verifikator set id_pegawai = $id_pejabat1 where level = 'awal'");
+		$this->db->query("update pejabat_verifikator set id_pegawai = $id_pejabat2 where level = 'akhir'");
+	    redirect('primer/pejabat_tanda_tangan');
+	}
     function logout(){
 		$this->session->sess_destroy();
 		redirect('primer');

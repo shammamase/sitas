@@ -124,7 +124,7 @@
 <script src="<?= base_url() ?>asset/lte31/plugins/sweetalert2/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="<?= base_url() ?>asset/lte31/plugins/select2/css/select2.min.css">
 </head>
-<body>
+<body onload="getLocation()">
 <div class="container register">
     <div class="row">
         <div class="col-md-3 register-left">
@@ -169,6 +169,8 @@
                             <div class="row">
                                 <div class="col-lg-7">
                                     <form role="form" method="POST" enctype="multipart/form-data" action="<?= base_url('nonlogin/kirim_buku_tamu') ?>">
+                                    <input type="hidden" id="lat" name="lat">
+                                    <input type="hidden" id="long" name="long">
                                         <div class="form-group"> 
                                             <input type="text" name="nama"  class="form-control" placeholder="Nama" required>
                                         </div>
@@ -382,5 +384,22 @@
             } );
         }
     </script>
+
+<script>
+        var x = document.getElementById("lat");
+        var y = document.getElementById("long");
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+          } else { 
+            x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+        }
+            
+        function showPosition(position) {
+          x.value = position.coords.latitude; 
+          y.value = position.coords.longitude; 
+        }
+</script>
 </body>
 </html>

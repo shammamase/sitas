@@ -182,27 +182,32 @@
                   <div class="col-md-12"><b>Diteruskan Kepada :</b></div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Kepala Balai">Kepala Balai
+                        <input type="checkbox" class="form-check-input" id="cb1" name="diteruskan[]" value="Kepala Balai">Kepala Balai
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Kepala Sub Bagian Tata Usaha">Kepala Sub Bagian Tata Usaha
+                        <input type="checkbox" class="form-check-input" id="cb2" name="diteruskan[]" value="Kepala Sub Bagian Tata Usaha">Kepala Sub Bagian Tata Usaha
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi">Ketua Tim Kerja Program, Evaluasi, dan Penyebarluasan Hasil Standardisasi
+                        <input type="checkbox" class="form-check-input" id="cb3" name="diteruskan[]" value="Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi">Ketua Tim Kerja Program, Evaluasi, dan Penyebarluasan Hasil Standardisasi
                       </label>
                     </div>
                   <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar">Ketua Tim Kerja Layanan Pengujian dan Penilaian Standar
+                        <input type="checkbox" class="form-check-input" id="cb4" name="diteruskan[]" value="Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar">Ketua Tim Kerja Layanan Pengujian dan Penilaian Standar
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="IP2SIP">IP2SIP
+                        <input type="checkbox" class="form-check-input" id="cb5" name="diteruskan[]" value="Pejabat Pembuat Komitmen">Pejabat Pembuat Komitmen
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb6" name="diteruskan[]" value="IP2SIP">IP2SIP
                       </label>
                     </div>
                     <!--
@@ -214,22 +219,22 @@
                     -->
                     <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Manajer UPBS">Manajer UPBS
+                        <input type="checkbox" class="form-check-input" id="cb7" name="diteruskan[]" value="Manajer UPBS">Manajer UPBS
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Manajer Laboratorium">Manajer Laboratorium
+                        <input type="checkbox" class="form-check-input" id="cb8" name="diteruskan[]" value="Manajer Laboratorium">Manajer Laboratorium
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Manajer Keuangan">Manajer Keuangan
+                        <input type="checkbox" class="form-check-input" id="cb9" name="diteruskan[]" value="Manajer Keuangan">Manajer Keuangan
                       </label>
                     </div>
                     <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="Jabatan Fungsional">Jabatan Fungsional
+                        <input type="checkbox" class="form-check-input" id="cb10" name="diteruskan[]" value="Jabatan Fungsional">Jabatan Fungsional
                       </label>
                     </div>
                   </div>
@@ -279,7 +284,7 @@
                   </div>
                   
                   <div style="margin-top:20px" class="col-md-12 col-12">
-                      <select multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2" required>
+                      <select id="selectBox" multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2" required>
                         <?php
                         foreach($peg as $pg){
                         ?>
@@ -328,4 +333,43 @@
                 return false;
             }
         }
+
+    const cb1 = document.getElementById('cb1');
+    const cb2 = document.getElementById('cb2');
+    const cb3 = document.getElementById('cb3');
+    const cb4 = document.getElementById('cb4');
+    const cb5 = document.getElementById('cb5');
+    const selectBox = document.getElementById('selectBox');
+    cb1.addEventListener('change', updateSelect);
+    cb2.addEventListener('change', updateSelect);
+    cb3.addEventListener('change', updateSelect);
+    cb4.addEventListener('change', updateSelect);
+    cb5.addEventListener('change', updateSelect);
+    function updateSelect(){
+        if(cb1.checked){
+            selectBox.querySelector('option[value="1"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="1"]').removeAttribute('selected');
+        }
+        if(cb2.checked){
+            selectBox.querySelector('option[value="12"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="12"]').removeAttribute('selected');
+        }
+        if(cb3.checked){
+            selectBox.querySelector('option[value="13"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="13"]').removeAttribute('selected');
+        }
+        if(cb4.checked){
+            selectBox.querySelector('option[value="31"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="31"]').removeAttribute('selected');
+        }
+        if(cb5.checked){
+            selectBox.querySelector('option[value="5"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="5"]').removeAttribute('selected');
+        }
+    }
   </script>

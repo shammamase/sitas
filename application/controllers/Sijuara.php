@@ -956,17 +956,7 @@ class Sijuara extends CI_Controller {
 		
 		redirect('sijuara/buat_surat_masuk');
 	}
-	
-	function pejabat_tanda_tangan(){
-	    $lev = $this->model_more->get_user_level($this->session->username)->row();
-	    if($lev->id_stakeholder==8){
-	    $data['pjb'] = $this->db->query("select a.*, b.nama from sijuara_pejabat a inner join t_biodata b on a.id_bio=b.id_bio")->result();
-	    $this->template->load('sijuara/persuratan/surat_keluar/template_form','sijuara/persuratan/verif_surat/pj_ttd',$data);
-	    } else {
-	        echo "Anda Tidak Memiliki Hak Akses";
-	    }
-	}
-	
+
 	function daftar_surat(){
 	    cek_session_admin1();
 	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
@@ -1249,11 +1239,6 @@ class Sijuara extends CI_Controller {
             echo "zonk";
         }
     }
-	function save_pejabat(){
-	    $id_pejabat = $_POST['id_pejabat'];
-	    $this->db->query("update sijuara_pejabat_ttd set id_pejabat = '$id_pejabat' where id_pjs = 1");
-	    redirect('sijuara/pejabat_tanda_tangan');
-	}
 	function lap_spt(){
 	    $id_spt = $this->uri->segment(3);
 	    $spt_id = $this->model_more->spt_no_id($id_spt)->row();
