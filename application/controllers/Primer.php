@@ -792,7 +792,7 @@ class Primer extends CI_Controller {
 	function tamu(){
 		cek_session_admin1();
 		$thn = $this->session->tahun;
-	    $data['rec'] = $this->model_sitas->listDataBy("*","buku_tamu","waktu like '%$thn%'","id_tamu desc");
+		$data['rec'] = $this->model_sitas->listDataBy("a.*,b.nama as nm","buku_tamu a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.waktu like '%$wkt%'","a.id_tamu desc");
         $this->template->load('sitas/template_form','sitas/tamu',$data);
 	}
 	function pejabat_tanda_tangan(){
