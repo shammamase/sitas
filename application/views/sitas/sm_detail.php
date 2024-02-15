@@ -155,7 +155,9 @@
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->no_surat_masuk ?></p></div>
     <div class="col-md-3 col-3 no_srt"><p>Disposisi</p></div>
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->disposisi ?></p></div>
-    <div class="col-md-3 col-3 no_srt"><p>Catatan Penyelesaian</p></div>
+    <div class="col-md-3 col-3 no_srt">&nbsp;</div>
+    <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->isi_disposisi ?></p></div>
+    <div class="col-md-3 col-3 no_srt"><p>Catatan</p></div>
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->catatan ?></p></div>
     <!--
     <div class="col-md-12 col-12" style="margin-bottom:10px">
