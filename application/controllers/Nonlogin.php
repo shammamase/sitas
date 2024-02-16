@@ -74,12 +74,10 @@ class Nonlogin extends CI_Controller
     $data['dtx'] = $this->db->query("select * from buku_tamu where waktu like '%$waktu%'");
     $this->load->view('sitas/lap_buku_tamu',$data);
   }
-  /*
   public function tes_wa_gateway(){
     $nox = "6281282410448";
     $pesan = "tes kirim";
-    $this->bsip->kirim_wa_gateway($nox,$pesan);
+    $this->model_sitas->kirim_wa_gateway($nox,$pesan);
     redirect('nonlogin/buku_tamu');
   }
-  */
 }
