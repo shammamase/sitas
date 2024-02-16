@@ -155,7 +155,7 @@ class Primer extends CI_Controller {
             $data['kode_klasifikasi'] = $kode_kl->kode_sub_arsip." - ".$kode_kl->sub_arsip;
         }
 		$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
-		$data['rec'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$thn%'","id_surat_masuk desc");
+		$data['rec'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal_masuk like '%$thn%'","id_surat_masuk desc");
 		$this->template->load('sitas/template_form','sitas/buat_surat_masuk',$data);
     }
 	public function save_surat_masuk(){
