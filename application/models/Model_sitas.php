@@ -101,7 +101,7 @@ class Model_sitas extends CI_model{
     function kirim_wa_gateway($no_target,$pesanx){
         $curl = curl_init();
         curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://aplikasi.srv-cloud.my.id/api/send_express',
+          CURLOPT_URL => 'https://aplikasi2.srv-cloud.my.id/api/send_express',
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
