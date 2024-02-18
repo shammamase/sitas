@@ -85,6 +85,64 @@
       </div>
     </div>
     <!-- /.row -->
+    <div class="card card-success">
+  <div class="card-header">
+    <h3 class="card-title">Daftar Surat Keluar</h3>
+  </div>
+  <div class="card-body">
+    <table id="example1" class="table table-bordered table-striped">
+      <thead>
+      <tr>
+        <th style="width:2%">No</th>
+        <th style="width:22%">No Surat</th>
+        <th style="width:21%">Tujuan Surat</th>
+        <th style="width:10%">Tanggal</th>
+        <th style="width:25%">Perihal</th>
+        <th style="width:20%">Aksi</th>
+      </tr>
+      </thead>
+      <tbody>
+      <?php 
+        $no = 1;
+        if($rec){
+        foreach ($rec as $row){
+          $pc_tgl = explode("-",$row->tanggal);
+          $kode_sifat = $this->model_sitas->rowDataBy("kode","sifat_surat","id_sifat=$row->sifat")->row();
+          $kode_arsip = $this->model_sitas->rowDataBy("kode_sub_arsip","klasifikasi_sub_arsip","id_sub_arsip=$row->id_sub_arsip")->row();
+          $surat_masuk = $this->model_sitas->rowDataBy("no_surat_masuk,asal_surat","surat_masuk","id_surat_masuk = $row->id_surat_masuk");
+          $cek_sm = $surat_masuk->num_rows();
+          if($cek_sm > 0) {
+            $sm = $surat_masuk->row();
+            $balasan = $sm->no_surat_masuk."-".$sm->asal_surat;
+          } else {
+            $balasan = "-";
+          }
+
+     ?>
+      <tr>
+        <td><?php echo $no ?></td>
+        <td><?php echo $kode_sifat->kode."-".$row->no_surat_keluar."/".$kode_arsip->kode_sub_arsip."/H.4.2/".$pc_tgl[1]."/".$pc_tgl[0] ?></td>
+        <td><?= $row->tujuan_surat ?><br><b>Balasan Surat</b> : <?= $balasan ?></td>
+        <td><?= tgl_indoo($row->tanggal) ?></td>
+        <td><?= $row->perihal ?></td>
+        <td>
+            <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat?id_bs=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
+            <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>primer/buat_surat?cs=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-copy'></i> Copy</a>
+            <a class='btn btn-info btn-xs' title='Kirim' href="#"><i class='fas fa-share'></i> Kirim WA</a>
+            <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>-->
+            <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
+            <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="#"><i class='fas fa-file-pdf'></i> PDF</a>
+        </td>
+      </tr>
+     <?php
+      $no++;
+        }
+    }
+      ?>
+      </tbody>
+    </table>
+    </div>
+  </div>
 </div>
   <!-- /.container-fluid -->
   <div class="modal fade" id="modalku">

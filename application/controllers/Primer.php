@@ -192,6 +192,8 @@ class Primer extends CI_Controller {
     redirect('primer/buat_surat_masuk');
   }
   function buat_surat(){
+	cek_session_admin1();
+	$thn = $this->session->tahun;
 	date_default_timezone_set("Asia/Jakarta");
 	$qw_surat_masuk = $this->model_sitas->listData("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
 						"surat_masuk","id_surat_masuk desc limit 50");
@@ -203,7 +205,7 @@ class Primer extends CI_Controller {
 	$data['lokasi_kepada'] = "";
 	$data['isi_surat'] = "";
 	$data['status'] = "save";
-	$data['id_buat_surat'] = "";
+	$data['id_buat_surat'] = "0";
 	$data['tembusan'] = "";
 	$data['arsip'] = "";
 	$data['arsip_val'] = "--";
@@ -216,18 +218,18 @@ class Primer extends CI_Controller {
 	if(isset($_GET['id_bs'])){
 		$id_bs = $_GET['id_bs'];
 		$qw_id = $this->model_sitas->rowDataBy("a.*,b.*,c.arsip","surat_keluar a
-							inner join klasifikasi_sub_arsip b on a.id_arsip=b.id_sub_arsip 
+							inner join klasifikasi_sub_arsip b on a.id_sub_arsip=b.id_sub_arsip 
 							inner join klasifikasi_arsip c on b.id_arsip=c.id_arsip","a.id_surat_keluar = $id_bs")->row();
 		$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw_id->sifat")->row();
 		$data['list_sm'] = $qw_surat_masuk;
 		$data['tanggal'] = $qw_id->tanggal;
 		$data['lampiran'] = $qw_id->lampiran;
-		$data['hal'] = $qw_id->hal;
-		$data['kepada'] = $qw_id->kepada;
-		$data['lokasi_kepada'] = $qw_id->lokasi_kepada;
+		$data['hal'] = $qw_id->perihal;
+		$data['kepada'] = $qw_id->tujuan_surat;
+		$data['lokasi_kepada'] = $qw_id->lokasi_tujuan_surat;
 		$data['isi_surat'] = $qw_id->isi_surat;
 		$data['status'] = "edit";
-		$data['id_buat_surat'] = $qw_id->id_surat_keluar;
+		$data['id_buat_surat'] = "0";
 		$data['tembusan'] = $qw_id->tembusan;
 		$data['arsip'] = $qw_id->id_sub_arsip;
 		$data['arsip_val'] = $qw_id->kode_sub_arsip." - ".$qw_id->arsip." - ".$qw_id->sub_arsip;
@@ -238,15 +240,15 @@ class Primer extends CI_Controller {
 	if(isset($_GET['cs'])){
 		$cs = $_GET['cs'];
 		$qw_id = $qw_id = $this->model_sitas->rowDataBy("a.*,b.*,c.arsip","surat_keluar a
-							inner join klasifikasi_sub_arsip b on a.id_arsip=b.id_sub_arsip 
+							inner join klasifikasi_sub_arsip b on a.id_sub_arsip=b.id_sub_arsip 
 							inner join klasifikasi_arsip c on b.id_arsip=c.id_arsip","a.id_surat_keluar = $cs")->row();
 		$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw_id->sifat")->row();
 		$data['list_sm'] = $qw_surat_masuk;
 		$data['tanggal'] = date('Y-m-d');
 		$data['lampiran'] = $qw_id->lampiran;
-		$data['hal'] = $qw_id->hal;
-		$data['kepada'] = $qw_id->kepada;
-		$data['lokasi_kepada'] = $qw_id->lokasi_kepada;
+		$data['hal'] = $qw_id->perihal;
+		$data['kepada'] = $qw_id->tujuan_surat;
+		$data['lokasi_kepada'] = $qw_id->lokasi_tujuan_surat;
 		$data['isi_surat'] = $qw_id->isi_surat;
 		$data['status'] = "save";
 		$data['id_buat_surat'] = $qw_id->id_surat_keluar;
@@ -257,6 +259,7 @@ class Primer extends CI_Controller {
 		$data['sifat_val'] = $qw_sf->sifat;
 		$data['id_surat_masuk'] = "0";
 	}
+	$data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%' and isi_surat != ''","id_surat_keluar desc"); 
 	$this->template->load('sitas/template_form','sitas/buat_surat',$data);
   }
   function save_surat1(){
@@ -281,7 +284,7 @@ class Primer extends CI_Controller {
 	} else {
 		$this->model_sitas->update_data("surat_keluar","id_surat_keluar",$id_surat_keluar,$data);
 	}
-	redirect('primer/buat_surat_keluar');
+	redirect('primer/buat_surat');
   }
   public function save_surat_keluar(){
 	date_default_timezone_set('Asia/Jakarta');
@@ -358,7 +361,7 @@ class Primer extends CI_Controller {
 		$qw_surat_masuk = $this->model_sitas->listDataBy("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
 						"surat_masuk","id_verifikasi != 0","id_surat_masuk desc limit 50");
 		$data['list_sm'] = $qw_surat_masuk;
-        $data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%'","id_surat_keluar desc"); 
+        $data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%' and id_verif!=0","id_surat_keluar desc"); 
 		$data['ars'] = $this->model_sitas->listData("a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip",
 								"klasifikasi_sub_arsip a
 								inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip","a.id_sub_arsip asc");
@@ -368,7 +371,7 @@ class Primer extends CI_Controller {
 		$uri = $this->uri->segment(3);
 		$this->model_sitas->deleteDataWithFile("surat_keluar","id_surat_keluar = '$uri'","./asset/surat_keluar/");
 		redirect('primer/buat_surat_keluar');
-	  }
+	}
 	function daftar_spt(){
 	    cek_session_admin1();
 		$thn = $this->session->tahun;

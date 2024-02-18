@@ -78,7 +78,7 @@
     </div>
     <!-- /.row -->
     
-    <div class="card card-success">
+<div class="card card-success">
   <div class="card-header">
     <h3 class="card-title">Daftar Surat Keluar</h3>
   </div>
@@ -120,7 +120,7 @@
         <td><?= $row->perihal ?></td>
         <td>
             <?php
-            if($row->id_verif!=0){
+            if($row->no_surat_keluar!=""){
             ?>
             <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
             <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>-->
@@ -129,7 +129,7 @@
             <?php
             } else {
             ?>
-            <a class='btn btn-warning btn-xs' title='Buat Nomor Surat' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?<?= $getx ?>=<?= $id_getx ?>/<?= $uri3 ?>"><i class='fas fa-edit'></i> Buat No Surat</a>
+            <a class='btn btn-warning btn-xs' title='Buat Nomor Surat' href="<?php echo base_url() ?>sijuara/buat_surat_keluar/<?= $uri3 ?>"><i class='fas fa-edit'></i> Buat No Surat</a>
             <?php
             }
             ?>
