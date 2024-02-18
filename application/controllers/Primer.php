@@ -62,7 +62,7 @@ class Primer extends CI_Controller {
 		$data['jml_v3'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","id_verifikasi = 0");
 		$data['jml_v4'] = 0;//$this->model_more->daftar_lap_spt_kabalai()->num_rows();
 		$data['jml_surat_masuk'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","tanggal_masuk like '%$thn%'");
-		$data['jml_surat_keluar'] = 0;//$this->model_more->daftar_surat_keluar()->num_rows();
+		$data['jml_surat_keluar'] = $this->model_sitas->jmlDataBy("id_surat_keluar","surat_keluar","no_surat_keluar != '' and tanggal like '%$thn%'");
 		$data['jml_surat'] = 0;//$this->model_more->daftar_surat()->num_rows();
 		$data['jml_spt'] = 0;//$this->model_more->daftar_spt()->num_rows();
 		$data['jml_perjadin'] = 0;//$this->model_more->daftar_lap_spt22()->num_rows();
