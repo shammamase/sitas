@@ -8,8 +8,7 @@
           </div>
           <div class="card-body">
             <!-- Date -->
-            <!--<form method="post" action="<?= base_url() ?>sijuara/save_surat_keluar">-->
-            <form method="post" action="#">
+            <form method="post" action="<?= base_url() ?>primer/save_surat_keluar" enctype="multipart/form-data">
             <div class="form-group">
               <label>No Surat :</label>
               <input type="text" class="form-control" name="no_surat_keluar" value="<?= $no_surat ?>" <?= $read ?>>
@@ -32,20 +31,42 @@
               <textarea name="perihal" class="form-control"><?= $perihal ?></textarea>
             </div>
             <div class="form-group">
-              <label>No Arsip Surat:</label>
-              <select class="form-control select2" name="arsip" style="width: 100%;">
-                    <option value="<?= $arsip ?>"><?= $arsip_val ?></option>
+              <label>Sifat:</label>
+              <select class="form-control select2" name="sifat" style="width: 100%;" required>
+                    <option value="<?= $sifat ?>"><?= $sifat_val ?></option>
                     <?php
-                        foreach($ars as $ar){
+                        foreach($sif as $sf){
                         ?>
-                        <option value="<?= $ar->kode_sub_arsip ?>"><?= $ar->kode_sub_arsip ?> - <?= $ar->arsip ?> - <?= $ar->sub_arsip ?></option>
+                        <option value="<?= $sf->id_sifat ?>"><?= $sf->sifat ?></option>
                         <?php
                         }
                     ?>
                   </select>
             </div>
+            <div class="form-group">
+              <label>Kode Klasifikasi:</label>
+              <select class="form-control select2" name="arsip" style="width: 100%;">
+                    <option value="<?= $arsip ?>"><?= $arsip_val ?></option>
+                    <?php
+                        foreach($ars as $ar){
+                        ?>
+                        <option value="<?= $ar->id_sub_arsip ?>"><?= $ar->kode_sub_arsip ?> - <?= $ar->arsip ?> - <?= $ar->sub_arsip ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
+            </div>
+            <div class="form-group">
+              <label>Balas Surat Masuk :</label>
+              <input class="form-control" id="surat_masuk" name="pilih_surat_masuk">
+            </div>
+            <div class="form-group">
+              <label>Upload File PDF:</label>
+              <input type="file" class="form-control" name="file_pdf">
+            </div>
             <input type="hidden" name="status" value="<?= $status ?>">
             <input type="hidden" name="id_surat_keluar" value="<?= $id_surat_keluar ?>">
+            <input type="hidden" id="id_surat_masuk" name="id_surat_masuk" value="<?= $id_surat_masuk ?>">
           </div>
             <div class="card-footer">
                 <button type="submit" name="submit" class="btn btn-primary">Buat Nomor Surat</button>
@@ -66,12 +87,11 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
-        <th style="width:10%">No Surat</th>
-        <th style="width:15%">Tujuan Surat</th>
+        <th style="width:22%">No Surat</th>
+        <th style="width:21%">Tujuan Surat</th>
         <th style="width:10%">Tanggal</th>
-        <th style="width:20%">Perihal</th>
-        <th style="width:23%">No Surat (Lengkap)</th>
-        <th style="width:20%">Action</th>
+        <th style="width:25%">Perihal</th>
+        <th style="width:20%">Aksi</th>
       </tr>
       </thead>
       <tbody>
@@ -79,49 +99,35 @@
         $no = 1;
         if($rec){
         foreach ($rec as $row){
+          $pc_tgl = explode("-",$row->tanggal);
+          $kode_sifat = $this->model_sitas->rowDataBy("kode","sifat_surat","id_sifat=$row->sifat")->row();
+          $kode_arsip = $this->model_sitas->rowDataBy("kode_sub_arsip","klasifikasi_sub_arsip","id_sub_arsip=$row->id_sub_arsip")->row();
+          $surat_masuk = $this->model_sitas->rowDataBy("no_surat_masuk,asal_surat","surat_masuk","id_surat_masuk = $row->id_surat_masuk");
+          $cek_sm = $surat_masuk->num_rows();
+          if($cek_sm > 0) {
+            $sm = $surat_masuk->row();
+            $balasan = $sm->no_surat_masuk."-".$sm->asal_surat;
+          } else {
+            $balasan = "-";
+          }
+
      ?>
       <tr>
         <td><?php echo $no ?></td>
-        <td><?php echo $row->no_surat_keluar ?></td>
-        <td><?= $row->tujuan_surat ?></td>
+        <td><?php echo $kode_sifat->kode."-".$row->no_surat_keluar."/".$kode_arsip->kode_sub_arsip."/H.4.2/".$pc_tgl[1]."/".$pc_tgl[0] ?></td>
+        <td><?= $row->tujuan_surat ?><br><b>Balasan Surat</b> : <?= $balasan ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
         <td><?= $row->perihal ?></td>
-        <td></td>
         <td>
             <?php
-            if($row->verif_kabalai==1){
-                if($row->id_spt==0 && $row->id_buat_surat==0){
-                    $hid = "style='display:'";
-                    $hids = "style='display:none'";
-                } else {
-                    $hid = "style='display:none'";
-                    $hids = "style='display:'";
-                }
-                
-                if($row->id_spt!=0){
-                    $get_pdf = "pdf_spt";
-                    $get_pdfs = "pdf_spt_manual";
-                    $id_yy = $row->id_spt;
-                } else {
-                    $get_pdf = "pdf_surat";
-                    $get_pdfs = "pdf_surat_manual";
-                    $id_yy = $row->id_buat_surat;
-                }
+            if($row->id_verif!=0){
             ?>
-            <a <?= $hid ?> class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?id_sk=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-edit'></i> Edit</a>
-            <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>
-            <a <?= $hids ?> class='btn btn-danger btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>sijuara/<?= $get_pdf ?>/<?php echo md5($id_yy) ?>/<?= $id_yy ?>"><i class='fas fa-file-pdf'></i> PDF Scan</a>
-            <a <?= $hids ?> class='btn btn-danger btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>sijuara/<?= $get_pdfs ?>/<?php echo md5($id_yy) ?>/<?= $id_yy ?>"><i class='fas fa-file-pdf'></i> PDF Asli</a>
-            <!--<a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>sijuara/delete_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>-->
+            <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
+            <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>-->
+            <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
+            <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?php echo base_url() ?>asset/surat_keluar/<?php echo $row->file_pdf ?>"><i class='fas fa-file-pdf'></i> PDF</a>
             <?php
             } else {
-                if($row->id_spt!=0){
-                    $getx = "spt";
-                    $id_getx = $row->id_spt;
-                } else {
-                    $getx = "srt";
-                    $id_getx = $row->id_buat_surat;
-                }
             ?>
             <a class='btn btn-warning btn-xs' title='Buat Nomor Surat' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?<?= $getx ?>=<?= $id_getx ?>/<?= $uri3 ?>"><i class='fas fa-edit'></i> Buat No Surat</a>
             <?php
@@ -140,3 +146,66 @@
   </div>
 </div>
   <!-- /.container-fluid -->
+
+  <div class="modal fade" id="modalku">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 class="modal-title">Pilih Surat Masuk</h4>
+                  <button type="button" class="close" data-dismiss="modal">x</button>
+              </div>
+              <div class="modal-body">
+                  <table id="example1" class="table table-bordered table-striped">
+                      <thead>
+                      <tr>
+                        <th style="width:3%">No</th>
+                        <th style="width:15%">No Surat</th>
+                        <th style="width:25%">Asal Surat</th>
+                        <th style="width:15%">Tanggal Surat</th>
+                        <th style="width:42%">Perihal Surat</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                       <tr style="cursor:pointer;text-align:center;color:#ff0000" class="pilih" data-dismiss="modal" data-id_surat_masuk="0" data-no_surat_masuk=""
+                       data-asal_surat="" data-tanggal="" data-perihal="" data-file_pdf="<?= base_url() ?>sijuara/tidak_ada_pilihan_surat_masuk"><td>0</td><td>Batal Pilih Surat Masuk</td>
+                       <td>Batal Pilih Surat Masuk</td><td>Batal</td><td>Batal Pilih Surat Masuk</td>
+                       </tr>
+                       <?php
+                       $nor = 1;
+                       foreach($list_sm as $lm){
+                       ?>
+                       <tr style="cursor:pointer" class="pilih" data-dismiss="modal" 
+                       data-id_surat_masuk="<?= $lm->id_surat_masuk ?>" data-no_surat_masuk="<?= $lm->no_surat_masuk ?>"
+                       data-asal_surat="Berdasarkan surat dari <?= $lm->asal_surat ?>">
+                           <td><?= $nor ?></td>
+                           <td><?= $lm->no_surat_masuk ?></td>
+                           <td><?= $lm->asal_surat ?></td>
+                           <td><?= tgl_indoo($lm->tanggal) ?></td>
+                           <td><?= $lm->perihal ?></td>
+                       </tr>
+                       <?php
+                       $nor++;
+                       }
+                       ?>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Tutup</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  <script>
+      $(document).ready(function(){
+          $("#surat_masuk").click(function(){
+              $("#modalku").modal();
+          });
+      });
+      
+      $("#modalku").on('click','.pilih',function (e) {
+          document.getElementById("id_surat_masuk").value = $(this).attr('data-id_surat_masuk');
+          document.getElementById("surat_masuk").value = $(this).attr('data-no_surat_masuk')+" "+$(this).attr('data-asal_surat');
+      })
+  </script>

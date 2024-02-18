@@ -248,13 +248,13 @@ class Model_sitas extends CI_model{
     }
     function cek_no_surat(){
         $uri3 = $this->session->tahun;
-        $query = $this->db->query("select max(substr(no_surat_keluar,3,8) * 1) as nos from surat_keluar where tanggal like '%$uri3%'");
-        $cek = $query->num_rows();
-        if($cek > 0){
+        $query = $this->db->query("select max(no_surat_keluar * 1) as nos from surat_keluar where tanggal like '%$uri3%'");
+        $cek = $query->row();
+        if($cek->nos != NULL){
             $hasil = $query->row();
-            $nomornya = "0";
+            $nomornya = $hasil->nos;
         } else {
-            $nomornya = "0";
+            $nomornya = 0;
         }
         return $nomornya;
     }

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="form-group">
-              <label>No Arsip Surat:</label>
+              <label>Kode Klasifikasi:</label>
               <select class="form-control select2" name="arsip" style="width: 100%;" required>
                     <option value="<?= $arsip ?>"><?= $arsip_val ?></option>
                     <?php

@@ -283,6 +283,34 @@ class Primer extends CI_Controller {
 	}
 	redirect('primer/buat_surat_keluar');
   }
+  public function save_surat_keluar(){
+	date_default_timezone_set('Asia/Jakarta');
+	$user = $this->session->username;
+	$verif = $this->model_sitas->rowDataBy("id_pegawai","pejabat_verifikator","level='akhir'")->row();
+	$status = _POST('status');
+	$id_surat_keluar = _POST('id_surat_keluar');
+	$data = [
+		'no_surat_keluar'=>_POST('no_surat_keluar'),
+		'tujuan_surat'=>_POST('tujuan_surat'),
+		'tanggal'=>_POST('tanggal'),
+		'perihal'=>_POST('perihal'),
+		'sifat'=>_POST('sifat'),
+		'id_sub_arsip'=>_POST('arsip'),
+		'lokasi_tujuan_surat'=>"Tempat",
+		'isi_surat'=>"",
+		'user'=>$user,
+		'tanggal_input'=>date('Y-m-d H:i:s'),
+		'id_verif'=>$verif->id_pegawai,
+		'waktu_verif'=>date('Y-m-d H:i:s'),
+		'id_surat_masuk'=>_POST('id_surat_masuk')
+	];
+	if($status=="save"){
+		$this->model_sitas->saveDataWithFile("surat_keluar",$data,"asset/surat_keluar","");
+	} else {
+		$this->model_sitas->updateDataWithFile("surat_keluar","id_surat_keluar",$id_surat_keluar,$data,"asset/surat_keluar");
+	}
+	redirect('primer/buat_surat_keluar');
+  }
   function buat_surat_keluar(){
 		cek_session_admin1();
 		$thn = $this->session->tahun;
@@ -295,122 +323,52 @@ class Primer extends CI_Controller {
         $data['tujuan_surat'] = "";
         $data['tanggal'] = "";
         $data['perihal'] = "";
-        $data['id_surat_keluar'] = "";
+        $data['id_surat_keluar'] = "0";
         $data['status'] = "save";
         $data['read'] = "";
         $data['arsip'] = "";
         $data['arsip_val'] = "--";
+		$data['sifat'] = "";
+		$data['sifat_val'] = "--";
+		$data['id_surat_masuk'] = "0";
         //$data['nsx'] = $no_surat;
-        
+        $data['sif'] = $this->model_sitas->listData("*","sifat_surat","id_sifat asc");
         if(isset($_GET['id_sk'])){
             $id_sk = $_GET['id_sk'];
             $qw = $this->db->query("select * from surat_keluar where id_surat_keluar = '$id_sk'")->row();
-            if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-				$qw_sa = $this->model_sitas->rowDataBy("a.kode_sub_arsip,a.sub_arsip,b.arsip",
-									"klasifikasi_sub_arsip a 
-									inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
-									"a.kode_sub_arsip = '$no_arsip'")->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
+			$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw->sifat")->row();
+			$qw_sa = $this->model_sitas->rowDataBy("a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip",
+								"klasifikasi_sub_arsip a 
+								inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
+								"a.id_sub_arsip = $qw->id_sub_arsip")->row();
+			$get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
             $data['no_surat'] = $qw->no_surat_keluar;
             $data['tujuan_surat'] = $qw->tujuan_surat;
             $data['tanggal'] = $qw->tanggal;
             $data['perihal'] = $qw->perihal;
             $data['id_surat_keluar'] = $qw->id_surat_keluar;
             $data['status'] = "edit";
-            $data['read'] = "readonly";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
-        
-        if(isset($_GET['copy'])){
-            $id_skc = $_GET['copy'];
-            $qw = $this->db->query("select * from surat_keluar where id_surat_keluar = '$id_skc'")->row();
-             if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_sitas->rowDataBy("a.kode_sub_arsip,a.sub_arsip,b.arsip",
-									"klasifikasi_sub_arsip a 
-									inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
-									"a.kode_sub_arsip = '$no_arsip'")->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $qw->no_surat_keluar;
-            $data['tujuan_surat'] = "";
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = "";
-            $data['status'] = "save";
             $data['read'] = "";
-            $data['arsip'] = $no_arsip;
+            $data['arsip'] = $qw_sa->id_sub_arsip;
             $data['arsip_val'] = $get_sa;
+			$data['sifat'] = $qw->sifat;
+			$data['sifat_val'] = $qw_sf->sifat;
+			$data['id_surat_masuk'] = $qw->id_surat_masuk;
         }
-        
-        if(isset($_GET['spt'])){
-            $id_spt = $_GET['spt'];
-            $qw = $this->db->query("select * from surat_keluar where id_spt = '$id_spt'")->row();
-            if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_sitas->rowDataBy("a.kode_sub_arsip,a.sub_arsip,b.arsip",
-									"klasifikasi_sub_arsip a 
-									inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
-									"a.kode_sub_arsip = '$no_arsip'")->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $no_suratx;
-            $data['tujuan_surat'] = $qw->tujuan_surat;
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = $qw->id_surat_keluar;
-            $data['status'] = "edit";
-            $data['read'] = "";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
-        
-        if(isset($_GET['srt'])){
-            $id_srt = $_GET['srt'];
-            $qw = $this->db->query("select * from surat_keluar where id_buat_surat = '$id_srt'")->row();
-            if(!empty($qw->no_lengkap)){
-                $pc_lengkap = explode("/",$qw->no_lengkap);
-                $no_arsip = $pc_lengkap[1];
-                $qw_sa = $this->model_sitas->rowDataBy("a.kode_sub_arsip,a.sub_arsip,b.arsip",
-									"klasifikasi_sub_arsip a 
-									inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
-									"a.kode_sub_arsip = '$no_arsip'")->row();
-                $get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
-            } else {
-                $no_arsip = "";
-                $get_sa = "--";
-            }
-            $data['no_surat'] = $no_suratx;
-            $data['tujuan_surat'] = $qw->tujuan_surat;
-            $data['tanggal'] = $qw->tanggal;
-            $data['perihal'] = $qw->perihal;
-            $data['id_surat_keluar'] = $qw->id_surat_keluar;
-            $data['status'] = "edit";
-            $data['read'] = "";
-            $data['arsip'] = $no_arsip;
-            $data['arsip_val'] = $get_sa;
-        }
+		$qw_surat_masuk = $this->model_sitas->listDataBy("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
+						"surat_masuk","id_verifikasi != 0","id_surat_masuk desc limit 50");
+		$data['list_sm'] = $qw_surat_masuk;
         $data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%'","id_surat_keluar desc"); 
 		$data['ars'] = $this->model_sitas->listData("a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip",
 								"klasifikasi_sub_arsip a
 								inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip","a.id_sub_arsip asc");
 		$this->template->load('sitas/template_form','sitas/buat',$data); 
     }
+	function delete_surat_keluar(){
+		$uri = $this->uri->segment(3);
+		$this->model_sitas->deleteDataWithFile("surat_keluar","id_surat_keluar = '$uri'","./asset/surat_keluar/");
+		redirect('primer/buat_surat_keluar');
+	  }
 	function daftar_spt(){
 	    cek_session_admin1();
 		$thn = $this->session->tahun;
