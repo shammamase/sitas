@@ -131,7 +131,7 @@
             <a class='btn btn-info btn-xs' title='Kirim' href="#"><i class='fas fa-share'></i> Kirim WA</a>
             <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>-->
             <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
-            <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="#"><i class='fas fa-file-pdf'></i> PDF</a>
+            <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
         </td>
       </tr>
      <?php

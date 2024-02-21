@@ -112,9 +112,12 @@ class Primer extends CI_Controller {
         $data['kode_klasifikasi'] = "Pilih Klasifikasi";
 		$data['uri3'] = $this->uri->segment(3);
         $data['list_kode'] = $list_kode;
+		$data['sifat'] = "";
+		$data['sifat_val'] = "--";
         if(isset($_GET['id_sm'])){
             $id_sm = $_GET['id_sm'];
 			$qw = $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk = $id_sm")->row();
+			$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw->id_sifat")->row();
 			$kode_kl = $this->model_sitas->rowDataBy("kode_sub_arsip,sub_arsip","klasifikasi_sub_arsip","id_sub_arsip = $qw->id_sub_arsip")->row();
             $data['no_agenda'] = $qw->no_agenda;
 			$data['no_surat_masuk'] = $qw->no_surat_masuk;
@@ -134,11 +137,14 @@ class Primer extends CI_Controller {
             $data['nama_file'] = $qw->file_pdf;
 			$data['id_sub_arsip'] = $qw->id_sub_arsip;
             $data['kode_klasifikasi'] = $kode_kl->kode_sub_arsip." - ".$kode_kl->sub_arsip;
+			$data['sifat'] = $qw->id_sifat;
+			$data['sifat_val'] = $qw_sf->sifat;
         }
         
         if(isset($_GET['copy'])){
             $id_skm = $_GET['copy'];
 			$qw = $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk = $id_skm")->row();
+			$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw->id_sifat")->row();
 			$kode_kl = $this->model_sitas->rowDataBy("kode_sub_arsip,sub_arsip","klasifikasi_sub_arsip","id_sub_arsip = $qw->id_sub_arsip")->row();
             $data['no_agenda'] = $no_agenda;
 			$data['no_surat_masuk'] = $qw->no_surat_masuk;
@@ -153,9 +159,12 @@ class Primer extends CI_Controller {
             $data['nama_file'] = "";
 			$data['id_sub_arsip'] = $qw->id_sub_arsip;
             $data['kode_klasifikasi'] = $kode_kl->kode_sub_arsip." - ".$kode_kl->sub_arsip;
+			$data['sifat'] = $qw->id_sifat;
+			$data['sifat_val'] = $qw_sf->sifat;
         }
 		$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
 		$data['rec'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal_masuk like '%$thn%'","id_surat_masuk desc");
+		$data['sif'] = $this->model_sitas->listData("*","sifat_surat","id_sifat asc");
 		$this->template->load('sitas/template_form','sitas/buat_surat_masuk',$data);
     }
 	public function save_surat_masuk(){
@@ -168,6 +177,7 @@ class Primer extends CI_Controller {
         $pesan = "*Layanan BSIP TAS* Ada surat masuk, silahkan klik link berikut $links ";
         $data = [
             'id_sub_arsip' => $this->input->post('id_sub_arsip'),
+			'id_sifat' => _POST('sifat'),
             'no_agenda' => $this->input->post('no_agenda'),
             'no_surat_masuk' => $this->input->post('no_surat_masuk'),
             'asal_surat' => $this->input->post('asal_surat'),

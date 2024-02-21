@@ -56,6 +56,19 @@
               <textarea name="perihal" class="form-control"><?= $perihal ?></textarea>
             </div>
             <div class="form-group">
+              <label>Sifat:</label>
+              <select class="form-control select2" name="sifat" style="width: 100%;" required>
+                    <option value="<?= $sifat ?>"><?= $sifat_val ?></option>
+                    <?php
+                        foreach($sif as $sf){
+                        ?>
+                        <option value="<?= $sf->id_sifat ?>"><?= $sf->sifat ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
+            </div>
+            <div class="form-group">
               <label>Upload File PDF : <?= $file_pdf ?></label>
               <input type="file" class="form-control" name="file_pdf">
             </div>
@@ -82,13 +95,16 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
-        <th style="width:10%">No Agenda</th>
-        <th style="width:18%">Asal Surat</th>
-        <th style="width:10%">Tanggal Masuknya Surat</th>
-        <th style="width:10%">Tanggal Surat</th>
-        <th style="width:20%">Perihal Surat</th>
+        <th style="width:5%">No Agenda</th>
+        <th style="width:5%">No Surat</th>
+        <th style="width:5%">Sifat</th>
+        <th style="width:15%">Asal</th>
+        <th style="width:10%">Tgl Registrasi</th>
+        <th style="width:10%">Tgl Surat</th>
+        <th style="width:15%">Perihal</th>
         <th style="width:10%">Disposisi</th>
-        <th style="width:20%">Action</th>
+        <th style="width:10%">Tindak Lanjut</th>
+        <th style="width:13%">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -99,17 +115,21 @@
         if($rec){
         foreach ($rec as $row){
             $kode_arsip = $this->model_sitas->rowDataBy("kode_sub_arsip","klasifikasi_sub_arsip","id_sub_arsip = $row->id_sub_arsip")->row();
+            $sifat = $this->model_sitas->rowDataBy("*","sifat_surat","id_sifat = $row->id_sifat")->row();
             $links = base_url()."sijuara/disposisi_detail/".$row->id_surat_masuk;
             $pesan = "*Layanan Aplikasi* Ada Surat Masuk, lebih detailnya silahkan klik link $links";
      ?>
       <tr>
         <td><?php echo $no ?></td>
         <td><?php echo $row->no_agenda ?>/<?= $kode_arsip->kode_sub_arsip ?></td>
+        <td><?php echo $row->no_surat_masuk ?></td>
+        <td><?= $sifat->sifat ?></td>
         <td><?= $row->asal_surat ?></td>
         <td><?= tgl_indoo($row->tanggal_masuk) ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
         <td><?= $row->perihal ?></td>
-        <td>(<?= $row->diteruskan ?>)<br><?= $row->disposisi ?><br><?= $row->isi_disposisi ?></td>
+        <td>(<?= $row->diteruskan ?>)<br><?= $row->disposisi ?></td>
+        <td><?= $row->isi_disposisi ?></td>
         <td>
             <?php
             if($row->id_verifikasi==0){

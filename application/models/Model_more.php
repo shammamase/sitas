@@ -219,10 +219,6 @@ class Model_more extends CI_model{
     function get_no_surat_buat($x){
         return $this->db->query("select * from sijuara_surat_keluar where id_buat_surat = '$x'");
     }
-    
-    function get_sub_arsip($x){
-        return $this->db->query("select * from klasifikasi_sub_arsip where id_sub_arsip = '$x'");
-    }
     function get_id_sub_arsip($x){
         return $this->db->query("select a.kode_sub_arsip,a.sub_arsip,b.arsip 
                                 from klasifikasi_sub_arsip a
