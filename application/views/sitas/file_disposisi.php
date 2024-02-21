@@ -30,7 +30,6 @@
             $pc_tgl_in = explode("-",$tgl_in); 
             $bln = $pc_tgl_in[1];
             $thn = $pc_tgl_in[0];
-            
         ?>
 		<div style="border:1px solid black">
 		<table style="margin-left:3%;margin-top:5px;width:90%" border="0">
@@ -43,10 +42,10 @@
 		<table style="margin-left:3%;margin-top:5px;width:90%" border="0">
           <tr>
               <td colspan="2">
-                  RAHASIA <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black"></div>
-                  PENTING <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black"></div>
-                  SEGERA <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black"></div>
-                  BIASA <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black"></div>
+                  RAHASIA <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black;background:<?php if($spt->id_sifat == 2) { echo '#fcc203'; } else { echo '#ffffff' ;} ?>"></div>
+                  PENTING <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black;background:<?php if($spt->id_sifat == 5) { echo '#fcc203'; } else { echo '#ffffff' ;} ?>"></div>
+                  SEGERA <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black;background:<?php if($spt->id_sifat == 6) { echo '#fcc203'; } else { echo '#ffffff' ;} ?>"></div>
+                  BIASA <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black;background:<?php if($spt->id_sifat == 1) { echo '#fcc203'; } else { echo '#ffffff' ;} ?>"></div>
                   Nota Dinas <div style="display:inline;margin-left:5px;margin-top:1px;margin-right:20px;width:30px;height:15px;border:1px solid black"></div>
               </td>
           </tr>
