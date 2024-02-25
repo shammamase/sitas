@@ -45,32 +45,27 @@
             bottom: 0;
             left: 70px;
         }
-        <?php if($spt->no_view_border==0){ ?>
         .table-bordered tr td {
         border-collapse: collapse;
         border-width: 1px;
         border-color: black;
         border-style: solid;
         }
-        <?php } ?>
+
         .table-bordered{
-            width: 40%;
             margin-top:-30px;
             margin-bottom:20px;
-        }
-        .table-bordered p {
-            margin-top:3px;
         }
 </style>
 	<body>
 	   <?php
             if($spt->id_verif==0){
                 $id_pjs = $this->db->query("select * from pejabat_verifikator where level = 'akhir'")->row();
-                $kabalai = $this->model_sitas->rowDataBy("a.struktur,a.for_ttd,b.nama,b.nip",
+                $kabalai = $this->model_sitas->rowDataBy("a.struktur,b.nama,b.nip",
                                 "struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai",
                                 "a.id_pegawai = $id_pjs->id_pegawai")->row();
             } else {
-                $kabalai = $this->model_sitas->rowDataBy("a.struktur,a.for_ttd,b.nama,b.nip",
+                $kabalai = $this->model_sitas->rowDataBy("a.struktur,b.nama,b.nip",
                                 "struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai",
                                 "a.id_pegawai = $spt->id_verif")->row();
             }
@@ -90,40 +85,38 @@
           <tr>
               <td style="width:15%;vertical-align:top">Nomor</td>
               <td style="width:5%;vertical-align:top;text-align:left">:</td>
-              <td style="width:55%;text-align:justify;vertical-align:top"><?= $sifat->kode ?>-<?= $no_srt ?>/<?= $no_sub->kode_sub_arsip ?>/H.4.2/<?= $bln ?>/<?= $thn ?></td>
+              <td style="width:55%;text-align:justify;vertical-align:top"><?= $no_srt ?>/<?= $no_sub->kode_sub_arsip ?>/H.4.2/<?= $bln ?>/<?= $thn ?></td>
               <td style="width:25%;vertical-align:top;text-align:right"><?= tgl_indoo($tgl_in) ?></td>
           </tr>
+          <!--
           <tr>
               <td style="vertical-align:top">Sifat</td>
               <td style="vertical-align:top;text-align:left">:</td>
-              <td colspan="2" style="text-align:justify;vertical-align:top"><?= $sifat->sifat ?></td>
+              <td colspan="2" style="text-align:justify;vertical-align:top">Segera</td>
           </tr>
+          -->
           <tr>
               <td style="vertical-align:top">Lampiran</td>
               <td style="vertical-align:top;text-align:left">:</td>
-              <td colspan="2" style="text-align:justify;vertical-align:top">
-              <?php 
-                if($spt->lampiran > 0){
-                    $vw_lamp = $spt->lampiran." berkas";
-                } else {
-                    $vw_lamp = "-";
-                }
-              ?>
-              <?= $vw_lamp ?>
-              </td>
+              <td colspan="2" style="text-align:justify;vertical-align:top"><?= $spt->lampiran ?></td>
           </tr>
           <tr>
-              <td style="vertical-align:top">Perihal</td>
+              <td style="vertical-align:top">Hal</td>
               <td style="vertical-align:top;text-align:left">:</td>
               <td colspan="2" style="text-align:justify;vertical-align:top"><?= wordwrap($spt->perihal,50,"<br />\n") ?></td>
           </tr>
         </table>
         
-        <table style="margin-left:5%;margin-top:30px;width:100%" border="0">
+        <table style="margin-left:5%;margin-top:10px;width:100%" border="0">
           <tr>
-              <td style="vertical-align:top">Yth.</td>
-              <td>
-              <?php 
+              <td style="width:70%;vertical-align:top">Yth.</td>
+              <td style="width:10%;vertical-align:top;text-align:right">&nbsp;</td>
+              <td style="width:20%;text-align:justify;vertical-align:top">&nbsp;</td>
+          </tr>
+          <tr>
+              <td style="width:70%;vertical-align:top">
+                  
+                  <?php 
                     $pc = explode("#",$spt->tujuan_surat); 
                     $jmlx = count($pc);
                     if($jmlx > 1){
@@ -140,25 +133,32 @@
                     </ol>
                 
                 <?php } else { ?>
-                <?= wordwrap($spt->tujuan_surat,70,"<br />\n") ?>
+                <?= $spt->tujuan_surat ?>
                 <?php } ?>
-              </td>
+               </td>
+              <td style="width:10%;vertical-align:top;text-align:right">&nbsp;</td>
+              <td style="width:20%;text-align:justify;vertical-align:top">&nbsp;</td>
           </tr>
           <tr>
-              <td colspan="2" style="vertical-align:top;"><?= $spt->lokasi_tujuan_surat ?></td>
+              <td style="width:70%;vertical-align:top">Di</td>
+              <td style="width:10%;vertical-align:top;text-align:right">&nbsp;</td>
+              <td style="width:20%;text-align:justify;vertical-align:top">&nbsp;</td>
+          </tr>
+          <tr>
+              <td style="width:70%;vertical-align:top;"><p style="margin-left:30px;margin-top:-10px"><?= $spt->lokasi_tujuan_surat ?></p></td>
+              <td style="width:10%;vertical-align:top;text-align:right">&nbsp;</td>
+              <td style="width:20%;text-align:justify;vertical-align:top">&nbsp;</td>
           </tr>
         </table>
-        
-        <div style="margin-left:6%;margin-right:7%;margin-top:40px;padding-top:10px">
-            <?= $spt->isi_surat ?>
+        <div style="margin-left:6%;margin-right:7%;margin-top:20px;padding-top:10px">
+        <p><span style="font-family: Arial;">Sesuai dengan Peraturan Bersama Menteri Keuangan dan Kepala BPN RI Nomor 186/PMK.06/2009 dan Nomor 24 Tahun 2009 tentang Pensertifikatan Barang Milik Negara Berupa Tanah, dengan ini kami mohonkan Pengukuran Ulang dan Perubahan Nama Pemegang Hak Atas Tanah Barang Milik Negara yang baru atas nama Pemerintah Republik Indonesia cq. Kementerian Pertanian dengan daftar sertipikat, sebagai berikut:</span></p><p><span style="font-family: Arial;"><br></span></p>
+        <table class="table table-bordered">
+            <tbody>
+                <tr><td>No.</td><td>Nama Pemegang Hak</td><td>Nomor Sertipikat</td><td>Luas (m2)</td><td>Alamat</td></tr>
+                <tr><td>1.</td><td>Departemen Pertanian<br> Republik Indonesia</td><td>Hak Pakai No. 25 /<br> Kelurahan Purwantoro</td><td>353</td><td>Jl. Taman Indragiri, Blimbing,<br> Malang</td></tr>
+            </tbody>
+        </table><p><span style="font-family: Arial;">Demikian kami sampaikan, atas perhatian dan kerjasama yang baik,disampaikan terima kasih.</span></p><p><span style="font-family: Arial;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Malang, 13 Februari 2024</span></p><p><span style="font-family: Arial;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Kepala Balai,</span></p><p><span style="font-family: Arial;"><br></span></p><p><span style="font-family: Arial;"><br></span></p><p><span style="font-family: Arial;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Dr. Andy Wijanarko, SP., M. Si.</span></p><p><span style="font-family: Arial;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;NIP 197411152000031001</span></p><p><br></p>
         </div>
-        <!--
-        <table style="margin-left:5%;margin-top:10px;width:90%" border="0">
-          <tr>
-              <td colspan="3" style="width:100%;vertical-align:top;line-height:1.5"></td>
-          </tr>
-        </table>
-        -->
         <table style="margin-left:30%;margin-top:10px;width:60%" border="0">
           <!--
           <tr>
@@ -168,7 +168,7 @@
           -->
           <tr>
               <td style="width:40%;vertical-align:top">&nbsp;</td>
-              <td style="width:60%;text-align:justify;vertical-align:top"><?= $kabalai->for_ttd ?></td>
+              <td style="width:60%;text-align:justify;vertical-align:top"><?= $kabalai->struktur ?></td>
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>
@@ -179,12 +179,9 @@
               if($kabalai->struktur == "Kepala Balai" OR $kabalai->struktur == "Kasubag Tata Usaha"){
                 if($spt->waktu_verif == ""){
                     ?>
-                    <td style="vertical-align:top;text-align:center">
-                    <!--<img style="height:80px; width:auto;" src="<?= base_url() ?>asset/qr_code/surat_keluar_<?= $spt->id_surat_keluar ?>.png">-->
-                    </td>
-                    <td style="height:70px;text-align:justify;vertical-align:bottom">
+                    <td style="vertical-align:top;text-align:center"><!--<img style="height:80px; width:auto;" src="<?= base_url() ?>asset/file_lainnya/qr_code_surat/<?= $spt->id_buat_surat ?>.png">--></td>
+                    <td style="text-align:justify;vertical-align:top">
                     <!--<img style="height:100px; width:auto;" src="<?= base_url().$kabalai->ttd ?>">-->
-                    TTD
                     </td>
                     <?php
                 } else {
@@ -197,11 +194,8 @@
                     <img style="margin-top:-50px;margin-left:-127px" src="<?= base_url() ?>asset/logo_kementan_tte.png">
                     </td>
                     -->
-                    <td style="vertical-align:top;text-align:center">
-                    <img style="height:80px; width:auto;" src="<?= base_url() ?>asset/qr_code/surat_keluar_<?= $spt->id_surat_keluar ?>.png">
-                    </td>
-                    <td style="height:70px;text-align:justify;vertical-align:bottom">
-                    TTD
+                    <td style="vertical-align:top;text-align:center"><!--<img style="height:80px; width:auto;" src="<?= base_url() ?>asset/file_lainnya/qr_code_surat/<?= $spt->id_buat_surat ?>.png">--></td>
+                    <td style="text-align:justify;vertical-align:top">
                     <!--<img style="height:100px; width:auto;" src="<?= base_url().$kabalai->ttd ?>">-->
                     </td>
                     <?php
@@ -209,10 +203,9 @@
             } else {
                 ?>
                 <td style="vertical-align:top;text-align:center">
-                <img style="height:80px; width:auto;" src="<?= base_url() ?>asset/qr_code/surat_keluar_<?= $spt->id_surat_keluar ?>.png">
+                <!--<img style="height:80px; width:auto;" src="<?= base_url() ?>asset/file_lainnya/qr_code_surat/<?= $spt->id_buat_surat ?>.png">-->
                 </td>
-                <td style="height:70px;text-align:justify;vertical-align:bottom">
-                TTD
+                <td style="text-align:justify;vertical-align:top">
                 <!--<img style="height:100px; width:auto;" src="<?= base_url().$kabalai->ttd ?>">-->
                 </td>
                 <?php
@@ -221,7 +214,7 @@
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>
-              <td style="text-align:justify;vertical-align:top;font-size:15px"><b><?= ucwords($kabalai->nama) ?></b></td>
+              <td style="text-align:justify;vertical-align:top"><b><?= $kabalai->nama ?></b></td>
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>
@@ -229,7 +222,7 @@
           </tr>
         </table>
         
-        <table style="margin-left:5%;margin-top:70px;width:90%" border="0">
+        <table style="margin-left:5%;margin-top:10px;width:90%" border="0">
           <tr>
               <td colspan="3" style="width:100%;vertical-align:top;line-height:1.5">
                   <?php
@@ -268,72 +261,5 @@
             }
         } 
         ?>
-        <?php if($cek_lampiran > 0) { ?>
-        <div style="page-break-after:always; clear:both"></div>
-        <?php
-            $no_lamp = 1;
-            foreach($list_lampiran as $ls){
-        ?>
-        <div style="margin-left:2%;margin-right:7%;margin-top:40px;padding-top:10px">
-            <?= $ls->deskripsi ?>
-        </div>
-        <table style="margin-left:30%;margin-top:10px;width:60%" border="0">
-          <tr>
-              <td style="width:40%;vertical-align:top">&nbsp;</td>
-              <td style="width:60%;text-align:justify;vertical-align:top"><?= $kabalai->for_ttd ?></td>
-          </tr>
-          <tr>
-              <td style="vertical-align:top">&nbsp;</td>
-              <td style="text-align:justify;vertical-align:top"><?= $kabalai->struktur ?></td>
-          </tr>
-          <tr>
-              <?php 
-              if($kabalai->struktur == "Kepala Balai" OR $kabalai->struktur == "Kasubag Tata Usaha"){
-                if($spt->waktu_verif == ""){
-                    ?>
-                    <td style="vertical-align:top;text-align:center">
-                    &nbsp;
-                    </td>
-                    <td style="height:70px;text-align:justify;vertical-align:bottom">
-                    TTD
-                    </td>
-                    <?php
-                } else {
-                    ?>
-                    <td style="vertical-align:top;text-align:center">
-                    <img style="height:80px; width:auto;" src="<?= base_url() ?>asset/qr_code/surat_keluar_<?= $spt->id_surat_keluar ?>.png">
-                    </td>
-                    <td style="height:70px;text-align:justify;vertical-align:bottom">
-                    TTD
-                    </td>
-                    <?php
-                }
-            } else {
-                ?>
-                <td style="vertical-align:top;text-align:center">
-                <img style="height:80px; width:auto;" src="<?= base_url() ?>asset/qr_code/surat_keluar_<?= $spt->id_surat_keluar ?>.png">
-                </td>
-                <td style="height:70px;text-align:justify;vertical-align:bottom">
-                TTD
-                </td>
-                <?php
-            }
-              ?>
-          </tr>
-          <tr>
-              <td style="vertical-align:top">&nbsp;</td>
-              <td style="text-align:justify;vertical-align:top;font-size:15px"><b><?= ucwords($kabalai->nama) ?></b></td>
-          </tr>
-          <tr>
-              <td style="vertical-align:top">&nbsp;</td>
-              <td style="text-align:justify;vertical-align:top;padding-top:0px">NIP. <?= $kabalai->nip ?></td>
-          </tr>
-        </table>
-        <div style="page-break-after:always; clear:both"></div>
-        <?php
-            $no_lamp++;
-            } 
-        ?>
-        <?php } ?>
      	</body>
 	</html>

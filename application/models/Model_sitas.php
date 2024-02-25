@@ -14,6 +14,10 @@ class Model_sitas extends CI_model{
     function saveDataBanyak($tabel,$data){
         $this->db->insert_batch($tabel, $data);
     }
+    function saveDataWithFileBanyak($tabel,$data,$folder){
+        $data['file_pdf'] = $this->upload_file_banyak($folder);
+        $this->db->insert($tabel, $data);
+    }
     function saveDataWithFile($tabel,$data,$folder,$folder_compres){
         $data['file_pdf'] = $this->upload_surat_masuk($folder);
         $this->db->insert($tabel, $data);
@@ -42,12 +46,12 @@ class Model_sitas extends CI_model{
         return $this->db->query("delete from $tabel where $were");
     }
     function saveDataWithFotoBanyak($tabel,$data,$folder){
-        $user = $this->bsip->get_user();
+        $user = $this->get_user();
         $data['gbr_dok'] = $this->upload_foto_banyak($folder,$user->id_peg);
         $this->db->insert($tabel, $data);
     }
     function updateDataWithFotoBanyak($tabel,$kol,$val_kol,$data,$folder){
-        $user = $this->bsip->get_user();
+        $user = $this->get_user();
         $row = $this->rowDataBy("gbr_dok",$tabel,"$kol = $val_kol")->row();
         $jumlahFile = $_FILES['foto']['name'];
         if (!empty($jumlahFile[0])) {
@@ -57,7 +61,7 @@ class Model_sitas extends CI_model{
         $this->db->where($kol, $val_kol);
         $this->db->update($tabel, $data);
     }
-    public function hapus_pdf($pathx,$pdfx) {
+    function hapus_pdf($pathx,$pdfx) {
         $path = $pathx.$pdfx;
         if (file_exists($path)) {
             unlink($path);
@@ -154,16 +158,36 @@ class Model_sitas extends CI_model{
             // Jika upload sukses, kembalikan nama file foto yang diunggah
             $upload_data = $this->upload->data();
             $file_name = $upload_data['file_name'];
-            
             $imageUploadPath = $fol_com . $file_name;
             compressImage($tmp, $imageUploadPath, 65);
-            
+            return $file_name;
+        }
+    }
+    function upload_file($folder,$name_file) {
+        // Konfigurasi untuk upload foto 
+        $tmp = $_FILES[$name_file]['tmp_name'];
+        //$config['upload_path'] = './assets/ttd_scan/';
+        $config['upload_path'] = $folder;
+        $config['allowed_types'] = 'jpg|jpeg|png|pdf';
+        $config['max_size'] = 8192; // ukuran maksimum dalam kilobita
+        $config['file_name'] = uniqid(); // nama unik untuk file foto
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload($name_file)) {
+            // Jika upload gagal, tampilkan pesan error
+            $error = $this->upload->display_errors();
+            $this->form_validation->set_message('upload_foto', $error);
+            return FALSE;
+        } else {
+            // Jika upload sukses, kembalikan nama file foto yang diunggah
+            $upload_data = $this->upload->data();
+            $file_name = $upload_data['file_name'];
             return $file_name;
         }
     }
     function upload_surat_masuk($folder) {
         $config['upload_path'] = $folder;
-        $config['allowed_types'] = 'pdf';
+        $config['allowed_types'] = 'pdf|jpg|jpeg|png';
         $config['max_size'] = 4096; // ukuran maksimum dalam kilobita
         $config['file_name'] = uniqid(); // nama unik untuk file foto
         $this->upload->initialize($config);
@@ -239,6 +263,30 @@ class Model_sitas extends CI_model{
             unlink($folder.$ft);
         }
     }
+    function upload_file_banyak($folderx){
+        $limit = 10 * 1024 * 1024;
+        $ekstensi =  array('png','jpg','jpeg','pdf');
+        $jumlahFile = count($_FILES['file_pdf']['name']);
+        $uploadPath = $folderx;
+        $xxx = ""; 
+        for($x=0; $x<$jumlahFile; $x++){
+        	$namafile = $_FILES['file_pdf']['name'][$x];
+        	$tmp = $_FILES['file_pdf']['tmp_name'][$x];
+        	$tipe_file = pathinfo($namafile, PATHINFO_EXTENSION);
+        	$ukuran = $_FILES['file_pdf']['size'][$x];	
+        	if($ukuran > $limit){
+        		echo "Ukuran File Terlalu Besar";
+        	}else{
+        		if(!in_array($tipe_file, $ekstensi)){
+        			echo "Ekstensi tidak diperbolehkan";
+        		}else{
+                    $imageUploadPath = $uploadPath . uniqid().".".$tipe_file;
+        			$xxx .= uniqid().".".$tipe_file.",";
+        		}
+        	}
+        }
+        return $gbr = substr($xxx,0,-1);
+    }
     function hapus_foto($folder,$foto) {
         //$path = './assets/foto_ktp/' . $foto;
         $path = $folder . $foto;
@@ -300,5 +348,55 @@ class Model_sitas extends CI_model{
             $this->db->where($idx,$arrs[$idx]);
             $this->db->update($tb,$datadb);
         }
+    }
+    function get_verifikator_awal(){
+        $get_peg = $this->rowDataBy("b.*,c.username",
+                        "pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai
+                        inner join user c on b.id_pegawai=c.id_pegawai",
+                        "a.level = 'awal'")->row();
+        return $get_peg;
+    }
+    function get_verifikator_akhir(){
+        $get_peg = $this->rowDataBy("b.*,c.username,d.struktur,d.for_ttd",
+                        "pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai
+                        inner join user c on b.id_pegawai=c.id_pegawai inner join struktur_organisasi d
+                        on c.id_pegawai=d.id_pegawai",
+                        "a.level = 'akhir'")->row();
+        return $get_peg;
+    }
+    function get_sub_arsip($x){
+        $qw = $this->rowDataBy("a.kode_sub_arsip,a.sub_arsip,b.arsip","klasifikasi_sub_arsip a inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
+                                "id_sub_arsip = $x")->row();
+        return $qw;
+    }
+    function get_peg_by_user($x){
+        return $this->db->query("select b.* from user a inner join pegawai b on a.id_pegawai=b.id_pegawai where a.username = '$x'")->row();
+    }
+    function cek_anggota_spt($tgl,$lama){
+        $tglm = no_anggota_spt($tgl,$lama);
+        $id_peg = "";
+		$get_pgx = $this->listDataBy("id_pegawai","anggota_spt","tanggal_spt like '%$tglm%'","id_pegawai asc");
+        foreach($get_pgx as $gpg){
+            $id_peg .= $gpg->id_pegawai.",";
+        }
+        $id_pegw = substr($id_peg,0,-1);
+        if($id_pegw == ""){
+            $qw_inti = $this->listData("id_pegawai,nama","pegawai","id_pegawai asc");
+        } else {
+            $qw_inti = $this->listDataBy("id_pegawai,nama","pegawai","id_pegawai not in ($id_pegw)","id_pegawai asc");
+        }
+        return $qw_inti;
+    }
+    function get_anggota_spt_by_id_spt($id_spt)
+    {
+        // Mengambil data anggota_spt berdasarkan id_spt
+        $this->db->where('id_spt', $id_spt);
+        return $this->db->get('anggota_spt')->result();
+    }
+    function delete_spt($table, $key, $id)
+    {
+        // Menghapus data pada tabel berdasarkan kunci utama ($key) dan id
+        $this->db->where($key, $id);
+        $this->db->delete($table);
     }
 }

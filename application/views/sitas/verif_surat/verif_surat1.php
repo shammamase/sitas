@@ -249,7 +249,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="" method="post" action="<?= base_url() ?>primer/setuju_surat">
+          <form class="" method="post" action="<?= base_url() ?>primer/setuju_surat1">
               <input type="hidden" name="id_buat_surat" value="<?= $spt->id_surat_keluar ?>">
               <div class="form-group">
                   <textarea class="form-control" name="keterangan"></textarea>
@@ -272,7 +272,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="" method="post" action="<?= base_url() ?>primer/tolak_surat">
+          <form class="" method="post" action="<?= base_url() ?>primer/tolak_surat1">
               <input type="hidden" name="id_buat_surat" value="<?= $spt->id_surat_keluar ?>">
               <div class="form-group">
                   <textarea class="form-control" name="alasan_tolak" required></textarea>

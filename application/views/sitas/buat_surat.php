@@ -8,7 +8,7 @@
           </div>
           <div class="card-body">
             <!-- Date -->
-            <form method="post" action="<?= base_url() ?>primer/save_surat1">
+            <form method="post" action="<?= base_url() ?>primer/save_surat1" enctype="multipart/form-data">
             <div class="form-group">
               <label>Tanggal</label>
                 <div class="input-group date" id="reservationdate" data-target-input="nearest">
@@ -44,10 +44,12 @@
                     ?>
                   </select>
             </div>
+            <!--
             <div class="form-group">
               <label>Lampiran</label>
               <input type="text" class="form-control" name="lampiran" value="<?= $lampiran ?>">
             </div>
+            -->
             <div class="form-group">
               <label>Hal</label>
               <textarea name="hal" class="form-control"><?= $hal ?></textarea>
@@ -72,6 +74,37 @@
               <label>Tembusan (Pisahkan dengan koma jika tembusan lebih dari 1)</label>
               <input type="text" class="form-control" name="tembusan" value="<?= $tembusan ?>">
             </div>
+            <div class="form-group">
+              <label>Pilih Upload File Lampiran</label>
+              <input style="width:20px;height:20px" type="checkbox" id="pilih_metode" <?= $is_file_lampiran ?>>
+            </div>
+            <div class="form-group" id="pilih3" style="display:<?= $display_jml_lampiran ?>">
+              <label>Jumlah Lampiran</label>
+              <input type="number" class="form-control" name="jml_lampiran" id="jumlahTextarea" value="<?= $lampiran ?>" onkeyup="buatTextarea()" <?= $disb ?>>
+            </div>
+            <div class="form-group" id="pilih1" style="display:<?= $display_file_lampiran ?>">
+              <label>Jumlah Lampiran</label>
+              <input id="pilih11" type="number" class="form-control" name="jml_lampiran" value="<?= $lampiran ?>" <?= $dis ?>>
+            </div>
+            <div class="form-group" id="pilih2" style="display:<?= $display_file_lampiran ?>">
+              <label>Upload File Lampiran <?= $file_lamp ?></label>
+              <input type="file" class="form-control" name="file_lampiran">
+            </div>
+            <div id="contextarea"></div>
+            <?php $no_lp = 1; foreach($list_lamp as $lp){ ?>
+              <div class="form-group lampx">
+              <label>Lampiran ke-<?= $no_lp ?></label>
+              <textarea name="lampiran[]" id="summernote<?= $no_lp ?>"><?= $lp->deskripsi ?></textarea>
+              </div>
+            <?php $no_lp++;} ?>
+            <?php if($jml_lamp > 0){ ?>
+              <?php for($yt = $no_lp; $yt <= 5; $yt++){ ?>
+                <div class="form-group lampx">
+                <label>Lampiran ke-<?= $yt ?></label>
+                <textarea name="lampiran[]" id="summernote<?= $yt ?>"></textarea>
+                </div>
+              <?php } ?>
+            <?php } ?>
             <input type="hidden" name="status" value="<?= $status ?>">
             <input type="hidden" id="id_surat_masuk" name="id_surat_masuk" value="<?= $id_surat_masuk ?>">
             <input type="hidden" name="id_buat_surat" value="<?= $id_buat_surat ?>">
@@ -94,10 +127,11 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
-        <th style="width:22%">No Surat</th>
-        <th style="width:21%">Tujuan Surat</th>
+        <th style="width:17%">No Surat</th>
+        <th style="width:16%">Tujuan Surat</th>
         <th style="width:10%">Tanggal</th>
-        <th style="width:25%">Perihal</th>
+        <th style="width:20%">Perihal</th>
+        <th style="width:15%">Status</th>
         <th style="width:20%">Aksi</th>
       </tr>
       </thead>
@@ -126,12 +160,36 @@
         <td><?= tgl_indoo($row->tanggal) ?></td>
         <td><?= $row->perihal ?></td>
         <td>
+          <?php
+            if($row->alasan_tolak != ""){
+            ?>
+            <span class="badge badge-pill badge-danger">di tolak</span><br>
+            <b>Keterangan :</b><?= $row->alasan_tolak ?>
+            <?php
+            } 
+          ?>
+          <?php if($row->id_verif1 != 0){ ?>
+            <span class="badge badge-pill badge-success">di setujui verifikator awal</span><br>
+          <?php } ?>
+          <?php if($row->id_verif1 != 0){ ?>
+            <span class="badge badge-pill badge-success">di setujui verifikator akhir</span><br>
+            <b>Keterangan :</b><?= $row->keterangan ?>
+          <?php } ?>
+        </td>
+        <td>
             <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat?id_bs=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
             <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>primer/buat_surat?cs=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-copy'></i> Copy</a>
-            <a class='btn btn-info btn-xs' title='Kirim' href="#"><i class='fas fa-share'></i> Kirim WA</a>
+            <!--<a class='btn btn-info btn-xs' title='Kirim' href="#"><i class='fas fa-share'></i> Kirim WA</a>-->
             <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>-->
+            <a class='btn btn-info btn-xs' title='Preview' href="<?= base_url() ?>primer/prev_surat/<?= $row->id_surat_keluar ?>"><i class='fas fa-eye'></i> Preview</a>
             <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
             <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+            <?php if($row->file_lampiran != ""){ ?>
+              <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>asset/lampiran/<?= $row->file_lampiran ?>"><i class='fas fa-file-pdf'></i> Lamp</a>  
+            <?php } ?>
+            <?php if($row->id_verif1 == 0){ ?>
+            <a class='btn btn-dark btn-xs' title='Ajukan' href="<?php echo base_url() ?>primer/ajukan_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk ajukan data ini?')"><i class='fas fa-share'></i> Ajukan</a>
+            <?php } ?>
         </td>
       </tr>
      <?php
@@ -212,6 +270,49 @@
           </div>
       </div>
   </div>
+
+  <div class="modal fade" id="modal_vw_lam">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h4 class="modal-title">File Lampiran</h4>
+                  <button type="button" class="close" data-dismiss="modal">x</button>
+              </div>
+              <div class="modal-body">
+                <iframe style="height:600px;width:100%" src="<?= $isi_file_lamp ?>"></iframe>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-danger btn-xs" data-dismiss="modal">Tutup</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script>
+    const checkbox = document.getElementById("pilih_metode");
+    const pilih1 = document.getElementById("pilih1");
+    const pilih11 = document.getElementById("pilih11");
+    const pilih2 = document.getElementById("pilih2");
+    const pilih3 = document.getElementById("pilih3");
+    const contextarea = document.getElementById("contextarea");
+    const jumlahTextArea = document.getElementById("jumlahTextarea");
+    checkbox.addEventListener("change", function () {
+        if(checkbox.checked){
+          pilih1.style.display = "";
+          pilih2.style.display = "";
+          pilih3.style.display = "none";
+          contextarea.style.display = "none";
+          pilih11.disabled = false;
+          jumlahTextArea.disabled = true;
+        } else {
+          pilih1.style.display = "none";
+          pilih2.style.display = "none";
+          pilih3.style.display = "";
+          contextarea.style.display = "";
+          pilih11.disabled = true;
+          jumlahTextArea.disabled = false;
+        }
+    });
+  </script>
   <script>
       $(document).ready(function(){
           $("#surat_masuk").click(function(){
@@ -223,7 +324,6 @@
               }
           });
       });
-      
       $("#modalku").on('click','.pilih',function (e) {
           var textValue = "<p>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</p>";
           const pdf_sm = document.createElement("a");
@@ -237,5 +337,34 @@
           //document.getElementById("summernote").value = $(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal');
           document.getElementById("filex_pdf").src = $(this).attr('data-file_pdf');
           $('#summernote').summernote('code', textValue);
-      })
+      });
+
+      function buatTextarea(){
+        // hapus dulu textarea yg telah dibuat
+            var textareas = document.getElementsByClassName("lampx")
+            while (textareas[0]){
+                textareas[0].parentNode.removeChild(textareas[0]);
+            }
+        
+        // buat textarea
+        var jumlah = document.getElementById("jumlahTextarea").value;
+        for(i = 0; i < jumlah; i++){
+            var div_form = document.createElement("div");
+            div_form.setAttribute("class","form-group lampx");
+            var lblx = document.createElement("label");
+            lblx.innerHTML = "Lampiran ke-" + (i+1);
+            var textarea = document.createElement("textarea");
+            textarea.setAttribute("class","form-control");
+            textarea.setAttribute("name", "lampiran[]");
+            textarea.setAttribute("id","summernote" + (i+1));
+            div_form.appendChild(lblx);
+            div_form.appendChild(textarea);
+            document.getElementById("contextarea").appendChild(div_form);
+        }
+        
+        // Inisialisasi summernote pada semua textarea yang telah dibuat
+          for (ff = 0; ff < jumlah; ff++) {
+            $('#summernote' + (ff+1)).summernote();
+          }
+    }
   </script>

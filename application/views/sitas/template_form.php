@@ -38,12 +38,6 @@
   <script src="<?php echo base_url(); ?>asset/lte31/plugins/jquery/jquery.min.js"></script>
   <!-- Summernote -->
   <script src="<?php echo base_url(); ?>asset/lte31/plugins/summernote/summernote-bs4.min.js"></script>
-  <script>
-  $(function () {
-    // Summernote
-    $('#summernote').summernote()
-  })
-</script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -76,7 +70,11 @@
     <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <?php $users = $this->model_sitas->get_user(); ?>
+  <?php 
+    $users = $this->model_sitas->get_user();
+    $username = $this->session->username;
+    $get_verif_awal = $this->model_sitas->get_verifikator_awal();
+  ?>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
         
@@ -108,6 +106,25 @@
                       </p>
                     </a>
                   </li>
+                  <?php if($username == $get_verif_awal->username){ ?>
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Verifikator Awal
+                        <i class="fas fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>primer/list_ver_surat_keluar1" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Surat Keluar</p>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <?php } ?>
                   <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/pejabat_tanda_tangan" class="nav-link">
                       <i class="fa fa-list"></i>
@@ -136,15 +153,17 @@
                       <li class="nav-item">
                         <a href="<?php echo base_url(); ?>primer/buat_surat" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
-                          <p>Buat Surat 1</p>
+                          <p>Buat Surat</p>
                         </a>
                       </li>
+                      <!--
                       <li class="nav-item">
                         <a href="#" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                           <p>Buat Surat 2</p>
                         </a>
                       </li>
+                      -->
                       <li class="nav-item">
                         <a href="<?php echo base_url(); ?>primer/buat_surat_keluar" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
@@ -154,7 +173,7 @@
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a href="<?php echo base_url(); ?>primer/buat_spt" class="nav-link">
+                    <a href="<?php echo base_url(); ?>primer/data_spt" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
                         Buat SPT
@@ -455,6 +474,23 @@
     myDropzone.removeAllFiles(true)
   }
   // DropzoneJS Demo Code End
+</script>
+
+<script>
+  $(function () {
+    // Summernote
+    $('#summernote').summernote()
+  })
+  $('#summernote1').summernote();
+    $('#summernote2').summernote();
+    $('#summernote3').summernote();
+    $('#summernote4').summernote();
+    $('#summernote5').summernote();
+    $('#summernote6').summernote();
+    $('#summernote7').summernote();
+    $('#summernote8').summernote();
+    $('#summernote9').summernote();
+    $('#summernote10').summernote();
 </script>
 
 <script type="text/javascript">

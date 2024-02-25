@@ -56,17 +56,22 @@
                     ?>
                   </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display:<?= $view_balas_sm ?>">
               <label>Balas Surat Masuk :</label>
-              <input class="form-control" id="surat_masuk" name="pilih_surat_masuk">
+              <input class="form-control" id="surat_masuk" name="pilih_surat_masuk" <?= $dis_sm ?>>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display:<?= $view_upl_pdf ?>">
               <label>Upload File PDF:</label>
-              <input type="file" class="form-control" name="file_pdf">
+              <input type="file" class="form-control" name="file_pdf" <?= $dis_pdf ?>>
             </div>
             <input type="hidden" name="status" value="<?= $status ?>">
             <input type="hidden" name="id_surat_keluar" value="<?= $id_surat_keluar ?>">
             <input type="hidden" id="id_surat_masuk" name="id_surat_masuk" value="<?= $id_surat_masuk ?>">
+            <input type="hidden" name="lokasi_tujuan_surat" value="<?= $lokasi_tujuan_surat ?>">
+            <input type="hidden" name="user" value="<?= $user ?>">
+            <input type="hidden" name="id_verif" value="<?= $id_verif ?>">
+            <input type="hidden" name="waktu_verif" value="<?= $waktu_verif ?>">
+            <input type="hidden" name="tanggal_input" value="<?= $tanggal_input ?>">
           </div>
             <div class="card-footer">
                 <button type="submit" name="submit" class="btn btn-primary">Buat Nomor Surat</button>
@@ -122,14 +127,22 @@
             <?php
             if($row->no_surat_keluar!=""){
             ?>
-            <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
-            <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $uri3 ?>"><i class='fas fa-copy'></i> Copy</a>-->
-            <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
-            <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?php echo base_url() ?>asset/surat_keluar/<?php echo $row->file_pdf ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+            <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/buat_surat_keluar?copy=<?php echo $row->id_surat_keluar ?>/<?= $id_surat_keluar ?>"><i class='fas fa-copy'></i> Copy</a>-->
+              <?php if($row->file_pdf != ""){ ?>
+                <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_keluar/<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
+                <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?php echo base_url() ?>asset/surat_keluar/<?php echo $row->file_pdf ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+                <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
+              <?php } else {
+              ?>
+                <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
+                <a class="btn btn-warning btn-xs" target="_blank" title="file pdf" href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+              <?php
+              }
+            ?>
             <?php
             } else {
             ?>
-            <a class='btn btn-warning btn-xs' title='Buat Nomor Surat' href="<?php echo base_url() ?>sijuara/buat_surat_keluar/<?= $uri3 ?>"><i class='fas fa-edit'></i> Buat No Surat</a>
+            <a class='btn btn-warning btn-xs' title='Buat Nomor Surat' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?= $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Buat No Surat</a>
             <?php
             }
             ?>

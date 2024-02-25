@@ -1078,16 +1078,6 @@ class Sijuara extends CI_Controller {
 	                        ");
 	    redirect('sijuara/verif_surat');
 	}
-	
-	function tolak_surat(){
-	    cek_session_admin1();
-	    $id_spt = $_POST['id_buat_surat'];
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $ket = $_POST['keterangan'];
-	    $this->db->query("update sijuara_buat_surat set keterangan = '$ket', pj_ttd = '$id_pjs->id_pejabat' where id_buat_surat = '$id_spt'");
-	    redirect('sijuara/verif_surat');
-	}
-	
 	function pdf_surat_manual(){
 	        ob_start();    
 	        $uri3 = $this->uri->segment(3);

@@ -74,6 +74,14 @@ class Nonlogin extends CI_Controller
     $data['dtx'] = $this->db->query("select * from buku_tamu where waktu like '%$waktu%'");
     $this->load->view('sitas/lap_buku_tamu',$data);
   }
+  public function status_surat(){
+    $uri3 = $this->uri->segment(3);
+    $uri4 = $this->uri->segment(4);
+    $qw = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar=$uri4")->row();
+    $data['kode_arsip'] = $this->model_sitas->rowDataBy("*","klasifikasi_sub_arsip","id_sub_arsip = $qw->id_sub_arsip")->row();
+    $data['data'] = $qw;
+    $this->load->view('sitas/preview/status_surat',$data);
+  }
   public function tes_wa_gateway(){
     $nox = "6281282410448";
     $pesan = "tes kirim";

@@ -245,3 +245,44 @@ function _GET($par)
     $par = str_replace("'", "", $par);
     return $par;
 }
+
+function no_anggota_spt($tgl,$lama_hari){
+    $ex_tgl = explode("-",$tgl);
+    $jml_hari = cal_days_in_month(CAL_GREGORIAN, $ex_tgl[1], $ex_tgl[0]);
+    $tglx = $ex_tgl[2];
+    $tglz = substr($tglx,0,1);
+    if($tglz==0){
+        $tgly = substr($tglx,1,1);
+    } else {
+        $tgly = $tglx;
+    }
+    $tot_tgl = $tgly + $lama_hari;
+    $tgln = "";
+    $iis = 0;
+    for($ii=$tgly; $ii<$tot_tgl; $ii++){
+        if($ii > $jml_hari){
+            $iis = $ii - $jml_hari;
+            if(strlen($iis) != 1){
+                $iisx = $iis;
+            } else {
+                $iisx = "0".$iis;
+            }
+            $bln = $ex_tgl[1] + 1;
+            if(strlen($bln)==1){
+                $blnx = "0".$bln;
+            } else {
+                $blnx = $bln;
+            }
+        } else {
+            if(strlen($ii) != 1){
+                $iisx = $ii;
+            } else {
+                $iisx = "0".$ii;
+            }
+            $blnx = $ex_tgl[1];
+        }
+        $tgln .= $ex_tgl[0]."-".$blnx."-".$iisx.",";
+    }
+    $tglm = substr($tgln,0,-1);
+    return $tglm;
+}

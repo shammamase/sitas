@@ -26,7 +26,7 @@
                             <td><a href="<?= base_url() ?>primer/drive/<?= $pc[0] ?>"><i style="font-size:20px;color:#fcba03" class="fa fa-folder"></i> <b><?= $pc[1] ?></b></a></td>
                             <td>
                                 <?php if($jumlah_inodes == 0){ ?>
-                                <a style="<?= $vw_hapus ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('page/hapus_folder/') ?><?= $uri3 ?>/<?= $qw_folder->id_folder ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
+                                <a style="<?= $vw_hapus ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('primer/hapus_folder/') ?><?= $uri3 ?>/<?= $qw_folder->id_folder ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
                                 <?php } ?>
                             </td>
                           </tr>
@@ -73,7 +73,7 @@
                           ?>
                           <tr>
                             <td><a target="_blank" href="<?= $link_file ?>"><?= $isi_file ?> <b><?= $flx->nama_file ?></b></a></td>
-                            <td><a onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('page/hapus_file/') ?><?= $uri3 ?>/<?= $flx->id_file ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a></td>
+                            <td><a onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('primer/hapus_file/') ?><?= $uri3 ?>/<?= $flx->id_file ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a></td>
                           </tr>
                           <?php 
                             }
@@ -99,13 +99,13 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <form method="post" action="<?= site_url('page/save_folder') ?>">
+        <form method="post" action="<?= site_url('primer/save_folder') ?>">
           <div class="form-group">
             <label for="email">Nama Folder</label>
             <input type="text" class="form-control" name="folder" required>
           </div>
           <input type="hidden" name="url" value="<?= $uri3 ?>">
-          <input type="hidden" name="uris" value="page/drive/<?= $uri3 ?>">
+          <input type="hidden" name="uris" value="primer/drive/<?= $uri3 ?>">
           <input type="hidden" name="root" value="<?= $root ?>">
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -133,7 +133,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-        <form method="post" action="<?= site_url('page/save_file') ?>" enctype="multipart/form-data">
+        <form method="post" action="<?= site_url('primer/save_file') ?>" enctype="multipart/form-data">
           <div class="form-group">
             <label for="email">Dasar</label>
             <select name="id_surat_keluar" id="id_surat_keluar" class="form-control select2">
@@ -155,7 +155,7 @@
             <label for="email">Upload File</label>
             <input type="file" class="form-control" name="file" id="fileInput">
           </div>
-          <input type="hidden" name="uris" id="uris" value="page/drive/<?= $uri3 ?>">
+          <input type="hidden" name="uris" id="uris" value="primer/drive/<?= $uri3 ?>">
           <input type="hidden" name="root" id="root" value="<?= $root ?>">
           <input type="hidden" name="tahun" id="tahun" value="<?= $thn ?>">
           <button type="button" onclick="uploadFile()" class="btn btn-primary">Submit</button><br>
@@ -201,7 +201,7 @@
                 formData.append('tahun', tahun_val);
 
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '<?= base_url() ?>page/save_file', true);
+                xhr.open('POST', '<?= base_url() ?>primer/save_file', true);
 
                 xhr.upload.onprogress = function(e) {
                     if (e.lengthComputable) {

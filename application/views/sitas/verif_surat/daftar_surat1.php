@@ -28,7 +28,7 @@
         <td><?php echo tgl_indoo($row->tanggal) ?></td>
         <td><?php echo $sifat->sifat ?></td>
         <td>
-            <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>primer/verif_surat_detail/<?php echo md5($row->id_surat_keluar) ?>/<?php echo $row->id_surat_keluar ?>"><i class='fas fa-file'></i> Lihat</a>
+            <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>primer/verif_surat_detail1/<?php echo md5($row->id_surat_keluar) ?>/<?php echo $row->id_surat_keluar ?>"><i class='fas fa-file'></i> Lihat</a>
         </td>
       </tr>
      <?php

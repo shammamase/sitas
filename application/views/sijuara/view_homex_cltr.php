@@ -71,7 +71,20 @@
                     <div class="card-header bg-secondary"><b>Verifikator</b></div>
                     <div class="card-body">
                         <div class="row">
-                        <div class="col-lg-3 col-md-3 col-6">
+                        <div class="col-lg-2 col-md-2 col-6">
+                          <div class="small-box bg-warning">
+                              <div class="inner">
+                                <h3><?= $jml_v2 ?></h3>
+                                <p>Surat</p>
+                              </div>
+                              <div class="icon">
+                                <i class="ion ion-ios-paper"></i>
+                              </div>
+                              <a href="<?= base_url() ?>primer/verif_surat" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
+                              <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
+                          </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-6">
                           <div class="small-box bg-warning">
                               <div class="inner">
                                 <h3><?= $jml_v1 ?></h3>
@@ -84,10 +97,10 @@
                               <!--<a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>-->
                           </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-6">
+                        <div class="col-lg-4 col-md-4 col-6">
                           <div class="small-box bg-warning">
                             <div class="inner">
-                              <h3><?= $jml_v2 ?></h3>
+                              <h3><?= $jml_v5 ?></h3>
                               <p>Cuti</p>
                             </div>
                             <div class="icon">
@@ -97,7 +110,7 @@
                             <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
                           </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-6">
+                        <div class="col-lg-2 col-md-2 col-6">
                           <div class="small-box bg-warning">
                             <div class="inner">
                               <h3><?= $jml_v4 ?></h3>
@@ -110,7 +123,7 @@
                             <a href="#" class="small-box-footer">Klik Disini <i class="fas fa-arrow-circle-right"></i></a>
                           </div>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-6">
+                        <div class="col-lg-2 col-md-2 col-6">
                           <div class="small-box bg-warning">
                             <div class="inner">
                               <h3><?= $jml_v3 ?></h3>
