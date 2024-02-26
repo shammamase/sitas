@@ -123,7 +123,7 @@
     <h3 class="card-title">Daftar Surat Keluar</h3>
   </div>
   <div class="card-body">
-    <table id="example1" class="table table-bordered table-striped">
+    <table id="example3" class="table table-bordered table-striped">
       <thead>
       <tr>
         <th style="width:2%">No</th>
@@ -211,7 +211,7 @@
                   <button type="button" class="close" data-dismiss="modal">x</button>
               </div>
               <div class="modal-body">
-                  <table id="example2" class="table table-bordered table-striped">
+                  <table id="example1" class="table table-bordered table-striped">
                       <thead>
                       <tr>
                         <th style="width:3%">No</th>
