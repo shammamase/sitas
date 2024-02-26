@@ -131,10 +131,10 @@
         <td>(<?= $row->diteruskan ?>)<br><?= $row->disposisi ?></td>
         <td><?= $row->isi_disposisi ?></td>
         <td>
+        <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_masuk?id_sm=<?php echo $row->id_surat_masuk ?>"><i class='fas fa-edit'></i> Edit</a>
             <?php
             if($row->id_verifikasi==0){
             ?>
-            <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_masuk?id_sm=<?php echo $row->id_surat_masuk ?>"><i class='fas fa-edit'></i> Edit</a>
             <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>primer/buat_surat_masuk?copy=<?php echo $row->id_surat_masuk ?>"><i class='fas fa-copy'></i> Copy</a>
             <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/hapus_surat_masuk/<?php echo $row->id_surat_masuk ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
             <!--<a class='btn btn-info btn-xs' title='Kirim' target="_blank" href="https://api.whatsapp.com/send?phone=<?= $no_wa ?>&text=<?= $pesan ?>"><i class='fa fa-share'></i> Kirim</a>-->
