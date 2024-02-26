@@ -211,7 +211,7 @@
                   <button type="button" class="close" data-dismiss="modal">x</button>
               </div>
               <div class="modal-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="example2" class="table table-bordered table-striped">
                       <thead>
                       <tr>
                         <th style="width:3%">No</th>
