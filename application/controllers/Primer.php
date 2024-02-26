@@ -621,7 +621,7 @@ class Primer extends CI_Controller {
 			'ajukan'=>1
 		);
 		$this->model_sitas->update_data("surat_keluar","id_surat_keluar",$uri3,$data);
-		//$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/buat_surat');
 	}
 	function list_ver_surat_keluar1(){
@@ -690,7 +690,7 @@ class Primer extends CI_Controller {
 	    $no_wa = substr_replace($get_verif_akhir->no_hp,62,0,1);
         $links = base_url('primer?redir=verif_surat_detail/'.md5($id_spt).'/'.$id_spt);
         $pesan = "*Layanan Aplikasi BSIP TAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links";
-        //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/list_ver_surat_keluar1');
 	}
 	function tolak_surat1(){
@@ -706,7 +706,7 @@ class Primer extends CI_Controller {
 	    $no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
         $links = base_url('primer?redir=buat_surat');
         $pesan = "*Layanan Aplikasi BSIP TAS* Pengajuan surat ditolak, silahkan klik link berikut $links";
-        //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/list_ver_surat_keluar1');
 	}
 	function setuju_surat(){
@@ -732,7 +732,7 @@ class Primer extends CI_Controller {
 	    $no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
         $links = base_url('primer?redir=buat_surat');
         $pesan = "*Layanan Aplikasi BSIP TAS* Pengajuan surat ditolak, silahkan klik link berikut $links";
-        //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/verif_surat');
 	}
 	function verif_surat_detail(){
