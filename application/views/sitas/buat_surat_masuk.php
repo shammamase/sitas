@@ -95,13 +95,13 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
+        <th style="width:15%">Perihal</th>
         <th style="width:5%">No Agenda</th>
         <th style="width:5%">No Surat</th>
         <th style="width:5%">Sifat</th>
         <th style="width:15%">Asal</th>
         <th style="width:10%">Tgl Registrasi</th>
         <th style="width:10%">Tgl Surat</th>
-        <th style="width:15%">Perihal</th>
         <th style="width:10%">Disposisi</th>
         <th style="width:10%">Tindak Lanjut</th>
         <th style="width:13%">Action</th>
@@ -121,13 +121,13 @@
      ?>
       <tr>
         <td><?php echo $no ?></td>
+        <td><?= $row->perihal ?></td>
         <td><?php echo $row->no_agenda ?>/<?= $kode_arsip->kode_sub_arsip ?></td>
         <td><?php echo $row->no_surat_masuk ?></td>
         <td><?= $sifat->sifat ?></td>
         <td><?= $row->asal_surat ?></td>
         <td><?= tgl_indoo($row->tanggal_masuk) ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
-        <td><?= $row->perihal ?></td>
         <td>(<?= $row->diteruskan ?>)<br><?= $row->disposisi ?></td>
         <td><?= $row->isi_disposisi ?></td>
         <td>
