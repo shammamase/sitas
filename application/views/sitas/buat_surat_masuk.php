@@ -121,7 +121,7 @@
      ?>
       <tr>
         <td><?php echo $no ?></td>
-        <td><?= $row->perihal ?><br><b><?= $row->asal_surat ?></b></td>
+        <td><?= $row->perihal ?>.<br><b><?= $row->asal_surat ?></b></td>
         <td><?php echo $row->no_agenda ?>/<?= $kode_arsip->kode_sub_arsip ?></td>
         <td><?php echo $row->no_surat_masuk ?></td>
         <td><?= $sifat->sifat ?></td>
