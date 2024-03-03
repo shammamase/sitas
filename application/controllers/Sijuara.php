@@ -681,18 +681,7 @@ class Sijuara extends CI_Controller {
 			$this->template->load('sijuara/persuratan/spt/template_form','sijuara/persuratan/spt/buat_spt',$data);
 		}
 	}
-	
-	function lihat_spt(){
-	    cek_session_admin1();
-	    if(isset($_POST['id_spt'])){
-		    $id_spt = $_POST['id_spt'];
-		    $data['spt'] = $this->model_more->get_spt_id($id_spt);
-		    $data['peg'] = $this->model_more->get_peg_spt($id_spt);
-		    $data['no_surat'] = $this->model_more->get_no_surat_spt($id_spt)->row();
-			$this->load->view('sijuara/persuratan/spt/lihat_spt',$data);
-		}
-	}
-	
+
 	function lihat_surat(){
 	    cek_session_admin1();
 	    if(isset($_POST['id_buat_surat'])){

@@ -205,9 +205,6 @@ class Model_more extends CI_model{
         $thn = $this->uri->segment(3);
         return $this->db->query("select * from sijuara_lap_spt where tanggal_input like '%$thn%' order by id_lap_spt desc");
     }
-    function get_spt_id($x){
-        return $this->db->query("select * from sijuara_spt where id_spt='$x'")->row();
-    }
     function get_surat_buat($x){
         return $this->db->query("select * from sijuara_surat_keluar where id_buat_surat = '$x'")->row();
     }

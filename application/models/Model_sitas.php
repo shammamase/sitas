@@ -79,6 +79,9 @@ class Model_sitas extends CI_model{
     function listDataBy($kolom,$tabel,$where,$urut){
         return $this->db->query("select $kolom from $tabel where $where order by $urut")->result();
     }
+    function listDataByArr($kolom,$tabel,$where,$urut){
+        return $this->db->query("select $kolom from $tabel where $where order by $urut")->result_array();
+    }
     function rowDataBy($kolom,$tabel,$where){
         return $this->db->query("select $kolom from $tabel where $where");
     }
@@ -398,5 +401,11 @@ class Model_sitas extends CI_model{
         // Menghapus data pada tabel berdasarkan kunci utama ($key) dan id
         $this->db->where($key, $id);
         $this->db->delete($table);
+    }
+    function get_existing_anggota_spt($id_spt, $id_pegawai){
+        // Mengambil data anggota_spt berdasarkan id_spt dan id_pegawai
+        $this->db->where('id_spt', $id_spt);
+        $this->db->where('id_pegawai', $id_pegawai);
+        return $this->db->get('anggota_spt')->row();
     }
 }

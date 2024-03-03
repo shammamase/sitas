@@ -65,7 +65,7 @@ class Primer extends CI_Controller {
 		$data['jml_surat_masuk'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","tanggal_masuk like '%$thn%'");
 		$data['jml_surat_keluar'] = $this->model_sitas->jmlDataBy("id_surat_keluar","surat_keluar","no_surat_keluar != '' and tanggal like '%$thn%'");
 		$data['jml_surat'] = 0;//$this->model_more->daftar_surat()->num_rows();
-		$data['jml_spt'] = 0;//$this->model_more->daftar_spt()->num_rows();
+		$data['jml_spt'] = $this->model_sitas->jmlDataAll("id_spt","spt");
 		$data['jml_perjadin'] = 0;//$this->model_more->daftar_lap_spt22()->num_rows();
 		$data['jml_anggaran'] = 0;//$this->db->query("select id_pengajuan from sijuara_simpan_pengajuan a
 		/*									
@@ -336,7 +336,7 @@ class Primer extends CI_Controller {
 			$data['isi_file_lamp'] = "";
 		}
 	}
-	$data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%' and isi_surat != ''","id_surat_keluar desc"); 
+	$data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%' and isi_surat != '' and file_pdf = ''","id_surat_keluar desc"); 
 	$this->template->load('sitas/template_form','sitas/buat_surat',$data);
   }
   function save_surat1(){
@@ -558,10 +558,22 @@ class Primer extends CI_Controller {
 			} else {
 				$data['no_surat'] = $qw->no_surat_keluar;
 			}
-			$data['user'] = $qw->user;
-			$data['id_verif'] = $qw->id_verif;
-			$data['waktu_verif'] = $qw->waktu_verif;
-			$data['tanggal_input'] = $qw->tanggal_input;
+			if($qw->lokasi_tujuan_surat=="SPT"){
+				$verify = $this->model_sitas->rowDataBy("id_pegawai","pejabat_verifikator","level='akhir'")->row();
+				$id_verif = $verify->id_pegawai;
+				$waktu_verif = date('Y-m-d H:i:s');
+				$tanggal_input = date('Y-m-d H:i:s');
+				$user = $this->session->username;
+			} else {
+				$id_verif = $qw->id_verif;
+				$waktu_verif = $qw->waktu_verif;
+				$tanggal_input = $qw->tanggal_input;
+				$user = $qw->user;
+			}
+			$data['user'] = $user;
+			$data['id_verif'] = $id_verif;
+			$data['waktu_verif'] = $waktu_verif;
+			$data['tanggal_input'] = $tanggal_input;
 			$data['lokasi_tujuan_surat'] = $qw->lokasi_tujuan_surat;
 			$data['tujuan_surat'] = $qw->tujuan_surat;
             $data['tanggal'] = $qw->tanggal;
@@ -576,8 +588,13 @@ class Primer extends CI_Controller {
 			$data['id_surat_masuk'] = $qw->id_surat_masuk;
 			$data['view_balas_sm'] = "none";
 			$data['dis_sm'] = "disabled";
-			$data['view_upl_pdf'] = "none";
-			$data['dis_pdf'] = "disabled";
+			if($qw->lokasi_tujuan_surat == "SPT"){
+				$data['view_upl_pdf'] = "";
+				$data['dis_pdf'] = "";
+			} else {
+				$data['view_upl_pdf'] = "none";
+				$data['dis_pdf'] = "disabled";
+			}
         }
 		$qw_surat_masuk = $this->model_sitas->listDataBy("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
 						"surat_masuk","id_verifikasi != 0","id_surat_masuk desc limit 50");
@@ -605,6 +622,52 @@ class Primer extends CI_Controller {
 			$this->model_sitas->hapus_data("surat_keluar_lampiran","id_surat_keluar = $uri");
 		}
 		redirect('primer/buat_surat');
+	}
+	function delete_surat_spt(){
+		$uri = $this->uri->segment(3);
+		$data = array('id_surat_keluar'=>NULL);
+		$this->model_sitas->hapus_data("surat_keluar","id_surat_keluar = $uri");
+		$this->model_sitas->update_data("spt","id_surat_keluar",$uri,$data);
+		redirect('primer/buat_surat');
+	}
+	function kirim_pesan(){
+		cek_session_admin1();
+		$no_wa = $_GET['no_wa'];
+		$pesan = $_GET['pesan'];
+		$url = $_GET['ctrl'];
+		$id_spt = $_GET['id_spt'];
+		$kode_unik = $_GET['kode_unik'];
+		if(get_kode_uniks($id_spt)==$kode_unik){
+			$spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,untuk,tanggal,lama_hari,tanggal_input",
+							"spt","id_spt=$id_spt")->row();
+			
+			$peg_spt = $this->model_sitas->listDataBy("b.nama",
+							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+							"a.id_spt=$id_spt","a.id_anggota asc");
+			$data_peg = array();
+			foreach($peg_spt as $ps){
+				array_push($data_peg,$ps->nama);
+			}
+			$untuk = implode(",",$data_peg);
+			$narasi_tgl = sd_tgl($spt->tanggal,$spt->lama_hari);
+			$data_sk = array(
+				'id_surat_masuk'=>$spt->id_surat_masuk,
+				'id_sub_arsip'=>$spt->id_sub_arsip,
+				'tujuan_surat'=>$untuk,
+				'lokasi_tujuan_surat'=>"SPT",
+				'tanggal'=>$spt->tanggal_input,
+				'sifat'=>1,
+				'lampiran'=>0,
+				'perihal'=>$spt->untuk." ".$narasi_tgl,
+				'isi_surat'=>"SPT"
+			);
+			$this->model_sitas->saveData("surat_keluar",$data_sk);
+			$id_surat_keluar = $this->db->insert_id();
+			$data_spt = array('id_surat_keluar'=>$id_surat_keluar);
+			$this->model_sitas->update_data("spt","id_spt",$id_spt,$data_spt);
+			$this->model_sitas->kirim_wa_gateway($no_wa,$pesan); 
+		}
+		redirect('primer/'.$url);
 	}
 	function ajukan_surat_keluar(){
 		cek_session_admin1();
@@ -658,9 +721,9 @@ class Primer extends CI_Controller {
 		$get_verif_awal = $this->model_sitas->get_verifikator_awal();
 		$cek_data_lamp = $this->model_sitas->rowDataBy("deskripsi","surat_keluar_lampiran","id_surat_keluar = $uri4")->num_rows();
 		$cek_file_lamp = $this->model_sitas->rowDataBy("file_lampiran","surat_keluar","id_surat_keluar = $uri4")->row();
+		$qw_spt = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar = $uri4")->row();
 		if($username == $get_verif_awal->username){
 			$data['kabalai'] = $this->model_sitas->get_verifikator_akhir();
-			$data['spt'] = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar = $uri4")->row();
 			$data['cek_data_lamp'] = $cek_data_lamp;
 			if($cek_data_lamp > 0){
 			$data['lampiran'] = $this->model_sitas->listDataBy("deskripsi,no_view_border","surat_keluar_lampiran",
@@ -673,7 +736,18 @@ class Primer extends CI_Controller {
 			} else {
 				$data['file_lampiran'] = "";
 			}
-			$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat1',$data);
+			if($qw_spt->lokasi_tujuan_surat=="SPT"){
+				$qw_spt2 = $this->model_sitas->rowDataBy("*","spt","id_surat_keluar = $uri4")->row();
+				$data['spt'] = $qw_spt2;
+				$data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
+							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$qw_spt2->id_spt","a.id_anggota asc");
+				$this->template->load('sitas/template_form','sitas/verif_surat/verif_spt1',$data);
+			} else {
+				$qw_spt2 = "";
+				$data['spt'] = $qw_spt;
+				$data['peg'] = array();
+				$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat1',$data);
+			}
 		} else {
 			$this->load->view('sitas/verif_surat/no_akses');
 		}
@@ -713,10 +787,17 @@ class Primer extends CI_Controller {
 	    cek_session_admin1();
 		date_default_timezone_set('Asia/Jakarta');
 		$user = $this->model_sitas->get_user();
+		$qw_petugas_surat = $this->model_sitas->rowDataBy("id_pegawai","petugas_terima","menu = 'surat_keluar'")->row();
+		$qw_user_petugas = $this->model_sitas->rowDataBy("username","user","id_pegawai = $qw_petugas_surat->id_pegawai")->row();
+		$get_buat_surat = $this->model_sitas->get_peg_by_user($qw_user_petugas->username);
 		$tgl = date('Y-m-d H:i:s');
 	    $id_spt = $_POST['id_buat_surat'];
 	    $ket = $_POST['keterangan'];
 	    $this->db->query("update surat_keluar set keterangan = '$ket', waktu_verif = '$tgl', id_verif = $user->id_pegawai where id_surat_keluar = $id_spt");
+		$no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
+        $links = base_url('primer?redir=buat_surat_keluar');
+        $pesan = "*Layanan Aplikasi BSIP TAS* Pemberian nomor surat, silahkan klik link berikut $links";
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/verif_surat');
 	}
 	function tolak_surat(){
@@ -743,9 +824,9 @@ class Primer extends CI_Controller {
 		$get_verif_akhir = $this->model_sitas->get_verifikator_akhir();
 		$cek_data_lamp = $this->model_sitas->rowDataBy("deskripsi","surat_keluar_lampiran","id_surat_keluar = $uri4")->num_rows();
 		$cek_file_lamp = $this->model_sitas->rowDataBy("file_lampiran","surat_keluar","id_surat_keluar = $uri4")->row();
+		$qw_spt = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar = $uri4")->row();
 		if($username == $get_verif_akhir->username){
 			$data['kabalai'] = $get_verif_akhir;
-			$data['spt'] = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar = $uri4")->row();
 			$data['cek_data_lamp'] = $cek_data_lamp;
 			if($cek_data_lamp > 0){
 			$data['lampiran'] = $this->model_sitas->listDataBy("deskripsi,no_view_border","surat_keluar_lampiran",
@@ -758,7 +839,18 @@ class Primer extends CI_Controller {
 			} else {
 				$data['file_lampiran'] = "";
 			}
-			$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_surat',$data);
+			if($qw_spt->lokasi_tujuan_surat=="SPT"){
+				$qw_spt2 = $this->model_sitas->rowDataBy("*","spt","id_surat_keluar = $uri4")->row();
+				$data['spt'] = $qw_spt2;
+				$data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
+							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$qw_spt2->id_spt","a.id_anggota asc");
+				$this->template->load('sitas/template_form','sitas/verif_surat/verif_spt',$data);
+			} else {
+				$qw_spt2 = "";
+				$data['spt'] = $qw_spt;
+				$data['peg'] = array();
+				$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat',$data);
+			}
 		} else {
 			$this->load->view('sitas/verif_surat/no_akses');
 		}
@@ -811,9 +903,11 @@ class Primer extends CI_Controller {
 	function daftar_spt(){
 	    cek_session_admin1();
 		$thn = $this->session->tahun;
-		$id_pjs = $this->model_sitas->rowDataBy("*","pejabat_verifikator","level = 'akhir'")->row();
+		//$id_pjs = $this->model_sitas->rowDataBy("*","pejabat_verifikator","level = 'akhir'")->row();
+		$id_pjs = $this->model_sitas->rowDataBy("*","petugas_terima","menu = 'surat_keluar'")->row();
 		$data['rec'] = $this->model_sitas->listDataBy("*","spt","tanggal like '%$thn%'","id_spt desc");
-		$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
+		//$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
+		$data['petugas'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
         $this->template->load('sitas/template_form','sitas/daftar_spt',$data);
 	}
 	function buat_sptxx(){
@@ -945,9 +1039,9 @@ class Primer extends CI_Controller {
 			$data['id_surat_masuk'] = 0;
         } else {
             $row = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
-            $get_pj = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai = $row->pj")->row();
+            //$get_pj = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai = $row->pj")->row();
             $get_spt_peg = $this->model_sitas->listDataBy("a.id_pegawai,b.nama","anggota_spt a inner join pegawai b on a.id_pegawai=b.id_pegawai",
-                            "a.id_spt = $uri4","a.id_anggota asc");
+                            "a.id_spt = $uri3","a.id_anggota asc");
             if (isset($cek_tgl)) {
                 $data['spt'] = $this->model_sitas->cek_anggota_spt($get_tgl,$get_lama);
             } else {
@@ -960,7 +1054,11 @@ class Primer extends CI_Controller {
 			$data['dasar'] = "<ul><li>Peraturan Menteri Pertanian Nomor 13 Tahun 2023
 			tentang Organisasi dan Tata Kerja Unit Pelaksana Teknis
 			Lingkup Badan Standardisasi Instrumen Pertanian</li></ul>";
-			$data['ceck'] = "";
+			if($row->is_dipa == 1){
+				$data['ceck'] = "checked";
+			} else {
+				$data['ceck'] = "";
+			}
 			$data['verif'] = 0;
 			/*
             if($uri5 == "surat_masuk"){
@@ -974,7 +1072,7 @@ class Primer extends CI_Controller {
             $data['tanggal_input'] = $row->tanggal_input;   
             $data['is_dipa'] = $row->is_dipa;
             $data['pj'] = $row->pj;
-            $data['npj'] = $get_pj->nama;
+            $data['npj'] = "";//$get_pj->nama;
             $data['id_pj'] = $row->pj;
             $data['user'] = $row->user;
             $data['id_spt'] = $row->id_spt;
@@ -1031,9 +1129,11 @@ class Primer extends CI_Controller {
         }
         $this->model_sitas->saveDataBanyak('anggota_spt', $data2);
         redirect('primer/daftar_spt');
+		/*
 		print_r($data);
 		echo "<br>";
 		print_r($data2);
+		*/
     	} else {
         foreach ($anggota_spt_existing as $anggota) {
             if (!in_array($anggota->id_pegawai, $id_peg_selected)) {
@@ -1057,6 +1157,104 @@ class Primer extends CI_Controller {
         redirect('primer/daftar_spt');
     	}
   	}	
+	function delete_spt(){
+		cek_session_admin1();
+		$uri3 = $this->uri->segment(3);
+		$uri4 = $this->uri->segment(4);
+		if($uri4 == get_kode_uniks($uri3)){
+			$this->model_sitas->hapus_data("spt","id_spt = $uri3");
+			$this->model_sitas->hapus_data("anggota_spt","id_spt = $uri3");
+		} 
+		redirect('primer/daftar_spt');
+
+	}
+	function lihat_spt(){
+	    cek_session_admin1();
+	    if(isset($_POST['id_spt'])){
+		    $id_spt = $_POST['id_spt'];
+			$data['spt'] = $this->model_sitas->rowDataBy("*","spt","id_spt=$id_spt")->row();
+			$data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
+							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$id_spt","a.id_anggota asc");
+		    $data['no_surat'] = "";
+			$this->load->view('sitas/lihat_spt',$data);
+		}
+	}
+	function no_sppd(){
+		$id_spt = _POST('id');
+		$no_current = $this->db->query("select is_dipa,ket_berangkat,ket_wilayah,instansi_pembiayaan,kode_pembiayaan,no_sppd,kendaraan,instansi_tujuan,nama_ttd_instansi_tujuan,nip_ttd_instansi_tujuan,id_ppk,tgl_sppd from spt where id_spt = $id_spt")->row();
+		$no_max = $this->db->query("select max(no_sppd) as nox from spt")->row();
+		$spt_last = $this->db->query("select id_spt from spt where no_sppd != 0 order by id_spt desc")->row();
+		$pjb_ppk = $this->model_sitas->rowDataBy("id_pegawai","struktur_organisasi","id_struktur = 5")->row();
+		if(empty($spt_last)){
+			$get_jml_anggota = 1;
+		} else {
+			$get_jml_anggota = $this->db->query("select id_anggota from anggota_spt where id_spt = $spt_last->id_spt")->num_rows();
+		}
+		$jml_anggota = $get_jml_anggota - 1;
+		if($no_current->no_sppd != 0){
+			$nomor_sppd = $no_current->no_sppd;
+			$tgl_sppd = $no_current->tgl_sppd;
+			$id_ppk = $no_current->id_ppk;
+		} else {
+			$nomor_sppd = $no_max->nox + 1 + $jml_anggota;
+			$tgl_sppd = date('Y-m-d');
+			$id_ppk = $pjb_ppk->id_pegawai;
+		}
+		$data['nox'] = $nomor_sppd;
+		$data['kendaraan'] = $no_current->kendaraan;
+		$data['ket_wilayah'] = $no_current->ket_wilayah;
+		if($no_current->ket_berangkat==""){
+			$data['ket_berangkat'] = "BPSI TAS";
+		} else {
+			$data['ket_berangkat'] = $no_current->ket_berangkat;
+		}
+		if($no_current->instansi_pembiayaan==""){
+			if($no_current->is_dipa == 1){	
+				$data['instansi_pembiayaan'] = "Balai Pengujian Standar Instrumen Tanaman Pemanis dan Serat";
+			} else {
+				$data['instansi_pembiayaan'] = "";
+			}
+		} else {
+			$data['instansi_pembiayaan'] = $no_current->instansi_pembiayaan;
+		}
+		$data['kode_pembiayaan'] = $no_current->kode_pembiayaan;
+		$data['instansi_tujuan'] = $no_current->instansi_tujuan;
+		$data['nama_ttd_instansi_tujuan'] = $no_current->nama_ttd_instansi_tujuan;
+		$data['nip_ttd_instansi_tujuan'] = $no_current->nip_ttd_instansi_tujuan;
+		$data['tgl_sppd'] = $tgl_sppd;
+		$data['id_ppk'] = $id_ppk;
+		$data['id_spt'] = $id_spt;
+		$this->load->view('sitas/form_sppd',$data);
+	}
+	function add_no_sppd(){
+		$tgl = date('Y-m-d');
+		$no_sppd = _POST('no_sppd');
+		$kendaraan = _POST('kendaraan');
+		$ket_wilayah = _POST('ket_wilayah');
+		$ket_berangkat = _POST('ket_berangkat');
+		$instansi_pembiayaan = _POST('instansi_pembiayaan');
+		$kode_pembiayaan = _POST('kode_pembiayaan');
+		$instansi_tujuan = _POST('instansi_tujuan');
+		$nama_ttd_yg_dikunjungi = _POST('nama_ttd_yg_dikunjungi');
+		$nip_ttd_yg_dikunjungi = _POST('nip_ttd_yg_dikunjungi');
+		$id_ppk = _POST('id_ppk');
+		$tgl_sppd = _POST('tgl_sppd');
+		$id_spt = _POST('id_spt');
+		$data = ['no_sppd'=>$no_sppd,
+					'kendaraan'=>$kendaraan,
+					'ket_berangkat'=>$ket_berangkat,
+					'ket_wilayah'=>$ket_wilayah,
+					'instansi_pembiayaan'=>$instansi_pembiayaan,
+					'kode_pembiayaan'=>$kode_pembiayaan,
+					'instansi_tujuan'=>$instansi_tujuan,
+					'nama_ttd_instansi_tujuan'=>$nama_ttd_yg_dikunjungi,
+					'nip_ttd_instansi_tujuan'=>$nip_ttd_yg_dikunjungi,
+					'id_ppk'=>$id_ppk,
+					'tgl_sppd'=>$tgl_sppd
+				];
+		$this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
+		redirect('primer/daftar_spt');
+	}
 	function buat_lap_spt(){
 		cek_session_admin1();
 		$thn = $this->session->tahun;

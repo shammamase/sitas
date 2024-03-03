@@ -286,3 +286,129 @@ function no_anggota_spt($tgl,$lama_hari){
     $tglm = substr($tgln,0,-1);
     return $tglm;
 }
+function get_kode_uniks($x){
+    $kode = md5($x);
+    $kode_fix = substr($kode,13,6);
+    return $kode_fix;
+}
+function tgl_selesai($tgl_awal,$lama_hari){
+    $tglx = explode("-",$tgl_awal);
+    $jml_hari = cal_days_in_month(CAL_GREGORIAN, $tglx[1], $tglx[0]);
+    $tgly = $tglx[2] + $lama_hari - 1;
+    if($tgly > $jml_hari){
+        $tglyy = $tgly - $jml_hari;
+        $jml_tgly = strlen($tglyy);
+        if($jml_tgly != 1){
+            $tglyyy = $tglyy;
+        } else {
+            $tglyyy = "0".$tglyy;
+        }
+        
+        $bln = $tglx[1] + 1;
+        
+        if(strlen($bln)==1){
+            $blnx = "0".$bln;
+        } else {
+            $blnx = $bln;
+        }
+        $tgl_akhir = $tglx[0]."-".$blnx."-".$tglyyy;
+    } else {
+        $jml_tgly = strlen($tgly);
+        if($jml_tgly != 1){
+            $tglyy = $tgly;
+        } else {
+            $tglyy = "0".$tgly;
+        }
+        $bln = $tglx[1];
+        $tgl_akhir = $tglx[0]."-".$bln."-".$tglyy;
+    }
+    
+    return $tgl_akhir;
+}
+
+function sd_tgl($tgl_awal,$lama_hari){
+    $tglx = explode("-",$tgl_awal);
+    $jml_hari = cal_days_in_month(CAL_GREGORIAN, $tglx[1], $tglx[0]);
+    $tgly = $tglx[2] + $lama_hari - 1;
+    if($tgly > $jml_hari){
+        $tglyy = $tgly - $jml_hari;
+        $jml_tgly = strlen($tglyy);
+        if($jml_tgly != 1){
+            $tglyyy = $tglyy;
+        } else {
+            $tglyyy = "0".$tglyy;
+        }
+        
+        $bln = $tglx[1] + 1;
+        
+        if(strlen($bln)==1){
+            $blnx = "0".$bln;
+        } else {
+            $blnx = $bln;
+        }
+        $tgl_akhir = $tglx[0]."-".$blnx."-".$tglyyy;
+        if($lama_hari > 1){
+            $narasi = "pada tanggal ".tgl_indoo($tgl_awal)." s/d ".tgl_indoo($tgl_akhir);
+        } else {
+            $narasi = "tanggal ".tgl_indoo($tgl_akhir);
+        }
+    } else {
+        $jml_tgly = strlen($tgly);
+        if($jml_tgly != 1){
+            $tglyy = $tgly;
+        } else {
+            $tglyy = "0".$tgly;
+        }
+        $bln = $tglx[1];
+        $tgl_akhir = $tglx[0]."-".$bln."-".$tglyy;
+        if($lama_hari > 1){
+            $narasi = "pada tanggal ".$tglx[2]." s/d ".tgl_indoo($tgl_akhir);
+        } else {
+            $narasi = "tanggal ".tgl_indoo($tgl_akhir);
+        }
+    }
+    
+    return $narasi;
+}
+
+function sd_tgl2($tgl_awal,$lama_hari){
+    $tglx = explode("-",$tgl_awal);
+    $jml_hari = cal_days_in_month(CAL_GREGORIAN, $tglx[1], $tglx[0]);
+    $tgly = $tglx[2] + $lama_hari - 1;
+    if($tgly > $jml_hari){
+        $tglyy = $tgly - $jml_hari;
+        $jml_tgly = strlen($tglyy);
+        if($jml_tgly != 1){
+            $tglyyy = $tglyy;
+        } else {
+            $tglyyy = "0".$tglyy;
+        }
+        
+        $bln = $tglx[1] + 1;
+        
+        if(strlen($bln)==1){
+            $blnx = "0".$bln;
+        } else {
+            $blnx = $bln;
+        }
+        $tgl_akhir = $tglx[0]."-".$blnx."-".$tglyyy;
+        $narasi = tgl_indoo($tgl_akhir);
+    } else {
+        $jml_tgly = strlen($tgly);
+        if($jml_tgly != 1){
+            $tglyy = $tgly;
+        } else {
+            $tglyy = "0".$tgly;
+        }
+        $bln = $tglx[1];
+        $tgl_akhir = $tglx[0]."-".$bln."-".$tglyy;
+        $narasi = tgl_indoo($tgl_akhir);
+    }
+    return $narasi;
+}
+function br_str($a){
+    $c = substr($a,0,12);
+    $d = substr($a,12,10);
+    $hasil = $c."<br>".$d;
+    return $hasil;
+}

@@ -38,4 +38,69 @@ class Preview extends CI_Controller {
         $pdf->Output();
         //$pdf->Output('Tes.pdf', 'D');
     }
+    function pdf_spt(){
+		ob_start();    
+		$uri3 = $this->uri->segment(3);
+		$id_spt = $this->uri->segment(4);
+		$kd = substr($uri3,0,6);
+		$nm_qr = $kd."/".$id_spt;
+		$link_url = base_url('nonlogin/status_surat/');
+		$this->load->library('ciqrcode'); //pemanggilan library QR CODE
+		$config['imagedir']     = './asset/qr_code/'; //direktori penyimpanan qr code
+		$config['quality']      = true; //boolean, the default is true
+		$config['size']         = '1024'; //interger, the default is 1024
+		$config['black']        = array(224,255,255); // array, default is array(255,255,255)
+		$config['white']        = array(70,130,180); // array, default is array(0,0,0)
+		$this->ciqrcode->initialize($config);
+        $image_name='surat_keluar_'.$id_spt.'.png'; //buat name dari qr code sesuai dengan nim
+		$params['data'] = $link_url.$nm_qr; //data yang akan di jadikan QR CODE
+		$params['level'] = 'H'; //H=High
+		$params['size'] = 10;
+		$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
+		$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+        $qw_spt = $this->model_sitas->rowDataBy("*","spt","id_surat_keluar=$id_spt")->row();
+        $qw_sk = $this->model_sitas->rowDataBy("no_surat_keluar,id_verif","surat_keluar","id_surat_keluar=$id_spt")->row();
+        $data['spt'] = $qw_spt;
+        $data['sk'] = $qw_sk;
+        $data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
+                        "anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$qw_spt->id_spt","a.id_anggota asc");
+        $data['no_surat'] = "";
+		$this->load->view('sitas/preview/print',$data);    
+        $html = ob_get_contents();        
+		ob_end_clean();            
+		require './asset/html2pdf_v5.2-master/vendor/autoload.php';        
+		$pdf = new Spipu\Html2Pdf\Html2Pdf('P','A4','en');    
+		$pdf->WriteHTML($html);    
+		$pdf->Output();
+		//$pdf->Output('Tes.pdf', 'D');
+	}
+    public function sppd(){
+        ob_start();
+        $uri3 = $this->uri->segment(3);
+        $rowx = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
+        $surat_keluar = $this->model_sitas->rowDataBy("no_surat_keluar,tanggal","surat_keluar","id_surat_keluar=$rowx->id_surat_keluar")->row();
+        $pc_tgl_surat_keluar = explode("-",$surat_keluar->tanggal);
+        $ppk = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$rowx->id_ppk")->row();
+        $list_pegawai = $this->model_sitas->listDataBy("a.*,b.nama,b.nip,b.jabatan,b.pangkat,b.gol,b.uk,b.is_internal","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt = $uri3","b.id_peserta asc");
+        if($rowx->no_sppd == 0){
+          echo "SPPD belum dibuat";
+        } else {
+        $data['id_spt'] = $uri3;
+        $data['data'] = $rowx;
+        $data['no_surat_keluar'] = $surat_keluar->no_surat_keluar;
+        $data['bulan_surat_keluar'] = $pc_tgl_surat_keluar[1];
+        $data['tahun_surat_keluar'] = $pc_tgl_surat_keluar[0];
+        $data['tanggal_surat_keluar'] = $surat_keluar->tanggal;
+        $data['nama_ppk'] = $ppk->nama;
+        $data['nip_ppk'] = $ppk->nip;
+        $data['list'] = $list_pegawai;
+        $this->load->view('sitas/preview/sppd',$data);
+        $html = ob_get_contents();
+        ob_end_clean(); 
+        require './asset/html2pdf_v5.2-master/vendor/autoload.php';
+        $pdf = new Spipu\Html2Pdf\Html2Pdf('P','F4','en');
+        $pdf->WriteHTML($html);
+        $pdf->Output();
+        }
+      }
 }

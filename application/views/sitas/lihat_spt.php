@@ -5,12 +5,12 @@
         font-size:9pt;
         }
         
-        ul{
+        ul,ol{
             font-family:Arial;
             font-size:9pt;
             margin-left:-20px;
         }
-        
+
         .no_srt{
             margin-top:-20px;
         }
@@ -151,25 +151,30 @@
     
 </style>
 <?php
-   $tgl_in = $spt->tanggal_input;
-   $pc_tgl_in = explode("-",$tgl_in); 
-   $bln = $pc_tgl_in[1];
-   $thn = $pc_tgl_in[0];
-   $no_sub = "TU.040";
-   
-   if($spt->is_dipa=="1"){
-       $dipa = "<ul class='dipa'><li>DIPA BPSI TAS Tahun ".$thn." Nomor:018.09.2.237572/".$thn.", Tanggal 30 November 2023</li></ul>";
-   } else {
-       $dipa = "";
-   }
+    if($spt->id_verif!=0){
+        $kabalai = $this->model_sitas->rowDataBy("b.struktur,b.for_ttd,c.nama,c.nip",
+                        "pejabat_verifikator a inner join struktur_organisasi b on a.id_pegawai=b.id_pegawai inner join pegawai c on b.id_pegawai=c.id_pegawai",
+                        "b.id_pegawai = $spt->id_verif")->row();
+    } else {
+        $kabalai = $this->model_sitas->rowDataBy("b.struktur,b.for_ttd,c.nama,c.nip",
+                        "pejabat_verifikator a inner join struktur_organisasi b on a.id_pegawai=b.id_pegawai inner join pegawai c on b.id_pegawai=c.id_pegawai",
+                        "a.level = 'akhir'")->row();
+    }
+    $tgl_in = $spt->tanggal_input;
+    $pc_tgl_in = explode("-",$tgl_in); 
+    $bln = $pc_tgl_in[1];
+    $thn = $pc_tgl_in[0];
+    $no_sub = "TU.040";
+    
+    if($spt->is_dipa=="1"){
+        $dipa = "<ul class='dipa'><li>DIPA BPSI TAS Tahun ".$thn." Nomor:018.09.2.237572/".$thn.", Tanggal 30 November 2023</li></ul>";
+    } else {
+        $dipa = "";
+    }
 ?>
-<div class="card card-success">
-<div class="card-header">
-    <h3 class="card-title">Surat Perintah Tugas</h3>
-</div>
-<div class="card-body">
+<img style="width:100%" src="<?= base_url() ?>asset/kop_surat.png">
 <div class="row">
-<div class="col-md-12 col-12"><p  style="text-align:center"><b><u>SURAT TUGAS</u></b></p></div>
+    <div class="col-md-12 col-12"><p  style="text-align:center"><b><u>SURAT TUGAS</u></b></p></div>
     <div class="col-md-12 col-12 no_srt"><p  style="text-align:center"><b>Nomor : -/<?= $no_sub ?>/H.4.2/<?= $bln ?>/<?= $thn ?></b></p></div>
     
     <div class="col-md-3 col-3"><p style="text-align:left">Menimbang</p></div> 
@@ -251,6 +256,11 @@
     
     <div class="col-md-6 col-6" style="background:#ffffff"></div>
     <div class="col-md-6 col-6 no_srt"><p><?= $kabalai->struktur ?></p></div>
+    <!--
+    <div class="col-md-8 col-8" style="background:#ffffff"></div>
+    <div class="col-md-1 col-1"><p style="text-align:right"><img src="<?= base_url().$kabalai->ttd ?>"></p></div>
+    <div class="col-md-3 col-3" style="background:#ffffff"></div>
+    -->
     
     <div class="col-md-6 col-6" style="background:#ffffff"></div>
     <div class="col-md-6 col-6"><p><b><?= $kabalai->nama ?></b></p></div>
@@ -258,56 +268,3 @@
     <div class="col-md-6 col-6" style="background:#ffffff"></div>
     <div class="col-md-6 col-6 no_srt"><p>NIP. <?= $kabalai->nip ?></p></div>
 </div>
-</div>
-<div class="card-footer">
-    <a class="btn btn-success" data-target="#setuju" data-toggle="modal">Setuju</a>
-    <button class="btn btn-danger" data-target="#tolak" data-toggle="modal">Tolak</button>
-</div>
-</div>
-
-<div class="modal fade" id="setuju" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Keterangan :</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form class="" method="post" action="<?= base_url() ?>primer/setuju_surat">
-              <input type="hidden" name="id_buat_surat" value="<?= $spt->id_surat_keluar ?>">
-              <div class="form-group">
-                  <textarea class="form-control" name="keterangan"></textarea>
-              </div>
-              <button type="submit" name="submit" class="btn btn-danger">Setuju</button>
-          </form>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-<div class="modal fade" id="tolak" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tolak :</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form class="" method="post" action="<?= base_url() ?>primer/tolak_surat">
-              <input type="hidden" name="id_buat_surat" value="<?= $spt->id_surat_keluar ?>">
-              <div class="form-group">
-                  <textarea class="form-control" name="alasan_tolak" required></textarea>
-              </div>
-              <button type="submit" name="submit" class="btn btn-danger">Tolak</button>
-          </form>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>

@@ -171,12 +171,13 @@
           <?php if($row->id_verif1 != 0){ ?>
             <span class="badge badge-pill badge-success">di setujui verifikator awal</span><br>
           <?php } ?>
-          <?php if($row->id_verif1 != 0){ ?>
+          <?php if($row->id_verif != 0){ ?>
             <span class="badge badge-pill badge-success">di setujui verifikator akhir</span><br>
             <b>Keterangan :</b><?= $row->keterangan ?>
           <?php } ?>
         </td>
         <td>
+            <?php if($row->lokasi_tujuan_surat!="SPT"){ ?> 
             <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat?id_bs=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
             <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>primer/buat_surat?cs=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-copy'></i> Copy</a>
             <!--<a class='btn btn-info btn-xs' title='Kirim' href="#"><i class='fas fa-share'></i> Kirim WA</a>-->
@@ -184,11 +185,17 @@
             <a class='btn btn-info btn-xs' title='Preview' href="<?= base_url() ?>primer/prev_surat/<?= $row->id_surat_keluar ?>"><i class='fas fa-eye'></i> Preview</a>
             <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
             <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+            <?php } else { ?>
+              <a class='btn btn-danger btn-xs' title='Preview PDF' target="_blank" href="<?= base_url() ?>preview/pdf_spt/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+              <a class='btn btn-primary btn-xs' title='Preview PDF' href="<?= base_url() ?>primer/prev_pdf_spt/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-word'></i> WORD</a>
+              <a class='btn btn-warning btn-xs' title='Upload' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?= $row->id_surat_keluar ?>"><i class='fas fa-upload'></i> Upload</a>
+              <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat_spt/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
+            <?php } ?>
             <?php if($row->file_lampiran != ""){ ?>
               <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>asset/lampiran/<?= $row->file_lampiran ?>"><i class='fas fa-file-pdf'></i> Lamp</a>  
             <?php } ?>
             <?php if($row->id_verif1 == 0){ ?>
-            <a class='btn btn-dark btn-xs' title='Ajukan' href="<?php echo base_url() ?>primer/ajukan_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk ajukan data ini?')"><i class='fas fa-share'></i> Ajukan</a>
+                    <a class='btn btn-dark btn-xs' title='Ajukan' href="<?php echo base_url() ?>primer/ajukan_surat_keluar/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk ajukan data ini?')"><i class='fas fa-share'></i> Ajukan</a>
             <?php } ?>
         </td>
       </tr>

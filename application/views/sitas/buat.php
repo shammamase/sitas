@@ -135,7 +135,11 @@
               <?php } else {
               ?>
                 <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?php echo $row->id_surat_keluar ?>"><i class='fas fa-edit'></i> Edit</a>
-                <a class="btn btn-warning btn-xs" target="_blank" title="file pdf" href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+                  <?php if($row->lokasi_tujuan_surat=="SPT"){ ?>
+                    <a class='btn btn-danger btn-xs' title='Preview PDF' target="_blank" href="<?= base_url() ?>preview/pdf_spt/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+                  <?php } else { ?>
+                    <a class="btn btn-warning btn-xs" target="_blank" title="file pdf" href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+                  <?php } ?>
               <?php
               }
             ?>

@@ -8,8 +8,8 @@
           </div>
           <div class="card-body">
             <!-- Date -->
-            <!--<form method="post" action="<?= base_url() ?>primer/add_spt">-->
-            <form method="post" action="#">
+            <form method="post" action="<?= base_url() ?>primer/add_spt">
+            <!--<form method="post" action="#">-->
             <div class="form-group">
               <label>Tanggal</label>
               <input type="date" class="datepicker form-control" placeholder="Masukan Tanggal"
@@ -60,7 +60,7 @@
             </div>
             <div class="form-group">
                  <div class="icheck-primary d-inline">
-                        <input type="checkbox" name="is_dipa" value="1" <?= $ceck ?> id="checkboxPrimary1">
+                        <input type="checkbox" name="is_dipa" <?= $ceck ?> id="checkboxPrimary1">
                         <label for="checkboxPrimary1">
                         </label>
                   </div>
