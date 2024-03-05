@@ -17,6 +17,7 @@ class Prevword extends CI_Controller {
             $bln = $pc_tgl[1];
             $thn = $pc_tgl[0];
             $narasi_tgl = sd_tgl($qw_spt->tanggal,$qw_spt->lama_hari);
+            $arr_dasar = clir_ul_li($qw_spt->dasar);
             $phpWord = new \PhpOffice\PhpWord\PhpWord();
             $sectionStyle = array(
                 'orientation' => 'portrait',
@@ -28,6 +29,8 @@ class Prevword extends CI_Controller {
                 'pageSizeW' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(21.59)
             );
             $badanx = ['name' => 'Bookman Old Style', 'size' => 11];
+            $badanxx = ['name' => 'Bookman Old Style', 'size' => 10];
+            $badanCalibri = ['name' => 'Calibri', 'size' => 10];
             $headTbl2 = ['name' => 'Bookman Old Style', 'size' => 10, 'bold' => true];
             $justix = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH];
             $rata_tengah = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
@@ -58,28 +61,44 @@ class Prevword extends CI_Controller {
             $tableStyle2 = ['borderSize' => 6,'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'cellMarginLeft' => 120,'cellMarginRight' => 80];
             $table = $section->addTable($tableStyle);
             $table->addRow();
-            $table->addCell(2500)->addText('Menimbang',$badanx);
-            $table->addCell(375)->addText(':',$badanx);
-            $table->addCell(650)->addText('a.',$badanx);
-            $table->addCell(7000)
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(4.95))->addText('Menimbang',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.76))->addText(':',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.09))->addText('a.',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(11.73))
             ->addText($qw_spt->menimbang,$badanx,$justix);
+            $no_ds = 1;
+            foreach($arr_dasar as $ads){
+            if($no_ds == 1){
+                $view_ds = "Dasar";
+                $view_ds2 = ":";
+            } else {
+                $view_ds = "";
+                $view_ds2 = "";
+            }
             $table->addRow();
-            $table->addCell(2500)->addText('Dasar',$badanx);;
-            $table->addCell(375)->addText(':',$badanx);
-            $table->addCell(650)->addText('a.',$badanx);
-            $table->addCell(7000)->addText('Peraturan Menteri Pertanian Nomor  13 Tahun 2023 tentang Organisasi dan Tata Kerja Unit Pelaksana Teknis Lingkup Badan Standardisasi Instrumen Pertanian',$badanx,$justix);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(4.95))->addText($view_ds,$badanx);;
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.76))->addText($view_ds2,$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.09))->addText(angka_ke_huruf($no_ds).'.',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(11.73))->addText(preg_replace('/\s+/', ' ', $ads),$badanx,$justix);
+            $no_ds++;
+            }
+            if($qw_spt->is_dipa==1){
+                $no_dipa = $no_ds;
+                $table->addRow();
+                $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(4.95))->addText('',$badanx);
+                $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.76))->addText('',$badanx);
+                $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.09))->addText(angka_ke_huruf($no_dipa).'.',$badanx);
+                $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(11.73))->addText('DIPA BPSI TAS Tahun 2024 Nomor: 018.09.2.237572/2023, Tanggal  30 November 2023',$badanx,$justix);
+            }
             $table->addRow();
-            $table->addCell(2500)->addText('',$badanx);
-            $table->addCell(375)->addText(':',$badanx);
-            $table->addCell(650)->addText('b.',$badanx);
-            $table->addCell(7000)->addText('DIPA Balittas Tahun 2023 Nomor: 018.09.2.237572/2023, Tanggal  30 November 2022, revisi   ke 3 tanggal 10 April 2023',$badanx,$justix);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(18.55),['gridSpan' => 4, 'valign' => 'bottom'])->addText('',$badanx,$rata_tengah);
             $table->addRow();
-            $table->addCell(10525,['gridSpan' => 4, 'valign' => 'bottom'])->addText('Memberi Tugas',$badanx,$rata_tengah);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(18.55),['gridSpan' => 4, 'valign' => 'bottom'])->addText('Memberi Tugas',$badanx,$rata_tengah);
             $table->addRow();
-            $table->addCell(2500)->addText('Kepada',$badanx);
-            $table->addCell(375)->addText('',$badanx);
-            $table->addCell(650)->addText('',$badanx);
-            $table->addCell(7000)->addText('',$badanx,$justix);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(4.95))->addText('Kepada',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.76))->addText('',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.09))->addText('',$badanx);
+            $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(11.73))->addText('',$badanx,$justix);
             $section->addTextBreak(1);
             $table2 = $section->addTable($tableStyle2);
             $table2->addRow();
@@ -104,12 +123,12 @@ class Prevword extends CI_Controller {
                     $jabatan = $pg->jabatan;
                 }
                 $table2->addRow();
-                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.02))->addText($no_pg,$badanx);
-                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(3.97))->addText($pg->nama,$badanx);
-                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.5))->addText(ucwords(strtolower($pangkat)).'/'.$gol,$badanx);
-                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(3.5))->addText($nip,$badanx);
-                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.61))->addText(ucwords(strtolower($jabatan)),$badanx);
-                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(4.64))->addText($pg->uk,$badanx);
+                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.02))->addText($no_pg,$badanxx);
+                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(3.97))->addText(konversi_nama_peg($pg->nama),$badanxx);
+                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.5))->addText(ucwords(strtolower($pangkat)).'/'.$gol,$badanxx);
+                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(3.5))->addText(pisah_nip($nip),$badanCalibri);
+                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(2.61))->addText(ucwords(strtolower($jabatan)),$badanxx);
+                $table2->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(4.64))->addText($pg->uk,$badanxx);
                 $no_pg++;
             }
             $section->addTextBreak(1);
@@ -162,6 +181,12 @@ class Prevword extends CI_Controller {
     }
 
     function tes_jo(){
-        $this->load->view('sitas/preview/tes_print');
+        $id_spt = $this->uri->segment(3);
+        $qw_spt = $this->model_sitas->rowDataBy("*","spt","id_surat_keluar=$id_spt")->row();
+        $tes = clir_ul_li($qw_spt->dasar);
+        foreach($tes as $ts){
+            echo $ts."<br>";
+        }
+        //$this->load->view('sitas/preview/tes_print');
     }
 }

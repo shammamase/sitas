@@ -412,3 +412,38 @@ function br_str($a){
     $hasil = $c."<br>".$d;
     return $hasil;
 }
+function angka_ke_huruf($angka) {
+    $huruf = range('a', 'z');
+    return isset($huruf[$angka - 1]) ? $huruf[$angka - 1] : null;
+}
+function clir_ul_li($x){
+   $text = $x;
+   $clir = trim($text);
+   $ganti = str_replace("<ul>","",$clir);
+   $ganti2 = str_replace("</ul>","",$ganti);
+   $ganti3 = str_replace("<li>","",$ganti2);
+   $ganti4 = str_replace("</li>","#",$ganti3);
+   $ganti5 = substr($ganti4,0,-1);
+   $arr = explode("#",$ganti5);
+   return $arr;
+}
+function pisah_nip($x){
+    $a = substr($x,0,8);
+    $b = substr($x,8,6);
+    $c = substr($x,14,1);
+    $d = substr($x,15,5);
+    $e = $a." ".$b." ".$c." ".$d;
+    return $e;
+}
+function konversi_nama_peg($x){
+    $a = explode(",",$x);
+    $jml = count($a) - 1;
+    $aa = ucwords(strtolower($a[0]));
+    $title = "";
+    for($ii=1; $ii<=$jml; $ii++){
+        $title .= $a[$ii].",";
+    }
+    $title_fix = substr($title,0,-1);
+    $hasil = $aa.",".$title_fix;
+    return $hasil;
+}
