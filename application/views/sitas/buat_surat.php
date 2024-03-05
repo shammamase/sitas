@@ -187,7 +187,7 @@
             <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
             <?php } else { ?>
               <a class='btn btn-danger btn-xs' title='Preview PDF' target="_blank" href="<?= base_url() ?>preview/pdf_spt/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
-              <a class='btn btn-primary btn-xs' title='Preview PDF' href="<?= base_url() ?>primer/prev_pdf_spt/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-word'></i> WORD</a>
+              <a class='btn btn-primary btn-xs' title='Preview Word' target="_blank" href="<?= base_url() ?>prevword/tmpl_spt/<?= get_kode_uniks($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-word'></i> WORD</a>
               <a class='btn btn-warning btn-xs' title='Upload' href="<?php echo base_url() ?>primer/buat_surat_keluar?id_sk=<?= $row->id_surat_keluar ?>"><i class='fas fa-upload'></i> Upload</a>
               <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat_spt/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
             <?php } ?>
