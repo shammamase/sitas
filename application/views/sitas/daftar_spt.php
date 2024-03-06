@@ -64,7 +64,7 @@
                 foreach($kpda as $kpd){
                     $tgl_plk = $kpd->tanggal_spt;
                 ?>
-                <?= $nok.". ".$kpd->nama ?><br>
+                <?= $nok.". ".konversi_nama_peg($kpd->nama) ?><br>
                 <?php
                 $nok++;
                 }

@@ -76,7 +76,7 @@
                     if($lap_id_spt->verif_kabalai==0){
                     ?>
                     <a class='btn btn-info btn-xs' title='Kirim' target="_blank" href="https://api.whatsapp.com/send?phone=<?= $no_wa ?>&text=<?= $pesan ?>"><i class='fa fa-share'></i> Kirim</a>
-                    <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>sijuara/lap_spt?edit=<?= $row->id_spt ?>"><i class='fas fa-edit'></i> Edit</a>
+                    <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/lap_spt?edit=<?= $row->id_spt ?>"><i class='fas fa-edit'></i> Edit</a>
                     <button class='btn btn-warning btn-xs' data-target="#myLs" data-toggle="modal" data-id="<?= $row->id_spt ?>"><i class='fas fa-file'></i> Lihat</button>
                     <?php
                     } else {

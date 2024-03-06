@@ -40,7 +40,7 @@
                 $pc_nf = explode(",",$nama_file);
                 foreach($pc_nf as $value){
           ?>
-          <div style="margin-bottom:10px" class="col-6 col-lg-2 col-md-2"><img style="width:150px;height:auto" class="img-responsive" src="<?= base_url() ?>asset/file_lainnya/lap_spt/<?= $value ?>"></div>
+          <div style="margin-bottom:10px" class="col-6 col-lg-2 col-md-2"><img style="width:150px;height:auto" class="img-responsive" src="<?= base_url() ?>asset/lap_spt/<?= $value ?>"></div>
           <?php
                 }
             }

@@ -13,7 +13,7 @@ class Nonlogin extends CI_Controller
     $larik_fix = "(".$larikx.")";
     $cek_peg = $this->db->query("select id_pegawai from anggota_spt where tanggal_spt like '%$tgl_hari_ini%'")->num_rows();
     if($cek_peg > 0){
-        $data['pegawai'] = $this->model_sitas->listDataBy("id_pegawai,nama,no_hp","pegawai","id_peg not in $larik_fix","id_pegawai asc");
+        $data['pegawai'] = $this->model_sitas->listDataBy("id_pegawai,nama,no_hp","pegawai","id_pegawai not in $larik_fix","id_pegawai asc");
     } else {
         $data['pegawai'] = $this->model_sitas->listData("id_pegawai,nama,no_hp","pegawai","id_pegawai ASC");
     }

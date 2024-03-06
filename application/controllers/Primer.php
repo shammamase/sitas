@@ -1653,9 +1653,15 @@ class Primer extends CI_Controller {
 	}
 	function lap_spt(){
 	    $id_spt = $this->uri->segment(3);
-	    $spt_id = $this->model_sitas->rowDataBy("a.*,b.no_surat_keluar",
-									"spt a inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar",
-									"a.id_spt = $id_spt")->row();
+	    if(!empty($id_spt)){
+			$spt_id = $this->model_sitas->rowDataBy("a.*,b.no_surat_keluar",
+										"spt a inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar",
+										"a.id_spt = $id_spt")->row();
+		} else {
+			$spt_id = $this->model_sitas->rowDataBy("a.*,b.no_surat_keluar",
+										"spt a inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar",
+										"a.id_spt = $_GET[edit]")->row();
+		}
 		$pc_tgl = explode("-",$spt_id->tanggal_input);
 	    
 		$data['id_lap_spt'] = "";
