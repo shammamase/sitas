@@ -1010,7 +1010,7 @@ class Primer extends CI_Controller {
 		if(empty($uri3)){
             $data['spt'] = $this->model_sitas->cek_anggota_spt($get_tgl,$get_lama);
             $data['tgl_ini'] = date('Y-m-d');
-            $data['menimbang'] = "";
+            $data['menimbang'] = "Bahwa dalam rangka mendukung terlaksananya kegiatan standardisasi instrumen tanaman perkebunan, maka dipandang perlu menugaskan pegawai yang berkompeten sesuai bidangnya dibawah ini.";
             $data['lamanya'] = 1;  
             $data['untuk'] = "";
 			$data['dasar'] = "<ul><li>Peraturan Menteri Pertanian Nomor 13 Tahun 2023

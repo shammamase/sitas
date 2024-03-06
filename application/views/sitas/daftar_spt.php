@@ -108,6 +108,7 @@
               <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/data_spt/<?php echo $row->id_spt ?>"><i class='fas fa-edit'></i> Edit</a>
               <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_spt/<?php echo $row->id_spt ?>/<?= get_kode_uniks($row->id_spt) ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
               <a class='btn btn-info btn-xs' title='Kirim' href="<?= base_url() ?>primer/kirim_pesan?no_wa=<?= $no_wa ?>&pesan=<?= $pesan ?>&ctrl=daftar_spt&id_spt=<?= $row->id_spt ?>&kode_unik=<?= get_kode_uniks($row->id_spt) ?>"><i class='fa fa-share'></i> Kirim</a>
+              <button class='btn btn-primary btn-xs' data-target="#myModalsx" data-toggle="modal" data-id="<?= $row->id_spt ?>"><i class='fas fa-file'></i> Lihat</button>
               <?php } else { ?>
               <a class="btn btn-warning btn-xs" style="cursor:pointer" data-toggle="modal" data-id="<?= $row->id_spt ?>" data-target="#no_sppd"><i class="fas fa-edit"></i>SPPD</a>
               <a target="_blank" href="<?= base_url('preview/sppd/') ?><?= $row->id_spt ?>" class="btn btn-danger btn-xs"><i class="fas fa-file-pdf"></i> SPPD</a>
@@ -117,9 +118,7 @@
                         <?php } else { ?>
                           <a class='btn btn-danger btn-xs' title='Preview PDF' target="_blank" href="<?= base_url() ?>asset/surat_keluar/<?= $file_pdf ?>"><i class='fas fa-file-pdf'></i> PDF</a>                          
                         <?php } ?>
-                    <?php } else { ?>
-                      <button class='btn btn-primary btn-xs' data-target="#myModalsx" data-toggle="modal" data-id="<?= $row->id_spt ?>"><i class='fas fa-file'></i> Lihat</button>
-                    <?php } ?>
+                    <?php }  ?>
               <?php } ?>
             <?php
             }
