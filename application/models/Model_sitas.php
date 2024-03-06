@@ -408,4 +408,91 @@ class Model_sitas extends CI_model{
         $this->db->where('id_pegawai', $id_pegawai);
         return $this->db->get('anggota_spt')->row();
     }
+    function save_lap_spt(){
+        
+        $limit = 10 * 1024 * 1024;
+        $ekstensi =  array('png','jpg','jpeg','gif','JPG','JPEG');
+        $jumlahFile = count($_FILES['foto']['name']);
+        $xxx = ""; 
+        for($x=0; $x<$jumlahFile; $x++){
+        	$namafile = $_FILES['foto']['name'][$x];
+        	$tmp = $_FILES['foto']['tmp_name'][$x];
+        	$tipe_file = pathinfo($namafile, PATHINFO_EXTENSION);
+        	$ukuran = $_FILES['foto']['size'][$x];	
+        	if($ukuran > $limit){
+        		echo "Ukuran File Terlalu Besar";
+        	}else{
+        		if(!in_array($tipe_file, $ekstensi)){
+        			echo "Ekstensi tidak diperbolehkan";
+        		}else{		
+        			move_uploaded_file($tmp, 'asset/lap_spt/'.date('d-m-Y').'-'.$namafile);
+        			$xxx .= date('d-m-Y').'-'.$namafile.",";
+        		}
+        	}
+        }
+        $gbr = substr($xxx,0,-1);
+        $tolak_ukur_kegiatan = $this->db->escape_str($this->input->post('tolak_ukur_kegiatan'));
+        $transportasi = $this->db->escape_str($this->input->post('transportasi'));
+        $tanggal = $this->input->post('tanggal');
+        $tanggal_masuk = $this->input->post('tanggal_masuk');
+        $datadb = array(//'tolak_ukur_kegiatan'=>$tolak_ukur_kegiatan,
+                        'transportasi'=>$transportasi,
+                        'lokasi'=>$this->db->escape_str($this->input->post('lokasi')),
+                        'uraian'=>$this->input->post('uraian'),
+                        'id_spt'=>$this->db->escape_str($this->input->post('id_spt')),
+                        'user'=>$this->session->username,
+                        'tanggal_input'=>date('Y-m-d H:i:s'),
+                        'gbr_dok'=>$gbr
+                        );
+        $this->db->insert('lap_spt',$datadb);
+    }
+    
+    function update_lap_spt(){
+        
+        $limit = 10 * 1024 * 1024;
+        $ekstensi =  array('png','jpg','jpeg','gif','JPG','JPEG');
+        $jumlahFile = count($_FILES['foto']['name']);
+        $xxx = ""; 
+        if($jumlahFile > 1){
+        for($x=0; $x<$jumlahFile; $x++){
+            $file_x = $_POST['file_pdf'];
+            $pc_fl = explode(",",$file_x);
+            foreach($pc_fl as $value){
+                unlink("./asset/file_lainnya/lap_spt/$value");   
+            }
+        	$namafile = $_FILES['foto']['name'][$x];
+        	$tmp = $_FILES['foto']['tmp_name'][$x];
+        	$tipe_file = pathinfo($namafile, PATHINFO_EXTENSION);
+        	$ukuran = $_FILES['foto']['size'][$x];	
+        	if($ukuran > $limit){
+        		echo "Ukuran File Terlalu Besar";
+        	}else{
+        		if(!in_array($tipe_file, $ekstensi)){
+        			echo "Ekstensi tidak diperbolehkan";
+        		}else{		
+        			move_uploaded_file($tmp, 'asset/lap_spt/'.date('d-m-Y').'-'.$namafile);
+        			$xxx .= date('d-m-Y').'-'.$namafile.",";
+        		}
+        	}
+        }
+            $gbr = substr($xxx,0,-1);
+        } else {
+            $gbr = $this->input->post('file_pdf');
+        }
+        $tolak_ukur_kegiatan = $this->db->escape_str($this->input->post('tolak_ukur_kegiatan'));
+        $transportasi = $this->db->escape_str($this->input->post('transportasi'));
+        $tanggal = $this->input->post('tanggal');
+        $tanggal_masuk = $this->input->post('tanggal_masuk');
+        $datadb = array(//'tolak_ukur_kegiatan'=>$tolak_ukur_kegiatan,
+                        'transportasi'=>$transportasi,
+                        'lokasi'=>$this->db->escape_str($this->input->post('lokasi')),
+                        'uraian'=>$this->input->post('uraian'),
+                        'id_spt'=>$this->db->escape_str($this->input->post('id_spt')),
+                        'user'=>$this->session->username,
+                        'tanggal_input'=>date('Y-m-d H:i:s'),
+                        'gbr_dok'=>$gbr
+                        );
+        $this->db->where('id_spt',$this->input->post('id_spt'));                
+        $this->db->update('lap_spt',$datadb);
+    }
 }

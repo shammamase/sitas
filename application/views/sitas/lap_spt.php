@@ -9,12 +9,11 @@
       <tr>
         <th style="width:2%">No</th>
         <th style="width:29%">SPT</th>
-        <th style="width:10%">No Surat</th>
+        <th style="width:12%">No Surat</th>
         <th style="width:18%">Kepada</th>
         <th style="width:17%">Untuk</th>
-        <th style="width:7%">Tanggal</th>
-        <th style="width:7%">DIPA</th>
-        <th style="width:10%">Action</th>
+        <th style="width:10%">Tanggal</th>
+        <th style="width:12%">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -23,30 +22,27 @@
         $no_hp = $kabalai->no_hp;
         $no_wa = substr_replace("$no_hp","62",0,1);
         foreach ($rec as $row){
+            $pc_tgl = explode("-",$row->tanggal_input);
             $links = base_url()."sijuara/verif_lap_spt_detail/".$row->id_spt;
             $pesan = "*Layanan Aplikasi* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
-            $lap_id_spt = $this->model_more->lap_spt_id_spt($row->id_spt)->row();
+            $kpda = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+                      "a.id_spt=$row->id_spt","a.id_anggota asc");
+            $lap_id_spt = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $row->id_spt")->row();
             if($lap_id_spt){
                 $lpi = $lap_id_spt->id_spt;
             } else {
                 $lpi = 0;
             }
-            $kpda = $this->model_more->get_peg_spt($row->id_spt);
-            if($row->is_dipa==1){
-                $dip = "Ya";
-            } else {
-                $dip = "Tidak";
-            }
      ?>
       <tr>
         <td><?php echo $no ?></td>
         <td><?php echo $row->menimbang ?></td>
-        <td><?= $row->no_lengkap ?></td>
+        <td>B-<?= $row->no_surat_keluar ?>/TU.040/H.4.2/<?= $pc_tgl[1] ?>/<?= $pc_tgl[0] ?></td>
         <td>
                 <?php
                 $nok = 1;
                 foreach($kpda as $kpd){
-                    $tgl_plk = $kpd->tanggal;
+                    $tgl_plk = $kpd->tanggal_spt;
                 ?>
                 <?= $nok.". ".$kpd->nama ?><br>
                 <?php
@@ -74,7 +70,6 @@
         </td>
         <td><?php echo $row->untuk ?></td>
         <td><?php echo $val_tgl ?></td>
-        <td><?php echo $dip ?></td>
         <td>
             <?php
                 if($row->id_spt==$lpi){
@@ -95,7 +90,7 @@
                     
                 } else {
             ?>
-            <a class='btn btn-success btn-xs' title='Laporan' href="<?php echo base_url() ?>sijuara/lap_spt/<?php echo $row->id_spt ?>"><i class='fas fa-edit'></i> Buat Laporan</a>
+            <a class='btn btn-success btn-xs' title='Laporan' href="<?php echo base_url() ?>primer/lap_spt/<?php echo $row->id_spt ?>/<?= get_kode_uniks($row->id_spt) ?>"><i class='fas fa-edit'></i> Buat Laporan</a>
             <?php
                 }
             ?>

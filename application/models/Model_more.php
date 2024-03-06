@@ -380,17 +380,6 @@ class Model_more extends CI_model{
                     inner join t_biodata c on b.id_bio=c.id_bio 
                     where a.username='$x'");
     }
-    
-    function lap_spt_id_spt($x){
-        return $this->db->query("select * from sijuara_lap_spt where id_spt = '$x'");
-    }
-    
-    function spt_no_id($x){
-        return $this->db->query("select a.*,b.no_lengkap 
-                                    from sijuara_spt a 
-                                    inner join sijuara_surat_keluar b on a.id_spt=b.id_spt 
-                                    where a.id_spt = '$x'");
-    }
 
     function save_lap_spt(){
         

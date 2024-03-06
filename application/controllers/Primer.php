@@ -1651,6 +1651,60 @@ class Primer extends CI_Controller {
 	    $this->db->query("delete from folder where id_folder = $uri4");
 	    redirect($uri3);
 	}
+	function lap_spt(){
+	    $id_spt = $this->uri->segment(3);
+	    $spt_id = $this->model_sitas->rowDataBy("a.*,b.no_surat_keluar",
+									"spt a inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar",
+									"a.id_spt = $id_spt")->row();
+		$pc_tgl = explode("-",$spt_id->tanggal_input);
+	    
+		$data['id_lap_spt'] = "";
+		$data['bln'] = $pc_tgl[1];
+		$data['thn'] = $pc_tgl[0];
+	    $data['id_spt'] = "";
+	    $data['transportasi'] = $spt_id->kendaraan;
+	    $data['tolak_ukur_kegiatan'] = "";
+	    $data['lokasi'] = $spt_id->ket_wilayah;
+	    $data['uraian'] = "";
+	    $data['gbr_dok'] = "";
+	    $data['status'] = "save";
+	    $data['nama_file'] = "";
+	    $data['spt'] = $spt_id;
+	    $data['harus'] = 'required';
+	    
+	    if(isset($_GET['edit'])){
+	        $id_spt = $_GET['edit'];
+	        $spt_id = $this->model_sitas->rowDataBy("*","lap_spt","id_spt=$id_spt")->row();
+			$pc_tgl = explode("-",$spt_id->tanggal_input);
+	        $data['bln'] = $pc_tgl[1];
+			$data['thn'] = $pc_tgl[0];
+			$data['id_lap_spt'] = $spt_id->id_lap_spt;
+    	    $data['id_spt'] = "";
+    	    $data['transportasi'] = $spt_id->transportasi;
+    	    $data['tolak_ukur_kegiatan'] = $spt_id->tolak_ukur_kegiatan;
+    	    $data['lokasi'] = $spt_id->lokasi;
+    	    $data['uraian'] = $spt_id->uraian;
+    	    $data['gbr_dok'] = "";
+    	    $data['status'] = "edit";
+    	    $data['nama_file'] = $spt_id->gbr_dok;
+    	    $data['spt'] = $this->model_sitas->rowDataBy("a.*,b.no_surat_keluar",
+								"spt a inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar",
+								"a.id_spt = $id_spt")->row();
+    	    $data['harus'] = '';
+	    }
+	    //$data['arr'] = $this->model_polling->list_kegiatan_a()->result();
+	    $this->template->load('sitas/template_form','sitas/buat_lap_spt',$data);
+	}
+	
+	function save_lap_spt(){
+	    $status = $this->input->post('status');
+	    if($status=="save"){
+	        $this->model_sitas->save_lap_spt();    
+	    } else {
+	        $this->model_sitas->update_lap_spt();
+	    }
+		redirect('primer/buat_lap_spt');
+	}
     function logout(){
 		$this->session->sess_destroy();
 		redirect('primer');
