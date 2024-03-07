@@ -1037,8 +1037,9 @@ class Primer extends CI_Controller {
             $data['status'] = "save";
 			$data['tgl_no'] = "";
 			$data['id_surat_masuk'] = 0;
+			$data['li_dasar'] = "'<li>Peraturan Menteri Pertanian Nomor 13 Tahun 2023 tentang Organisasi dan Tata Kerja Unit Pelaksana Teknis Lingkup Badan Standardisasi Instrumen Pertanian</li>'";
         } else {
-            $row = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
+			$row = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
             //$get_pj = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai = $row->pj")->row();
             $get_spt_peg = $this->model_sitas->listDataBy("a.id_pegawai,b.nama","anggota_spt a inner join pegawai b on a.id_pegawai=b.id_pegawai",
                             "a.id_spt = $uri3","a.id_anggota asc");
@@ -1051,9 +1052,7 @@ class Primer extends CI_Controller {
             $data['menimbang'] = $row->menimbang;
             $data['lamanya'] = $row->lama_hari;
             $data['untuk'] = $row->untuk;
-			$data['dasar'] = "<ul><li>Peraturan Menteri Pertanian Nomor 13 Tahun 2023
-			tentang Organisasi dan Tata Kerja Unit Pelaksana Teknis
-			Lingkup Badan Standardisasi Instrumen Pertanian</li></ul>";
+			$data['dasar'] = $row->dasar;
 			if($row->is_dipa == 1){
 				$data['ceck'] = "checked";
 			} else {
@@ -1080,6 +1079,7 @@ class Primer extends CI_Controller {
             $data['status'] = "edit";
 			$data['tgl_no'] = "";
 			$data['id_surat_masuk'] = $row->id_surat_masuk;
+			$data['li_dasar'] = clir_ul($row->dasar);
         }
 		$this->template->load('sitas/template_form','sitas/buat_spt',$data);
 	}

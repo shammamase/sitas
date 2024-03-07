@@ -160,17 +160,27 @@
                         "pejabat_verifikator a inner join struktur_organisasi b on a.id_pegawai=b.id_pegawai inner join pegawai c on b.id_pegawai=c.id_pegawai",
                         "a.level = 'akhir'")->row();
     }
+    $pimpinan = $this->model_sitas->rowDataBy("id_pegawai","struktur_organisasi","struktur='Kepala Balai'")->row();
+    $cek_pim = $this->model_sitas->rowDataBy("id_pegawai","anggota_spt","id_spt = $spt->id_spt and id_pegawai = $pimpinan->id_pegawai")->num_rows();
+    if($cek_pim > 0){
+        $pejabat_ttd = "<p style='line-height:1.2'>An. Kepala Pusat Standardisasi<br>Instrumen Perkebunan,</p>";
+    } else {
+        $pejabat_ttd = "<p>".$kabalai->struktur."</p>";
+    }
     $tgl_in = $spt->tanggal_input;
     $pc_tgl_in = explode("-",$tgl_in); 
     $bln = $pc_tgl_in[1];
     $thn = $pc_tgl_in[0];
     $no_sub = "TU.040";
+    $arr_dasar = clir_ul_li($spt->dasar);
     
+    /*
     if($spt->is_dipa=="1"){
         $dipa = "<ul class='dipa'><li>DIPA BPSI TAS Tahun ".$thn." Nomor:018.09.2.237572/".$thn.", Tanggal 30 November 2023</li></ul>";
     } else {
         $dipa = "";
     }
+    */
 ?>
 <img style="width:100%" src="<?= base_url() ?>asset/kop_surat.png">
 <div class="row">
@@ -179,11 +189,21 @@
     
     <div class="col-md-3 col-3"><p style="text-align:left">Menimbang</p></div> 
     <div class="col-md-1 col-1"><p style="text-align:right">:</p></div> 
-    <div class="col-md-8 col-8"><p style="text-align:left"><?= $spt->menimbang ?></p></div>
+    <div class="col-md-8 col-8"><ol type="a" style="text-align:justify"><li><?= $spt->menimbang ?></li></ol></div>
     
     <div class="col-md-3 col-3"><p style="text-align:left">Dasar</p></div> 
     <div class="col-md-1 col-1"><p style="text-align:right">:</p></div> 
-    <div class="col-md-8 col-8"><?= $spt->dasar.$dipa ?></div>
+    <div class="col-md-8 col-8">
+        <ol type="a" style="text-align:justify">
+        <?php
+        foreach($arr_dasar as $ads){
+        ?>
+        <li><?= $ads ?></li>
+        <?php
+        }  
+        ?>
+        </ol>
+    </div>
     
     <div class="col-md-12 col-12"><p  style="text-align:center">Memberi Tugas</p></div>
 
@@ -214,12 +234,12 @@
                     }
             ?>
             <tr>
-                <td><?= $nox ?></td>
-                <td><?= $pg->nama ?></td>
-                <td><?= wordwrap($pangkat_gol,10,"<br /> \n") ?></td>
-                <td><?= $nip ?></td>
-                <td><?= $jabatan ?></td>
-                <td><?= $pg->uk ?></td>
+                <td style="padding:5px"><?= $nox ?></td>
+                <td style="padding:5px"><?= konversi_nama_peg($pg->nama) ?></td>
+                <td style="padding:5px"><?= wordwrap(ucwords(strtolower($pangkat_gol)),10,"<br /> \n") ?></td>
+                <td style="padding:5px;text-align:center"><?= $nip ?></td>
+                <td style="padding:5px;text-align:center"><?= ucwords(strtolower($jabatan)) ?></td>
+                <td style="padding:5px;text-align:justify"><?= wordwrap($pg->uk,35,"<br />\n") ?></td>
             </tr>
             <?php
                 $nox++;
@@ -255,7 +275,7 @@
     <div class="col-md-6 col-6 no_srt"><p><?= $kabalai->for_ttd ?></p></div>
     
     <div class="col-md-6 col-6" style="background:#ffffff"></div>
-    <div class="col-md-6 col-6 no_srt"><p><?= $kabalai->struktur ?></p></div>
+    <div class="col-md-6 col-6 no_srt"><?= $pejabat_ttd ?></div>
     <!--
     <div class="col-md-8 col-8" style="background:#ffffff"></div>
     <div class="col-md-1 col-1"><p style="text-align:right"><img src="<?= base_url().$kabalai->ttd ?>"></p></div>

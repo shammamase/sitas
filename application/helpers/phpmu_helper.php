@@ -427,6 +427,27 @@ function clir_ul_li($x){
    $arr = explode("#",$ganti5);
    return $arr;
 }
+function clir_ul($x){
+    $text = $x;
+    $clir = trim($text);
+    $ganti = str_replace("<ul>","",$clir);
+    $ganti2 = str_replace("</ul>","",$ganti);
+    // Pisahkan data berdasarkan </li> dan hilangkan </li>
+    $items = explode("</li>", $ganti2);
+    // Hapus elemen terakhir dari $items karena itu hanya akan menjadi string kosong
+    array_pop($items);
+    // Tambahkan kembali </li> ke setiap elemen
+    $items = array_map(function($item) {
+        return $item . "</li>";
+    }, $items);
+    // Tambahkan tanda kutip ganda di awal dan akhir setiap elemen
+    $items = array_map(function($item) {
+        return "\"" . $item . "\"";
+    }, $items);
+    // Gabungkan kembali semua elemen menjadi satu string
+    $result = implode(",", $items);
+    return $result;
+}
 function pisah_nip($x){
     $a = substr($x,0,8);
     $b = substr($x,8,6);

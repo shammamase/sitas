@@ -82,6 +82,7 @@ class Prevword extends CI_Controller {
             $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(11.73))->addText(preg_replace('/\s+/', ' ', $ads),$badanx,$justix);
             $no_ds++;
             }
+            /*
             if($qw_spt->is_dipa==1){
                 $no_dipa = $no_ds;
                 $table->addRow();
@@ -90,6 +91,7 @@ class Prevword extends CI_Controller {
                 $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(1.09))->addText(angka_ke_huruf($no_dipa).'.',$badanx);
                 $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(11.73))->addText('DIPA BPSI TAS Tahun 2024 Nomor: 018.09.2.237572/2023, Tanggal  30 November 2023',$badanx,$justix);
             }
+            */
             $table->addRow();
             $table->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(18.55),['gridSpan' => 4, 'valign' => 'bottom'])->addText('',$badanx,$rata_tengah);
             $table->addRow();

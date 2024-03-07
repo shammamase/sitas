@@ -164,6 +164,8 @@
   </div>
   
   <script>
+      const arr_dasar = [<?= $li_dasar ?>];
+      console.log(arr_dasar);
       $(document).ready(function(){
           $("#surat_masuk").click(function(){
               var el_mdl = document.querySelectorAll('[data-target="#modal_vw_sm"]');
@@ -177,6 +179,18 @@
       
       $("#modalku").on('click','.pilih',function (e) {
           const pdf_sm = document.createElement("a");
+          const jumlah_arr_dasar = arr_dasar.length;
+          if(jumlah_arr_dasar == 2){
+            arr_dasar.pop();
+            arr_dasar.push("<li>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</li>");
+          } else if(jumlah_arr_dasar == 3){
+            arr_dasar.splice(1,1);
+            arr_dasar.splice(1,0,"<li>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</li>");
+          } else if(jumlah_arr_dasar == 1){
+            arr_dasar.push("<li>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</li>");
+          }
+          let join_dasar = arr_dasar.join(" ");
+          let dasar_surat_masuk = "<ul>"+join_dasar+"</ul>";
           pdf_sm.innerHTML = "<i class='fas fa-file-pdf'></i> Lihat Surat Masuk";
           pdf_sm.classList.add('btn', 'btn-danger', 'btn-xs');
           pdf_sm.setAttribute('data-toggle', 'modal');
@@ -184,8 +198,21 @@
           document.getElementById("srt_msk").appendChild(pdf_sm);
           document.getElementById("id_surat_masuk").value = $(this).attr('data-id_surat_masuk');
           document.getElementById("surat_masuk").value = $(this).attr('data-no_surat_masuk')+" "+$(this).attr('data-asal_surat');
-          document.getElementById("menimbang").value = $(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal');
+          //document.getElementById("menimbang").value = $(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal');
           document.getElementById("filex_pdf").src = $(this).attr('data-file_pdf');
+          $('#summernote').summernote('code', dasar_surat_masuk);
+      });
+
+      const is_dipa = document.getElementById("checkboxPrimary1");
+      is_dipa.addEventListener("change", function () {
+        if(is_dipa.checked) {
+          arr_dasar.push("<li>DIPA BPSI TAS Tahun 2024 Nomor: 018.09.2.237572/2023, Tanggal  30 November 2023</li>");
+        } else {
+          arr_dasar.pop();
+        }
+          let join_dasar2 = arr_dasar.join(" ");
+          let dasar_surat_masuk2 = "<ul>"+join_dasar2+"</ul>";
+          $('#summernote').summernote('code', dasar_surat_masuk2);
       })
   </script>
 

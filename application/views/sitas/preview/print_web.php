@@ -1,13 +1,13 @@
 <html> 
 <style>
      p{
-        font-family:Arial;
-        font-size:11pt;
+        font-family:'Bookman Old Style',serif;
+        font-size:12pt;
         }
 
         table,tr,td{
-        font-family:Arial;
-        font-size:11pt;
+        font-family:'Bookman Old Style',serif;
+        font-size:12pt;
         border-collapse:collapse;
         /*
         padding-left:3px;
@@ -19,10 +19,9 @@
         }
         
         ul,ol{
-            font-family:Arial;
-            font-size:11pt;
+            font-family:'Bookman Old Style',serif;
+            font-size:12pt;
             margin-left:-15px;
-            margin-top:-15px;
         } 
         
         .no_srt{
@@ -85,47 +84,49 @@
             $bln = $pc_tgl_in[1];
             $thn = $pc_tgl_in[0];
             $no_sub = "TU.040";
-            //$clear_li = str_replace("<ul>","",$spt->dasar);
-            //$clear_li2 = str_replace("</ul>","",$clear_li);
-            /*
-            if($spt->is_dipa=="1"){
-                $dipa = "<ul class='dipa'><li>DIPA BPSI TAS Tahun ".$thn." Nomor:018.09.2.237572/".$thn.", Tanggal 30 November 2023</li></ul>";
-            } else {
-                $dipa = "";
-            }
-            */
+            $arr_dasar = clir_ul_li($spt->dasar);
         ?>
 		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_surat.png' ?>"></div>
 		<!--<div><img style="position:absolute;top:300px;left:200px" src="<?php echo base_url().'asset/file_lainnya/cap_bptp.png' ?>"></div>-->
 		<p style="text-align:center;margin-top:0px"><b>SURAT TUGAS</b></p>
 		<p style="text-align:center;margin-top:-10px"><b>Nomor : B-<?= $sk->no_surat_keluar ?>/<?= $no_sub ?>/H.4.2/<?= $bln ?>/<?= $thn ?></b></p>
-		<table style="margin-left:3%;margin-top:10px;width:65%" border="0">
+		<table style="margin-left:3%;margin-top:10px;width:95%" border="0">
           <tr>
-              <td style="width:40%;vertical-align:top">Menimbang</td>
-              <td style="width:10%;vertical-align:top;text-align:right">:</td>
-              <td style="width:90%;text-align:justify;vertical-align:top"><?= $spt->menimbang ?></td>
+              <td style="width:25%;vertical-align:top">Menimbang</td>
+              <td style="width:5%;vertical-align:top;text-align:right">:</td>
+              <td style="width:70%;text-align:justify;vertical-align:top"><ol type="a" style="text-align:justify"><li><?= $spt->menimbang ?></li></ol></td>
           </tr>
           <tr>
               <td style="vertical-align:top">Dasar</td>
               <td style="vertical-align:top;text-align:right">:</td>
-              <td style="text-align:justify;vertical-align:top"><?= $spt->dasar ?></td>
+              <td style="text-align:justify;vertical-align:top">
+                    <ol type="a" style="text-align:justify">
+                    <?php
+                    foreach($arr_dasar as $ads){
+                    ?>
+                    <li><?= $ads ?></li>
+                    <?php
+                    }  
+                    ?>
+                    </ol>
+              </td>
           </tr>
         </table>
         
         <p style="text-align:center;margin-top:10px">Memberi Tugas</p>
-        <table style="margin-left:3%;margin-top:10px;margin-bottom:10px;width:65%" border="0">
+        <table style="margin-left:3%;margin-top:10px;margin-bottom:10px;width:95%" border="0">
           <tr>
-              <td colspan="3" style="width:40%;vertical-align:top">Kepada</td>
+              <td colspan="3" style="width:100%;vertical-align:top">Kepada</td>
           </tr>
         </table>
-        <table style="margin-left:3%;width:100%" class="tblx">
+        <table style="margin-left:3%;width:95%" class="tblx">
             <tr>
-                <td style="text-align:center"><b>No</b></td>
-                <td style="text-align:center"><b>Nama</b></td>
-                <td style="text-align:center"><b>Pangkat/<br>Gol Ruang</b></td>
-                <td style="text-align:center"><b>NIP</b></td>
-                <td style="text-align:center"><b>Jabatan</b></td>
-                <td style="text-align:center"><b>Unit Kerja</b></td>
+                <td style="text-align:center;width:3%"><b>No</b></td>
+                <td style="text-align:center;width:27%"><b>Nama</b></td>
+                <td style="text-align:center;width:10%"><b>Pangkat/<br>Gol Ruang</b></td>
+                <td style="text-align:center;width:15%"><b>NIP</b></td>
+                <td style="text-align:center;width:15%"><b>Jabatan</b></td>
+                <td style="text-align:center;width:30%"><b>Unit Kerja</b></td>
             </tr>
             <?php
                 $nox = 1;
@@ -144,11 +145,11 @@
             ?>
             <tr>
                 <td style="text-align:center"><?= $nox ?></td>
-                <td><?= wordwrap(konversi_nama_peg($pg->nama),25,"<br />\n") ?></td>
-                <td><?= wordwrap(ucwords($pangkat_gol),10,"<br /> \n") ?></td>
+                <td><?= konversi_nama_peg($pg->nama) ?></td>
+                <td><?= ucwords($pangkat_gol) ?></td>
                 <td><?= br_str($nip) ?></td>
-                <td><?= wordwrap(ucwords(strtolower($jabatan)),15,"<br /> \n") ?></td>
-                <td style="text-align:justify"><?= wordwrap($pg->uk,23,"<br />\n") ?></td>
+                <td><?= ucwords(strtolower($jabatan)) ?></td>
+                <td><?= $pg->uk ?></td>
             </tr>
             <?php
                 $nox++;
@@ -172,20 +173,20 @@
                 // end logika tgl s.d tgl
             ?>    
         </table>
-        <table style="margin-left:3%;margin-top:10px;width:65%" border="0">
+        <table style="margin-left:3%;margin-top:10px;width:95%" border="0">
           <tr>
-              <td style="width:40%;vertical-align:top">Untuk</td>
-              <td style="width:10%;vertical-align:top;text-align:right">:</td>
-              <td style="width:90%;text-align:justify;vertical-align:top">
+              <td style="width:25%;vertical-align:top">Untuk</td>
+              <td style="width:5%;vertical-align:top;text-align:right">:</td>
+              <td style="width:70%;text-align:justify;vertical-align:top">
                 <?= $spt->untuk ?>, pada Tanggal <?= $val_tgl ?>
               </td>
           </tr>
         </table>
         
-        <table style="margin-left:30%;margin-top:30px;width:65%" border="0">
+        <table style="margin-left:3%;margin-top:30px;width:95%" border="0">
           <tr>
-              <td style="width:50%;vertical-align:top">&nbsp;</td>
-              <td style="width:50%;text-align:justify;vertical-align:top">Malang, <?= tgl_indoo($tgl_in) ?></td>
+              <td style="width:60%;vertical-align:top">&nbsp;</td>
+              <td style="width:40%;text-align:justify;vertical-align:top">Malang, <?= tgl_indoo($tgl_in) ?></td>
           </tr>
           <?php if($kabalai->for_ttd!=""){ ?>
           <tr>
