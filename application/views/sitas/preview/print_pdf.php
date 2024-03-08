@@ -221,7 +221,7 @@
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>
-              <td style="text-align:justify;vertical-align:top;font-size:15px"><b><?= ucwords($kabalai->nama) ?></b></td>
+              <td style="text-align:justify;vertical-align:top;font-size:15px"><b><?= konversi_nama_peg($kabalai->nama) ?></b></td>
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>
@@ -322,7 +322,7 @@
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>
-              <td style="text-align:justify;vertical-align:top;font-size:15px"><b><?= ucwords($kabalai->nama) ?></b></td>
+              <td style="text-align:justify;vertical-align:top;font-size:15px"><b><?= konversi_nama_peg($kabalai->nama) ?></b></td>
           </tr>
           <tr>
               <td style="vertical-align:top">&nbsp;</td>

@@ -156,12 +156,7 @@
    $bln = $pc_tgl_in[1];
    $thn = $pc_tgl_in[0];
    $no_sub = "TU.040";
-   
-   if($spt->is_dipa=="1"){
-       $dipa = "<ul class='dipa'><li>DIPA BPSI TAS Tahun ".$thn." Nomor:018.09.2.237572/".$thn.", Tanggal 30 November 2023</li></ul>";
-   } else {
-       $dipa = "";
-   }
+   $arr_dasar = clir_ul_li($spt->dasar);
 ?>
 <div class="card card-success">
 <div class="card-header">
@@ -174,11 +169,21 @@
     
     <div class="col-md-3 col-3"><p style="text-align:left">Menimbang</p></div> 
     <div class="col-md-1 col-1"><p style="text-align:right">:</p></div> 
-    <div class="col-md-8 col-8"><p style="text-align:left"><?= $spt->menimbang ?></p></div>
+    <div class="col-md-8 col-8"><p style="text-align:left"><ol type="a"><li><?= $spt->menimbang ?></li></ol></div>
     
     <div class="col-md-3 col-3"><p style="text-align:left">Dasar</p></div> 
     <div class="col-md-1 col-1"><p style="text-align:right">:</p></div> 
-    <div class="col-md-8 col-8"><?= $spt->dasar.$dipa ?></div>
+    <div class="col-md-8 col-8">
+        <ol type="a" style="text-align:justify">
+        <?php
+        foreach($arr_dasar as $ads){
+        ?>
+        <li><?= $ads ?></li>
+        <?php
+        }  
+        ?>
+        </ol>
+    </div>
     
     <div class="col-md-12 col-12"><p  style="text-align:center">Memberi Tugas</p></div>
 
