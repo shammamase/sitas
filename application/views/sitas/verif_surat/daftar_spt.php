@@ -8,13 +8,13 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
-        <th style="width:29%">SPT</th>
-        <th style="width:10%">No Surat</th>
-        <th style="width:18%">Kepada</th>
-        <th style="width:17%">Untuk</th>
-        <th style="width:7%">Tanggal</th>
-        <th style="width:7%">DIPA</th>
-        <th style="width:10%">Action</th>
+        <!--<th style="width:29%">SPT</th>-->
+        <th style="width:15%">No Surat</th>
+        <th style="width:22%">Kepada</th>
+        <th style="width:27%">Untuk</th>
+        <th style="width:10%">Tanggal</th>
+        <th style="width:8%">DIPA</th>
+        <th style="width:16%">Action</th>
       </tr>
       </thead>
       <tbody>
@@ -39,13 +39,13 @@
      ?>
       <tr>
         <td><?php echo $no ?></td>
-        <td><?php echo $row->menimbang ?></td>
+        <!--<td><?php echo $row->menimbang ?></td>-->
         <td><?= $no_sr ?></td>
         <td>
                 <?php
                 $nok = 1;
                 foreach($kpda as $kpd){
-                    $tgl_plk = $kpd->tanggal;
+                    $tgl_plk = $kpd->tanggal_spt;
                 ?>
                 <?= $nok.". ".$kpd->nama ?><br>
                 <?php

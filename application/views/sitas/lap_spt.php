@@ -7,24 +7,20 @@
     <table id="example1" class="table table-bordered table-striped">
       <thead>
       <tr>
-        <th style="width:2%">No</th>
-        <th style="width:29%">SPT</th>
-        <th style="width:12%">No Surat</th>
-        <th style="width:18%">Kepada</th>
-        <th style="width:17%">Untuk</th>
+        <th style="width:3%">No</th>
+        <!--<th style="width:29%">SPT</th>-->
+        <th style="width:25%">No Surat</th>
+        <th style="width:20%">Kepada</th>
+        <th style="width:27%">Untuk</th>
         <th style="width:10%">Tanggal</th>
-        <th style="width:12%">Action</th>
+        <th style="width:15%">Action</th>
       </tr>
       </thead>
       <tbody>
       <?php 
         $no = 1;
-        $no_hp = $kabalai->no_hp;
-        $no_wa = substr_replace("$no_hp","62",0,1);
         foreach ($rec as $row){
             $pc_tgl = explode("-",$row->tanggal_input);
-            $links = base_url()."sijuara/verif_lap_spt_detail/".$row->id_spt;
-            $pesan = "*Layanan Aplikasi* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
             $kpda = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
                       "a.id_spt=$row->id_spt","a.id_anggota asc");
             $lap_id_spt = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $row->id_spt")->row();
@@ -36,7 +32,7 @@
      ?>
       <tr>
         <td><?php echo $no ?></td>
-        <td><?php echo $row->menimbang ?></td>
+        <!--<td><?php echo $row->menimbang ?></td>-->
         <td>B-<?= $row->no_surat_keluar ?>/TU.040/H.4.2/<?= $pc_tgl[1] ?>/<?= $pc_tgl[0] ?></td>
         <td>
                 <?php
@@ -68,22 +64,34 @@
                 
                 ?>
         </td>
-        <td><?php echo $row->untuk ?></td>
+        <td>
+          <?php 
+            echo $row->untuk;
+            if($lpi != 0){
+              if($lap_id_spt->keterangan != ""){
+              ?>
+              <br><br><b>Keterangan :</b><?= $lap_id_spt->keterangan ?>
+              <?php
+              }
+            }
+          ?>
+        </td>
         <td><?php echo $val_tgl ?></td>
         <td>
             <?php
                 if($row->id_spt==$lpi){
                     if($lap_id_spt->verif_kabalai==0){
                     ?>
-                    <a class='btn btn-info btn-xs' title='Kirim' target="_blank" href="https://api.whatsapp.com/send?phone=<?= $no_wa ?>&text=<?= $pesan ?>"><i class='fa fa-share'></i> Kirim</a>
+                    <a class='btn btn-info btn-xs' title='Kirim' href="<?= base_url() ?>primer/kirim_ajuan_lap_spt/<?= $row->id_spt ?>"><i class='fa fa-share'></i> Kirim</a>
                     <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/lap_spt?edit=<?= $row->id_spt ?>"><i class='fas fa-edit'></i> Edit</a>
+                    <a onclick="return confirm('Apakah anda yakin ingin menghapus data ini ?')" class='btn btn-danger btn-xs' title='Delete' href="<?php echo base_url() ?>primer/delete_lap_spt/<?= $row->id_spt ?>"><i class='fas fa-trash'></i> Hapus</a>
                     <button class='btn btn-warning btn-xs' data-target="#myLs" data-toggle="modal" data-id="<?= $row->id_spt ?>"><i class='fas fa-file'></i> Lihat</button>
                     <?php
                     } else {
                     ?>
                     <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/copy_lap_spt/<?= $row->id_spt ?>"><i class='fas fa-copy'></i> Copy</a>
-                    <a class='btn btn-danger btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>sijuara/pdf_lap_spt2/<?php echo md5($row->id_spt) ?>/<?= $row->id_spt ?>"><i class='fas fa-file-pdf'></i> PDF Scan</a>
-                    <a class='btn btn-danger btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>sijuara/pdf_lap_spt_manual2/<?php echo md5($row->id_spt) ?>/<?= $row->id_spt ?>"><i class='fas fa-file-pdf'></i> PDF Asli</a>
+                    <a class='btn btn-danger btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>preview/pdf_lap_spt/<?php echo md5($row->id_spt) ?>/<?= $row->id_spt ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+                    <a class='btn btn-info btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>preview/html_lap_spt/<?php echo md5($row->id_spt) ?>/<?= $row->id_spt ?>"><i class='fas fa-file-pdf'></i> PDF View</a>
                     <button class='btn btn-warning btn-xs' data-target="#myLs" data-toggle="modal" data-id="<?= $row->id_spt ?>"><i class='fas fa-file'></i> Lihat</button>
                     <?php
                     }
@@ -134,7 +142,7 @@
             var rowid = $(e.relatedTarget).data('id');
             $.ajax({
                type : 'post',
-               url : '<?= base_url() ?>sijuara/lihat_perjadin',
+               url : '<?= base_url() ?>primer/lihat_perjadin',
                data : 'id_spt='+ rowid,
                success : function(data){
                    $('.fetch_data').html(data);

@@ -373,14 +373,6 @@ class Model_more extends CI_model{
                                     inner join sijuara_user b on a.id_user=b.id_user 
                                     where b.username = '$x'");
     }
-    
-    function get_yg_membuat($x){
-        return $this->db->query("select c.nip,c.nama,c.ttd 
-                    from sijuara_user a inner join sijuara_pj b on a.id_pj=b.id_pj 
-                    inner join t_biodata c on b.id_bio=c.id_bio 
-                    where a.username='$x'");
-    }
-
     function save_lap_spt(){
         
         $limit = 10 * 1024 * 1024;
@@ -468,14 +460,4 @@ class Model_more extends CI_model{
         $this->db->where('id_spt',$this->input->post('id_spt'));                
         $this->db->update('sijuara_lap_spt',$datadb);
     }
-    
-    function daftar_lap_spt_kabalai(){
-        $thn = date('Y');
-        return $this->db->query("select a.lokasi,a.keterangan as ket,b.*
-                                from sijuara_lap_spt a 
-                                inner join sijuara_spt b on a.id_spt=b.id_spt 
-                                where a.verif_kabalai = 0 
-                                order by a.id_lap_spt asc");
-    }
-    
 }

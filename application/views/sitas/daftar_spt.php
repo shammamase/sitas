@@ -8,13 +8,13 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
-        <th style="width:23%">SPT</th>
-        <th style="width:18%">No Surat</th>
-        <th style="width:18%">Kepada</th>
-        <th style="width:17%">Untuk</th>
+        <!--<th style="width:23%">SPT</th>-->
+        <th style="width:23%">No Surat</th>
+        <th style="width:23%">Kepada</th>
+        <th style="width:27%">Untuk</th>
         <th style="width:7%">Tanggal</th>
         <!--<th style="width:7%">Tanggal SPT</th>-->
-        <th style="width:5%">DIPA</th>
+        <th style="width:8%">DIPA</th>
         <th style="width:10%">Action</th>
       </tr>
       </thead>
@@ -56,7 +56,7 @@
      ?>
       <tr>
         <td><?php echo $no ?></td>
-        <td><?php echo $row->menimbang ?></td>
+        <!--<td><?php echo $row->menimbang ?></td>-->
         <td><?= $no_surat ?></td>
         <td>
                 <?php

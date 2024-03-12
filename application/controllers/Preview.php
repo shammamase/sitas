@@ -102,7 +102,7 @@ class Preview extends CI_Controller {
         $data['no_surat'] = "";
 		$this->load->view('sitas/preview/print_web',$data);
 	}
-    public function sppd(){
+    function sppd(){
         ob_start();
         $uri3 = $this->uri->segment(3);
         $rowx = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
@@ -131,4 +131,77 @@ class Preview extends CI_Controller {
         $pdf->Output();
         }
       }
+      function pdf_lap_spt(){
+        ob_start();
+        $uri3 = $this->uri->segment(3);
+        $id_spt = $this->uri->segment(4);
+        $kd = substr($uri3,0,6);
+        $nm_qr = $kd."/".$id_spt;
+        $link_url = base_url()."nonlogin/status_lap_spt/";
+        $this->load->library('ciqrcode'); //pemanggilan library QR CODE
+        $config['imagedir']     = './asset/qr_code/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '1024'; //interger, the default is 1024
+        $config['black']        = array(224,255,255); // array, default is array(255,255,255)
+        $config['white']        = array(70,130,180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+        $image_name='lap_spt_'.$id_spt.'.png'; //buat name dari qr code sesuai dengan nim
+        $params['data'] = $link_url.$nm_qr; //data yang akan di jadikan QR CODE
+        $params['level'] = 'H'; //H=High
+        $params['size'] = 10;
+        $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+            $model_lap = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $id_spt")->row();
+			$model_spt = $this->model_sitas->rowDataBy("*","spt","id_spt = $id_spt")->row();
+	        $user = $model_lap->user;
+		    $data['spt'] = $model_spt;
+		    $data['peg'] = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+							"a.id_spt = $id_spt","a.id_anggota asc");
+		    $data['no_surat'] = $this->model_sitas->rowDataBy("a.no_surat_keluar,a.id_verif",
+									"surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar",
+									"a.id_surat_keluar = $model_spt->id_surat_keluar")->row();
+		    $data['lap_spt'] = $model_lap;
+		    $data['user'] = $this->model_sitas->rowDataBy("a.nama,a.nip","pegawai a inner join user b on a.id_pegawai=b.id_pegawai",
+								"b.username='$user'")->row();
+	        $this->load->view('sitas/preview/print_lap',$data);    
+            $html = ob_get_contents();
+            ob_end_clean(); 
+            require './asset/html2pdf_v5.2-master/vendor/autoload.php';
+            $pdf = new Spipu\Html2Pdf\Html2Pdf('P','F4','en');
+            $pdf->WriteHTML($html);
+            $pdf->Output();
+	}
+    function html_lap_spt(){
+        $uri3 = $this->uri->segment(3);
+        $id_spt = $this->uri->segment(4);
+        $kd = substr($uri3,0,6);
+        $nm_qr = $kd."/".$id_spt;
+        $link_url = base_url()."nonlogin/status_lap_spt/";
+        $this->load->library('ciqrcode'); //pemanggilan library QR CODE
+        $config['imagedir']     = './asset/qr_code/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '1024'; //interger, the default is 1024
+        $config['black']        = array(224,255,255); // array, default is array(255,255,255)
+        $config['white']        = array(70,130,180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+        $image_name='lap_spt_'.$id_spt.'.png'; //buat name dari qr code sesuai dengan nim
+        $params['data'] = $link_url.$nm_qr; //data yang akan di jadikan QR CODE
+        $params['level'] = 'H'; //H=High
+        $params['size'] = 10;
+        $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+            $model_lap = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $id_spt")->row();
+			$model_spt = $this->model_sitas->rowDataBy("*","spt","id_spt = $id_spt")->row();
+	        $user = $model_lap->user;
+		    $data['spt'] = $model_spt;
+		    $data['peg'] = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+							"a.id_spt = $id_spt","a.id_anggota asc");
+		    $data['no_surat'] = $this->model_sitas->rowDataBy("a.no_surat_keluar,a.id_verif",
+									"surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar",
+									"a.id_surat_keluar = $model_spt->id_surat_keluar")->row();
+		    $data['lap_spt'] = $model_lap;
+		    $data['user'] = $this->model_sitas->rowDataBy("a.nama,a.nip","pegawai a inner join user b on a.id_pegawai=b.id_pegawai",
+								"b.username='$user'")->row();
+	        $this->load->view('sitas/preview/print_lap',$data);    
+	}
 }

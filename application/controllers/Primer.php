@@ -60,13 +60,13 @@ class Primer extends CI_Controller {
 		$data['jml_v1'] = 0;//$this->model_more->daftar_spt_kabalai()->num_rows();
 		$data['jml_v2'] = $this->model_sitas->jmlDataBy("id_surat_keluar","surat_keluar","tanggal like '%$thn%' and id_verif1 != 0 and id_verif = 0");
 		$data['jml_v3'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","id_verifikasi = 0");
-		$data['jml_v4'] = 0;//$this->model_more->daftar_lap_spt_kabalai()->num_rows();
+		$data['jml_v4'] = $this->model_sitas->jmlDataBy("id_lap_spt","lap_spt","verif_kabalai = 0 and is_publish = 1");
 		$data['jml_v5'] = 0;
 		$data['jml_surat_masuk'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","tanggal_masuk like '%$thn%'");
 		$data['jml_surat_keluar'] = $this->model_sitas->jmlDataBy("id_surat_keluar","surat_keluar","no_surat_keluar != '' and tanggal like '%$thn%'");
 		$data['jml_surat'] = 0;//$this->model_more->daftar_surat()->num_rows();
 		$data['jml_spt'] = $this->model_sitas->jmlDataAll("id_spt","spt");
-		$data['jml_perjadin'] = 0;//$this->model_more->daftar_lap_spt22()->num_rows();
+		$data['jml_perjadin'] = $this->model_sitas->jmlDataAll("id_lap_spt","lap_spt");
 		$data['jml_anggaran'] = 0;//$this->db->query("select id_pengajuan from sijuara_simpan_pengajuan a
 		/*									
 		inner join sijuara_detil b on a.id_detil=b.id_detil
@@ -1703,13 +1703,128 @@ class Primer extends CI_Controller {
 	}
 	
 	function save_lap_spt(){
+		cek_session_admin1();
+		date_default_timezone_set('Asia/Jakarta');
 	    $status = $this->input->post('status');
+		$id_lap_spt = _POST('id_lap_spt');
 	    if($status=="save"){
-	        $this->model_sitas->save_lap_spt();    
+	        //$tolak_ukur_kegiatan = $this->db->escape_str($this->input->post('tolak_ukur_kegiatan'));
+        	$transportasi = $this->db->escape_str($this->input->post('transportasi'));
+        	$datadb = array(//'tolak_ukur_kegiatan'=>$tolak_ukur_kegiatan,
+                        'transportasi'=>$transportasi,
+                        'lokasi'=>$this->db->escape_str($this->input->post('lokasi')),
+                        'uraian'=>$this->input->post('uraian'),
+                        'id_spt'=>$this->db->escape_str($this->input->post('id_spt')),
+                        'user'=>$this->session->username,
+                        'tanggal_input'=>date('Y-m-d H:i:s')
+			);
+			$this->model_sitas->saveDataWithFotoBanyak("lap_spt",$datadb,"asset/lap_spt/");    
 	    } else {
-	        $this->model_sitas->update_lap_spt();
+			$transportasi = $this->db->escape_str($this->input->post('transportasi'));
+        	$datadb = array(//'tolak_ukur_kegiatan'=>$tolak_ukur_kegiatan,
+                        'transportasi'=>$transportasi,
+                        'lokasi'=>$this->db->escape_str($this->input->post('lokasi')),
+                        'uraian'=>$this->input->post('uraian'),
+                        'id_spt'=>$this->db->escape_str($this->input->post('id_spt')),
+                        'user'=>$this->session->username,
+                        'tanggal_input'=>date('Y-m-d H:i:s')
+			);
+	        $this->model_sitas->updateDataWithFotoBanyak("lap_spt","id_lap_spt",$id_lap_spt,$datadb,"asset/lap_spt/");
 	    }
 		redirect('primer/buat_lap_spt');
+	}
+	function lihat_perjadin(){
+	    cek_session_admin1();
+	    if(isset($_POST['id_spt'])){
+		    $id_spt = $_POST['id_spt'];
+		    $model_lap = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $id_spt")->row();
+			$model_spt = $this->model_sitas->rowDataBy("*","spt","id_spt = $id_spt")->row();
+	        $user = $model_lap->user;
+		    $data['spt'] = $model_spt;
+		    $data['peg'] = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+							"a.id_spt = $id_spt","a.id_anggota asc");
+		    $data['no_surat'] = $this->model_sitas->rowDataBy("a.no_surat_keluar,a.id_verif",
+									"surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar",
+									"a.id_surat_keluar = $model_spt->id_surat_keluar")->row();
+		    $data['lap_spt'] = $model_lap;
+		    $data['user'] = $this->model_sitas->rowDataBy("a.nama,a.nip","pegawai a inner join user b on a.id_pegawai=b.id_pegawai",
+								"b.username='$user'")->row();
+			$this->load->view('sitas/lihat_perjadin',$data);
+		}
+	}
+	function delete_lap_spt(){
+		cek_session_admin1();
+		$uri3 = $this->uri->segment(3);
+		$row = $this->model_sitas->rowDataBy("gbr_dok","lap_spt","id_spt=$uri3")->row();
+		$this->model_sitas->hapus_data("lap_spt","id_spt=$uri3");
+		$this->model_sitas->hapus_foto_banyak("./asset/lap_spt/",$row->gbr_dok);
+		redirect('primer/buat_lap_spt');
+	}
+	function kirim_ajuan_lap_spt(){
+		$uri3 = $this->uri->segment(3);
+		$get_kabalai = $this->model_sitas->get_verifikator_akhir();
+		$no_hp = $get_kabalai->no_hp;
+        $no_wa = substr_replace("$no_hp","62",0,1);
+		$links = base_url()."primer/verif_lap_spt_detail/".$uri3;
+        $pesan = "*Layanan Aplikasi BSIP TAS* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
+		$data = ['is_publish' => 1];
+		$this->model_sitas->update_data("lap_spt","id_spt",$uri3,$data);
+		$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		redirect('primer/buat_lap_spt');
+	}
+	function verif_lap_spt(){
+		cek_session_admin1();
+		$username = $this->session->username;
+		//$tahun = $this->session->tahun;
+		$get_verif_akhir = $this->model_sitas->get_verifikator_akhir();
+		if($username == $get_verif_akhir->username){
+			$data['rec'] = $this->model_sitas->listDataBy("b.*,c.no_surat_keluar",
+							"lap_spt a inner join spt b on a.id_spt=b.id_spt inner join surat_keluar c on b.id_surat_keluar=c.id_surat_keluar",
+							"verif_kabalai = 0 and is_publish = 1","a.id_lap_spt asc");
+			$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/daftar_lap_spt',$data);    
+		} else {
+			$this->load->view('sitas/verif_surat/no_akses');
+		}
+	}
+	function verif_lap_spt_detail(){
+		cek_session_admin1();
+		$id_spt = $this->uri->segment(3);
+		$username = $this->session->username;
+		$get_verif_akhir = $this->model_sitas->get_verifikator_akhir();
+		if($username == $get_verif_akhir->username){
+			$model_lap = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $id_spt")->row();
+			$model_spt = $this->model_sitas->rowDataBy("*","spt","id_spt = $id_spt")->row();
+	        $user = $model_lap->user;
+			$data['kabalai'] = $get_verif_akhir;
+		    $data['spt'] = $model_spt;
+		    $data['peg'] = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+							"a.id_spt = $id_spt","a.id_anggota asc");
+		    $data['no_surat'] = $this->model_sitas->rowDataBy("a.no_surat_keluar,a.id_verif",
+									"surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar",
+									"a.id_surat_keluar = $model_spt->id_surat_keluar")->row();
+		    $data['lap_spt'] = $model_lap;
+			$data['user'] = $this->model_sitas->rowDataBy("a.nama,a.nip","pegawai a inner join user b on a.id_pegawai=b.id_pegawai",
+								"b.username='$user'")->row();
+			$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_lap_spt',$data);
+		} else {
+			$this->load->view('sitas/verif_surat/no_akses');
+		}
+	}
+	function setuju_lap_spt(){
+	    cek_session_admin1();
+	    $id_spt = $_POST['id_spt'];
+		$ket = $_POST['keterangan'];
+		$user = $this->model_sitas->get_user();
+	    $this->db->query("update lap_spt set keterangan = '$ket', verif_kabalai = 1, pj_ttd = $user->id_pegawai where id_spt = $id_spt");
+	    redirect('primer/verif_lap_spt');
+	}
+	function tolak_lap_spt(){
+	    cek_session_admin1();
+	    $id_spt = $_POST['id_spt'];
+	    $ket = $_POST['keterangan'];
+		$user = $this->model_sitas->get_user();
+	    $this->db->query("update lap_spt set keterangan = '$ket', pj_ttd = $user->id_pegawai where id_spt = $id_spt");
+	    redirect('primer/verif_lap_spt');
 	}
     function logout(){
 		$this->session->sess_destroy();

@@ -692,22 +692,6 @@ class Sijuara extends CI_Controller {
 		}
 	}
 	
-	function lihat_perjadin(){
-	    cek_session_admin1();
-	    if(isset($_POST['id_spt'])){
-		    $id_spt = $_POST['id_spt'];
-		    $model_lap = $this->model_more->lap_spt_id_spt($id_spt)->row();
-	        $user = $model_lap->user;
-		    $data['spt'] = $this->model_more->get_spt_id($id_spt);
-		    $data['peg'] = $this->model_more->get_peg_spt($id_spt);
-		    $data['no_surat'] = $this->model_more->get_no_surat_spt($id_spt)->row();
-		    $data['lap_spt'] = $model_lap;
-		    $data['user'] = $this->model_more->get_yg_membuat($user)->row();
-                    
-			$this->load->view('sijuara/persuratan/spt/lihat_perjadin',$data);
-		}
-	}
-	
 	function save_spt(){
 	    $status = $this->input->post('status');
 	    if($status=="save"){
@@ -1228,22 +1212,6 @@ class Sijuara extends CI_Controller {
 		
 		redirect('sijuara/buat_lap_spt');
 	}
-	
-	function verif_lap_spt(){
-	    cek_session_admin1();
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $kabalai = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-	    $user_vr = $this->session->username;
-	    if($kabalai->username==$user_vr){
-	        $data['rec'] = $this->model_more->daftar_lap_spt_kabalai();
-    		$data['kabalai'] = $kabalai;
-            $this->template->load('sijuara/persuratan/verif_surat/template_form','sijuara/persuratan/verif_surat/daftar_lap_spt',$data);    
-	    } else {
-	        echo "Anda Tidak Memiliki Hak Akses";
-	    }
-		
-	}
-	
 	function verif_lap_spt_detail(){
 	    cek_session_admin1();
 	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
@@ -1269,24 +1237,6 @@ class Sijuara extends CI_Controller {
 	        echo "Anda Tidak Memiliki Akses !!!";
 	    }
 	}
-	
-	function setuju_lap_spt(){
-	    cek_session_admin1();
-	    $id_spt = $this->uri->segment(3);
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $this->db->query("update sijuara_lap_spt set verif_kabalai = 1, pj_ttd = '$id_pjs->id_pejabat' where id_spt = '$id_spt'");
-	    redirect('sijuara/verif_lap_spt');
-	}
-	
-	function tolak_lap_spt(){
-	    cek_session_admin1();
-	    $id_spt = $_POST['id_spt'];
-	    $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-	    $ket = $_POST['keterangan'];
-	    $this->db->query("update sijuara_lap_spt set keterangan = '$ket', pj_ttd = '$id_pjs->id_pejabat' where id_spt = '$id_spt'");
-	    redirect('sijuara/verif_lap_spt');
-	}
-	
 	function pdf_lap_spt(){
 	        ob_start();    
 	        $uri3 = $this->uri->segment(3);
@@ -1376,40 +1326,6 @@ class Sijuara extends CI_Controller {
 	        $pdf->Output();
 	        //$pdf->Output('Tes.pdf', 'D');
 	}
-	
-	function pdf_lap_spt2(){
-        $uri3 = $this->uri->segment(3);
-        $id_spt = $this->uri->segment(4);
-        $kd = substr($uri3,0,6);
-        $nm_qr = $kd."/".$id_spt;
-        $link_url = "https://new.gorontalo.litbang.pertanian.go.id/web/sijuara/status_lap_spt/";
-        $model_lap = $this->model_more->lap_spt_id_spt($id_spt)->row();
-        $user = $model_lap->user;
-        
-        $this->load->library('ciqrcode'); //pemanggilan library QR CODE
-        $config['imagedir']     = './asset/file_lainnya/qr_code_lap_spt/'; //direktori penyimpanan qr code
-        $config['quality']      = true; //boolean, the default is true
-        $config['size']         = '1024'; //interger, the default is 1024
-        $config['black']        = array(224,255,255); // array, default is array(255,255,255)
-        $config['white']        = array(70,130,180); // array, default is array(0,0,0)
-        $this->ciqrcode->initialize($config);
- 
-        $image_name=$id_spt.'.png'; //buat name dari qr code sesuai dengan nim
- 
-        $params['data'] = $link_url.$nm_qr; //data yang akan di jadikan QR CODE
-        $params['level'] = 'H'; //H=High
-        $params['size'] = 10;
-        $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
-        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
- 
-    	    $data['spt'] = $this->model_more->get_spt_id($id_spt);
-    	    $data['peg'] = $this->model_more->get_peg_spt($id_spt);
-    	    $data['no_surat'] = $this->model_more->get_no_surat_spt($id_spt)->row();
-    	    $data['lap_spt'] = $model_lap;
-    		$data['user'] = $this->model_more->get_yg_membuat($user)->row();
-	        $this->load->view('sijuara/persuratan/spt/print_lap',$data);    
-	}
-	
 	function pdf_lap_spt_manual2(){
 	        $uri3 = $this->uri->segment(3);
 	        $id_spt = $this->uri->segment(4);

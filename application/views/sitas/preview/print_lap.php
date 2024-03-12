@@ -40,28 +40,30 @@
         }
 </style>
 	<body>
-	   <?php
-	        if($spt->pj_ttd==0){
-                $id_pjs = $this->db->query("select * from sijuara_pejabat_ttd where id_pjs = 1")->row();
-                $kabalai = $this->model_more->get_pj_ttd($id_pjs->id_pejabat)->row();
-            } else {
-                $kabalai = $this->model_more->get_pj_ttd($spt->pj_ttd)->row();
-                //$kabalai = $this->model_more->get_pj_ttd(1)->row();
-            }
-            $tgl_in = substr($lap_spt->tanggal_input,0,10);
-            $pc_tgl_in = explode("-",$tgl_in); 
-            $bln = $pc_tgl_in[1];
-            $thn = $pc_tgl_in[0];
-            $no_sub = $this->model_more->get_sub_arsip($spt->id_arsip)->row();
-            if(!empty($no_surat)){
-                $no_srt = $no_surat->no_surat_keluar;
-            } else {
-                $no_srt = " - ";
-            }
-        ?>
-		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_iso.jpg' ?>"></div>
+    <?php
+    if($no_surat->id_verif==0){
+        $verif_akhir = $this->db->query("select * from pejabat_verifikator where level = 'akhir'")->row();
+        $kabalai = $this->model_sitas->rowDataBy("a.struktur,a.for_ttd,b.nama,b.nip",
+                        "struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                        "a.id_pegawai=$verif_akhir->id_pegawai")->row();
+    } else {
+        $kabalai = $this->model_sitas->rowDataBy("a.struktur,a.for_ttd,b.nama,b.nip",
+                        "struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                        "a.id_pegawai=$no_surat->id_verif")->row();
+    }
+    $tgl_in = substr($lap_spt->tanggal_input,0,10);
+    $pc_tgl_in = explode("-",$tgl_in); 
+    $bln = $pc_tgl_in[1];
+    $thn = $pc_tgl_in[0];
+    if(!empty($no_surat)){
+        $no_srt = $no_surat->no_surat_keluar;
+    } else {
+        $no_srt = " - ";
+    }
+?>
+		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_surat.png' ?>"></div>
 		<p style="text-align:center;margin-top:0px"><b><u>LAPORAN PERJALANAN DINAS</u></b></p>
-		<p style="text-align:center;margin-top:-10px">SPT NO. <?= $no_srt ?>/<?= $no_sub->kode_sub_arsip ?>/H.10.29/<?= $bln ?>/<?= $thn ?></p>
+		<p style="text-align:center;margin-top:-10px">SPT NO. <?= $no_srt ?>/TU.040/H.4.2/<?= $bln ?>/<?= $thn ?></p>
 		<table style="margin-left:10%;margin-top:10px;width:80%" border="0">
           <tr>
               <td style="width:40%;vertical-align:top">1. Nama Yang Ditugaskan</td>
@@ -69,9 +71,9 @@
               <td style="width:55%;text-align:justify;vertical-align:top">
                   <?php
                     foreach($peg as $pg){
-                        $tgl_plk = $pg->tanggal;
+                        $tgl_plk = $pg->tanggal_spt;
                         ?>
-                            <?= $pg->nama ?><br>
+                            <?= konversi_nama_peg($pg->nama) ?><br>
                         <?php
                             }
                             
@@ -99,28 +101,30 @@
               <td style="width:5%;vertical-align:top;text-align:right">:</td>
               <td style="width:55%;text-align:justify;vertical-align:top"><?= $lap_spt->lokasi ?></td>
           </tr>
+          <!--
           <tr>
               <td style="width:40%;vertical-align:top">3. Judul Tolak Ukur Kegiatan</td>
               <td style="width:5%;vertical-align:top;text-align:right">:</td>
               <td style="width:55%;text-align:justify;vertical-align:top"><?= $lap_spt->tolak_ukur_kegiatan ?></td>
           </tr>
+          -->
           <tr>
-              <td style="width:40%;vertical-align:top">4. Lama Perjalanan Dinas</td>
+              <td style="width:40%;vertical-align:top">3. Lama Perjalanan Dinas</td>
               <td style="width:5%;vertical-align:top;text-align:right">:</td>
               <td style="width:55%;text-align:justify;vertical-align:top"><?= $spt->lama_hari ?> Hari, Tanggal <?= $val_tgl ?></td>
           </tr>
           <tr>
-              <td style="width:40%;vertical-align:top">5. Transportasi</td>
+              <td style="width:40%;vertical-align:top">4. Transportasi</td>
               <td style="width:5%;vertical-align:top;text-align:right">:</td>
               <td style="width:55%;text-align:justify;vertical-align:top"><?= $lap_spt->transportasi ?></td>
           </tr>
           <tr>
-              <td style="width:40%;vertical-align:top">6. Maksud Perjalanan Dinas</td>
+              <td style="width:40%;vertical-align:top">5. Maksud Perjalanan Dinas</td>
               <td style="width:5%;vertical-align:top;text-align:right">:</td>
               <td style="width:55%;text-align:justify;vertical-align:top"><?= $spt->untuk ?></td>
           </tr>
           <tr>
-              <td style="width:40%;vertical-align:top">7. Uraian Perjalanan Dinas</td>
+              <td style="width:40%;vertical-align:top">6. Uraian Perjalanan Dinas</td>
               <td style="width:5%;vertical-align:top;text-align:right">:</td>
               <td style="width:55%;text-align:justify;vertical-align:top">&nbsp;</td>
           </tr>
@@ -130,23 +134,29 @@
         <table style="margin-left:10%;margin-top:10px;width:80%" border="0">
           <tr>
               <td style="width:55%;vertical-align:top">Yang Membuat</td>
-              <td style="width:45%;text-align:justify;vertical-align:top">Gorontalo, <?= tgl_indoo($tgl_in) ?></td>
+              <td style="width:45%;text-align:justify;vertical-align:top">Malang, <?= tgl_indoo($tgl_in) ?></td>
           </tr>
+          <?php if($kabalai->struktur != "Kepala Balai"){ ?>
           <tr>
               <td style="width:55%;vertical-align:top">&nbsp;</td>
               <td style="width:45%;text-align:justify;vertical-align:top"><?= $kabalai->for_ttd ?></td>
           </tr>
+          <?php } ?>
           <tr>
               <td style="width:55%;vertical-align:top">&nbsp;</td>
-              <td style="width:45%;text-align:justify;vertical-align:top"><?= $kabalai->jabatan ?></td>
+              <td style="width:45%;text-align:justify;vertical-align:top"><?= $kabalai->struktur ?></td>
           </tr>
           <tr>
-              <td style="width:55%;text-align:justify;vertical-align:top"><img style="height:80px;width:auto" src="<?= base_url().$user->ttd ?>"></td>
-              <td style="width:45%;text-align:justify;vertical-align:top"><img style="height:80px;width:auto" src="<?= base_url().$kabalai->ttd ?>"></td>
+              <td style="width:55%;height:70px;text-align:justify;vertical-align:top">
+                <!--<img style="height:80px;width:auto" src="">-->
+              </td>
+              <td style="width:45%;text-align:justify;vertical-align:top">
+                <!--<img style="height:80px;width:auto" src="">-->
+              </td>
           </tr>
           <tr>
-              <td style="width:55%;text-align:justify;vertical-align:top"><b><?= $user->nama ?></b></td>
-              <td style="width:45%;text-align:justify;vertical-align:top"><b><?= $kabalai->nama ?></b></td>
+              <td style="width:55%;text-align:justify;vertical-align:top"><b><?= konversi_nama_peg($user->nama) ?></b></td>
+              <td style="width:45%;text-align:justify;vertical-align:top"><b><?= konversi_nama_peg($kabalai->nama) ?></b></td>
           </tr>
           <tr>
               <td style="width:55%text-align:justify;vertical-align:top">NIP. <?= $user->nip ?></td>
@@ -154,7 +164,8 @@
           </tr>
           <tr>
               <td colspan="2" style="width:100%;vertical-align:top;text-align:center">
-                  <img style="height:80px; width:auto" src="<?= base_url() ?>asset/file_lainnya/qr_code_lap_spt/<?= $spt->id_spt ?>.png">
+                  <br>
+                  <img style="height:80px; width:auto" src="<?= base_url() ?>asset/qr_code/lap_spt_<?= $spt->id_spt ?>.png">
               </td>
           </tr>
         </table>
@@ -165,7 +176,7 @@
             foreach($dok as $dk){
                 $gbr_dok = str_replace(" ","%20",$dk);
             ?>
-            <img style="margin-top:2px;margin-left:2px;height:270px; width:auto" src="<?= base_url() ?>asset/file_lainnya/lap_spt/<?= $gbr_dok ?>">
+            <img style="margin-top:2px;margin-left:2px;height:270px; width:auto" src="<?= base_url() ?>asset/lap_spt/<?= $gbr_dok ?>">
             <?php
             }
         }

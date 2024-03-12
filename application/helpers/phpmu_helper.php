@@ -468,3 +468,29 @@ function konversi_nama_peg($x){
     $hasil = $aa.",".$title_fix;
     return $hasil;
 }
+// Fungsi untuk kompres gamber sebelum upload
+function compressImage($source, $destination, $quality) {
+    // mendapatkan info image
+    $imgInfo = getimagesize($source); 
+    $mime = $imgInfo['mime'];  
+    // membuat image baru
+    switch($mime){ 
+    // proses kode memilih tipe tipe image 
+        case 'image/jpeg': 
+            $image = imagecreatefromjpeg($source); 
+            break; 
+        case 'image/png': 
+            $image = imagecreatefrompng($source); 
+            break; 
+        case 'image/gif': 
+            $image = imagecreatefromgif($source); 
+            break; 
+        default: 
+            $image = imagecreatefromjpeg($source); 
+    } 
+      
+    // Menyimpan image dengan ukuran yang baru
+    imagejpeg($image, $destination, $quality);       
+    // Return image
+    return $destination; 
+}
