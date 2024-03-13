@@ -24,7 +24,11 @@
       <tr>
         <td><?php echo $no ?></td>
         <td><?php echo $row->perihal ?></td>
+        <?php if($row->lokasi_tujuan_surat != "SPT"){ ?>
         <td><?php echo $row->tujuan_surat." di ".$row->lokasi_tujuan_surat ?></td>
+        <?php } else { ?>
+        <td><?php echo $row->tujuan_surat ?></td>
+        <?php } ?>
         <td><?php echo tgl_indoo($row->tanggal) ?></td>
         <td><?php echo $sifat->sifat ?></td>
         <td>

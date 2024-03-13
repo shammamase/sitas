@@ -16,10 +16,10 @@
           Info
       </div>
         <div class="card-body">
-          <img src="<?php echo base_url() ?>asset/file_lainnya/valid.png">
+        <img src="<?php echo base_url() ?>asset/valid.png">
           <?php
             if(!empty($no_surat)){
-                $no_srt = $no_surat->no_lengkap;
+                $no_srt = $no_surat->no_surat_keluar;
             } else {
                 $no_srt = " - ";
             }
@@ -28,7 +28,7 @@
             <thead>
               <tr>
                 <td>No Surat</td>
-                <td><?= $no_srt ?></td>
+                <td><?= $no_srt ?>/TU.040/H.4.2</td>
               </tr>
             </thead>
             <tbody>
@@ -41,7 +41,7 @@
                   <td>
                   <?php
                       foreach($peg as $pg){
-                            $tgl_plk = $pg->tanggal;
+                            $tgl_plk = $pg->tanggal_spt;
                     ?>
                     <?= $pg->nama ?><br>
                     <?php
@@ -77,6 +77,32 @@
               <tr>
                 <td>Yang Membuat Laporan</td>
                 <td><?php echo $user->nama ?></td>
+              </tr>
+              <tr>
+                <td>Status Verifikasi</td>
+                <td>
+                    <?php 
+                    if($lap_spt->pj_ttd == 0){
+                        echo "Belum";
+                    } else {
+                        echo "Sudah";
+                    }
+                    ?>
+                </td>
+              </tr>
+              <tr>
+                <td>Verifikator</td>
+                <td>
+                    <?php 
+                    if($lap_spt->verif_kabalai == 0){
+                        $view_pjb = "-";
+                    } else {
+                        $qw = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai = $lap_spt->pj_ttd")->row();
+                        $view_pjb = $qw->nama;
+                    }
+                    echo $view_pjb;
+                    ?>
+                </td>
               </tr>
             </tbody>
           </table>

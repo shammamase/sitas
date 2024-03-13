@@ -89,7 +89,7 @@
                     <?php
                     } else {
                     ?>
-                    <a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/copy_lap_spt/<?= $row->id_spt ?>"><i class='fas fa-copy'></i> Copy</a>
+                    <!--<a class='btn btn-primary btn-xs' title='Copy' href="<?php echo base_url() ?>sijuara/copy_lap_spt/<?= $row->id_spt ?>"><i class='fas fa-copy'></i> Copy</a>-->
                     <a class='btn btn-danger btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>preview/pdf_lap_spt/<?php echo md5($row->id_spt) ?>/<?= $row->id_spt ?>"><i class='fas fa-file-pdf'></i> PDF</a>
                     <a class='btn btn-info btn-xs' title='PDF' target="_blank" href="<?php echo base_url() ?>preview/html_lap_spt/<?php echo md5($row->id_spt) ?>/<?= $row->id_spt ?>"><i class='fas fa-file-pdf'></i> PDF View</a>
                     <button class='btn btn-warning btn-xs' data-target="#myLs" data-toggle="modal" data-id="<?= $row->id_spt ?>"><i class='fas fa-file'></i> Lihat</button>

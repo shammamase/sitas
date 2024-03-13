@@ -82,6 +82,29 @@ class Nonlogin extends CI_Controller
     $data['data'] = $qw;
     $this->load->view('sitas/preview/status_surat',$data);
   }
+  function status_lap_spt(){
+    $uri3 = $this->uri->segment(3);
+    $id_spt = $this->uri->segment(4);
+    $a = md5($id_spt);
+    $b = substr($a,0,6);
+    if($uri3==$b){
+        $model_lap = $this->model_sitas->rowDataBy("*","lap_spt","id_spt = $id_spt")->row();
+        $model_spt = $this->model_sitas->rowDataBy("*","spt","id_spt = $id_spt")->row();
+        $user = $model_lap->user;
+        $data['spt'] = $model_spt;
+        $data['peg'] = $this->model_sitas->listDataBy("a.tanggal_spt,b.nama","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+              "a.id_spt = $id_spt","a.id_anggota asc");
+        $data['no_surat'] = $this->model_sitas->rowDataBy("a.no_surat_keluar,a.id_verif",
+                  "surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar",
+                  "a.id_surat_keluar = $model_spt->id_surat_keluar")->row();
+        $data['lap_spt'] = $model_lap;
+        $data['user'] = $this->model_sitas->rowDataBy("a.nama,a.nip","pegawai a inner join user b on a.id_pegawai=b.id_pegawai",
+                "b.username='$user'")->row();
+        $this->load->view('sitas/preview/status_lap',$data);
+    } else {
+        echo "zonk";
+    }
+  }
   public function tes_wa_gateway(){
     $nox = "6281282410448";
     $pesan = "tes kirim";
