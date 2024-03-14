@@ -204,4 +204,59 @@ class Preview extends CI_Controller {
 								"b.username='$user'")->row();
 	        $this->load->view('sitas/preview/print_lap',$data);    
 	}
+    public function cuti(){
+        ob_start();
+        $pjb =  $this->model_sitas->rowDataBy("*","pejabat_verifikator","level = 'akhir'")->row();  
+        $uri3 = $this->uri->segment(3);
+        $link_url = base_url('nonlogin/status_cuti/');
+        $this->load->library('ciqrcode'); //pemanggilan library QR CODE
+        $config['imagedir']     = './asset/qr_code/'; //direktori penyimpanan qr code
+        $config['quality']      = true; //boolean, the default is true
+        $config['size']         = '1024'; //interger, the default is 1024
+        $config['black']        = array(224,255,255); // array, default is array(255,255,255)
+        $config['white']        = array(70,130,180); // array, default is array(0,0,0)
+        $this->ciqrcode->initialize($config);
+        $image_name='cuti_'.$uri3.'.png'; //buat name dari qr code sesuai dengan nim
+        $params['data'] = $link_url.$uri3; //data yang akan di jadikan QR CODE
+        $params['level'] = 'H'; //H=High
+        $params['size'] = 10;
+        $params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
+        $this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
+        /*
+        jika cuti masuk surat keluar 
+        $qw_spt = $this->db->query("select a.*,b.tanggal from trs_cuti a 
+                     inner join surat_keluar b on a.id_surat_keluar=b.id_surat_keluar
+                     where a.id_cuti = '$uri3'")->row();
+        */
+        $qw_spt = $this->db->query("select * from trs_cuti where id_cuti = $uri3")->row();
+        $get_peg = $this->model_sitas->get_user_by($qw_spt->username);
+          $tahun_ini = $qw_spt->tahun;
+          $tahun_lalu = $tahun_ini - 1;
+          $tahun_lalux = $tahun_ini - 2;
+          $jml_thn_ini = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$qw_spt->username' and tahun = $tahun_ini")->row();
+          $jml_thn_lalu = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$qw_spt->username' and tahun = $tahun_lalu")->row();
+          $jml_thn_lalux = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$qw_spt->username' and tahun = $tahun_lalux")->row();
+          $data['data'] = $qw_spt;
+          $data['n'] = 12 - $jml_thn_ini->jml;
+          if($jml_thn_lalu->jml==null){
+            $data['n_1'] = 0;
+          } else {
+            $data['n_1'] = $jml_thn_lalu->jml;
+          }
+          if($jml_thn_lalux->jml==null){
+            $data['n_2'] = 0;
+          } else {
+            $data['n_2'] = $jml_thn_lalux->jml;
+          }
+          $data['bio'] = $this->model_sitas->rowDataBy("*","pegawai","id_pegawai=$get_peg->id_pegawai")->row();
+          $data['atasan_langsung'] = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$qw_spt->pejabat_atasan_langsung")->row();
+          $data['atasan'] = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$pjb->id_pegawai")->row();
+          $this->load->view('sitas/preview/cuti',$data);
+          $html = ob_get_contents();        
+          ob_end_clean();            
+          require './asset/html2pdf_v5.2-master/vendor/autoload.php';        
+          $pdf = new Spipu\Html2Pdf\Html2Pdf('P','F4','en');    
+          $pdf->WriteHTML($html);    
+          $pdf->Output();
+    }
 }

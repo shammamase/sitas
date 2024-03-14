@@ -102,6 +102,9 @@ class Model_sitas extends CI_model{
         $x = $this->session->username;
         return $this->db->query("select a.username,b.* from user a inner join pegawai b on a.id_pegawai=b.id_pegawai where a.username = '$x'")->row();
     }
+    function get_user_by($x){
+        return $this->db->query("select a.username,b.* from user a inner join pegawai b on a.id_pegawai=b.id_pegawai where a.username = '$x'")->row();
+    }
     function kirim_wa($no_hp,$pesan){
         redirect('https://api.whatsapp.com/send?phone='.$no_hp.'&text='.$pesan);
     }

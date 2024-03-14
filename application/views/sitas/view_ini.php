@@ -106,7 +106,7 @@
                                 <?php } ?>
                                 <td>
                                     <?php foreach($aksi as $ak) { ?>
-                                    <a style="<?= $ak[0] ?>" class="btn <?= $ak[1] ?> <?= $ak[2] ?>" href="<?= site_url().$ak[3].$row[0] ?>" onclick="<?= $ak[6] ?>"><?= $ak[4] ?> <?= $ak[5] ?></a>
+                                    <a style="<?= $ak[0] ?>" class="btn <?= $ak[1] ?> <?= $ak[2] ?>" href="<?= site_url().$ak[3].$row[0] ?>/<?= get_kode_uniks($row[0]) ?>" onclick="<?= $ak[6] ?>"><?= $ak[4] ?> <?= $ak[5] ?></a>
                                     <?php } ?>
                                 </td>
                             </tr>

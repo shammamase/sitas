@@ -1,12 +1,38 @@
 <?php
 class Model_sitas2 extends CI_model{
     function list_cuti(){
+        $pejabat = $this->model_sitas->listDataBy("id_pegawai","struktur_organisasi","id_struktur in (1,2)","id_struktur asc");
+        $pejabat_atasan_langsung = $this->model_sitas->listDataBy("id_pegawai","struktur_organisasi","id_struktur != 5","id_struktur asc");
+        $kepeg = $this->model_sitas->listDataBy("id_pegawai","petugas_terima","menu = 'cuti'","id_petugas asc");
+        $otoritas = array();
+        $otoritas_atasan_langsung = array();
+        foreach($pejabat as $pj){
+            array_push($otoritas,$pj->id_pegawai);
+        }
+        foreach($kepeg as $kp){
+            array_push($otoritas,$kp->id_pegawai);
+        }
+        foreach($pejabat_atasan_langsung as $pjs){
+            array_push($otoritas_atasan_langsung,$pjs->id_pegawai);
+        }
+        //$otor = implode(",",$otoritas);
+        $user_login = $this->model_sitas->get_user();
+        $usernm = $this->session->username;
         $tahun = $this->session->tahun;
+        if(in_array($user_login->id_pegawai,$otoritas)){
+            $qw_for_user = "";
+        } else {
+            if(in_array($user_login->id_pegawai,$otoritas_atasan_langsung)){
+                $qw_for_user = "and a.pejabat_atasan_langsung = $user_login->id_pegawai or a.username = '$usernm'";
+            } else {
+                $qw_for_user = "and a.username = '$usernm'";
+            }
+        }
         $dtx =  $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
                                     inner join user b on a.username=b.username 
                                     inner join pegawai c on b.id_pegawai=c.id_pegawai
                                     inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
-                                    where a.tahun = '$tahun'
+                                    where a.tahun = '$tahun' $qw_for_user
                                     order by a.id_cuti desc")->result();
         $arr = array();
         $nor = 0;
@@ -35,7 +61,7 @@ class Model_sitas2 extends CI_model{
         return $arr;
     }
     function atasan_selek(){
-        $qw = $this->db->query("select a.id_pegawai,b.nama from struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai")->result();
+        $qw = $this->db->query("select a.id_pegawai,b.nama from struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai where a.id_struktur != 5")->result();
         $arr = array();
         $nor = 0;
         foreach($qw as $dt){
@@ -43,6 +69,19 @@ class Model_sitas2 extends CI_model{
             $nor++;
         }
         array_unshift($arr, "#Pilih Atasan");
+        return $arr;
+    }
+    function atasan_selekted($x){
+        $xx = $this->db->query("select a.id_pegawai,b.nama from struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai where a.id_pegawai = $x")->row();
+        $qw = $this->db->query("select a.id_pegawai,b.nama from struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai where a.id_struktur != 5")->result();
+        $arr = array();
+        $nor = 0;
+        $yy = $xx->id_pegawai."#".$xx->nama;
+        foreach($qw as $dt){
+            $arr[$nor] = $dt->id_pegawai."#".$dt->nama;
+            $nor++;
+        }
+        array_unshift($arr, $yy);
         return $arr;
     }
     function jenis_cuti(){
@@ -67,6 +106,39 @@ class Model_sitas2 extends CI_model{
             $nor++;
         }
         array_unshift($arr, $yy);
+        return $arr;
+    }
+    function list_sebelum_cuti(){
+        $tahun = $this->session->tahun;
+        $dtx =  $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
+                                    inner join user b on a.username=b.username 
+                                    inner join pegawai c on b.id_pegawai=c.id_pegawai
+                                    inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
+                                    where a.tahun = '$tahun' order by a.id_cuti desc")->result();
+        $arr = array();
+        $nor = 0;
+        foreach($dtx as $dt){
+            if($dt->verif_atasan_langsung != 0){
+                $verif_atasan_langsung = $this->model_silayak2->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan_langsung")->row();
+                $status_atasan_langsung = $verif_atasan_langsung->verif." Atasan Langsung";
+            } else {
+                $status_atasan_langsung = "";
+            }
+            if($dt->verif_atasan != 0){
+                $verif_atasan = $this->model_silayak2->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan")->row();
+                $status_atasan = $verif_atasan->verif." Kepala Balai";
+            } else {
+                $status_atasan = "";
+            }
+            $arr[$nor][0] = $dt->id_cuti;
+            $arr[$nor][1] = $nor+1;
+            $arr[$nor][2] = $dt->nama;
+            $arr[$nor][3] = $dt->jenis_cuti;
+            $arr[$nor][4] = $dt->alasan_cuti;
+            $arr[$nor][5] = tgl_indoo($dt->tgl_mulai)." <b>( ".$dt->lama_cuti." Hari)</b>";
+            $arr[$nor][6] = $status_atasan_langsung."<br>".$status_atasan;
+            $nor++;
+        }
         return $arr;
     }
 }

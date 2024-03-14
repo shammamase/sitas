@@ -1285,17 +1285,20 @@ class Primer extends CI_Controller {
         $dtx = $this->model_sitas2->list_cuti();
         $atasan = $this->model_sitas2->atasan_selek();
         $jn_cuti = $this->model_sitas2->jenis_cuti();
-        if (isset($_POST['submit'])){
-            $inp = array("id_cuti#0","id_jenis_cuti#0","alasan_cuti#0","lama_cuti#0","tgl_mulai#0","tgl_akhir#0","alamat_cuti#0","tgl_input#0","tahun#0","username#0","atasan_langsung#0");
-            $tbl = "cuti";
+		if (isset($_POST['submit'])){
+            $inp = array("id_cuti#0","id_jenis_cuti#0","alasan_cuti#0","lama_cuti#0","tgl_mulai#0","tgl_akhir#0","alamat_cuti#0","tgl_input#0","tahun#0","username#0","pejabat_atasan_langsung#0");
+            $tbl = "trs_cuti";
             $idx = "id_cuti";
             $this->model_sitas->save_all_wa($inp,$tbl,$idx);
-            $atasanx = $this->input->post("atasan_langsung");
+            /*
+			$atasanx = $this->input->post("atasan_langsung");
             $no_peg = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai = $atasanx")->row();
             $no_wa = substr_replace("$no_peg->no_hp",62,0,1);
             $links = base_url('primer/verif_cuti2');
             $pesan = "*Layanan Aplikasi* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
             $this->model_sitas->kirim_wa($no_wa,$pesan);
+			*/
+			redirect('primer/buat_cuti');
         } else {
             if(empty($uri3)){
                 $tgl = date('Y-m-d');
@@ -1313,7 +1316,7 @@ class Primer extends CI_Controller {
                                         array("date","tgl_mulai",$tgl,"Tanggal Mulai","Tanggal Mulai","","required"),
                                         array("date","tgl_akhir",$tgl,"Tanggal Akhir","Tanggal Akhir","","required"),
                                         array("textarea","alamat_cuti","","Masukkan Alamat Cuti","Masukkan Alamat Cuti","","required"),
-                                        array("select","atasan_langsung","","Atasan Langsung","Atasan Langsung",$atasan,"required"),
+                                        array("select","pejabat_atasan_langsung","","Atasan Langsung","Atasan Langsung",$atasan,"required"),
                                         array("hidden","tgl_input",$tgl_wkt,"","","",""),
                                         array("hidden","tahun",$thn,"","","",""),
                                         array("hidden","username",$usr,"","","",""),
@@ -1322,6 +1325,7 @@ class Primer extends CI_Controller {
             } else {
 				$qwx = $this->model_sitas->rowDataBy("*","trs_cuti","id_cuti = $uri3")->row();
                 $jn_cutix = $this->model_sitas2->jenis_cuti_select($qwx->id_jenis_cuti);
+				$atasan_selex = $this->model_sitas2->atasan_selekted($qwx->pejabat_atasan_langsung);
                 $data['judul'] = "Edit Permohonan Cuti";
                 $data['metod'] = "post";
                 $data['aktion'] = "";
@@ -1339,7 +1343,7 @@ class Primer extends CI_Controller {
                                         array("date","tgl_mulai",$qwx->tgl_mulai,"Tanggal Mulai","Tanggal Mulai","","required"),
                                         array("date","tgl_akhir",$qwx->tgl_akhir,"Tanggal Akhir","Tanggal Akhir","","required"),
                                         array("textarea","alamat_cuti",$qwx->alamat_cuti,"Masukkan Alamat Cuti","Masukkan Alamat Cuti","","required"),
-                                        array("select","atasan_langsung","","Atasan Langsung","Atasan Langsung",$atasan,"required"),
+                                        array("select","pejabat_atasan_langsung","","Atasan Langsung","Atasan Langsung",$atasan_selex,"required"),
                                         array("hidden","tgl_input",$qwx->tgl_input,"","","",""),
                                         array("hidden","tahun",$qwx->tahun,"","","",""),
                                         array("hidden","username",$usr,"","","",""),
@@ -1347,19 +1351,55 @@ class Primer extends CI_Controller {
                                         $send
                                         );
             }
-            $heads = array("No","Nama","Jenis Cuti","Alasan","Tanggal","Status","Aksi");
+			$heads = array("No","Nama","Jenis Cuti","Alasan","Tanggal","Status","Aksi");
             $data['judul2'] = "Daftar Cuti Pegawai";
             $data['heads'] = $heads;
             $data['list'] = $dtx;
             $data['jml_col'] = count($heads);
             // (style,ukuran btn,warna btn,href,icon,isi,onclick)
-            $data['aksi'] = array(array("","btn-sm","btn-primary","silayakx/buat_cuti/","<i class='fas fa-edit'></i>","Edit",""),
-                            array("margin-top:2px","btn-sm","btn-danger","silayakx/delete_cuti/","<i class='fas fa-trash-alt'></i>","Hapus","return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ?')"),
-                            array("","btn-sm","btn-warning","silayakx/cetak_cuti/","<i class='fas fa-file-pdf'></i>","PDF","")
-                                );   
+			$data['aksi'] = array(array("","btn-sm","btn-primary","primer/buat_cuti/","<i class='fas fa-edit'></i>","Edit",""),
+						array("margin-top:2px","btn-sm","btn-danger","primer/delete_cuti/","<i class='fas fa-trash-alt'></i>","Hapus","return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ?')"),
+						array("","btn-sm","btn-warning","preview/cuti/","<i class='fas fa-file-pdf'></i>","PDF",""),
+						array("","btn-sm","btn-success","primer/ajukan_cuti/","<i class='fas fa-share'></i>","Ajukan","")
+						);   
             $this->template->load('sitas/template_form','sitas/view_ini',$data);
         }
     }
+	public function delete_cuti(){
+		cek_session_admin1();
+		$uri3 = $this->uri->segment(3);
+		$uri4 = $this->uri->segment(4);
+		if(get_kode_uniks($uri3) == $uri4){
+			$this->model_sitas->hapus_data("trs_cuti","id_cuti=$uri3");
+			redirect('primer/buat_cuti');
+		} else {
+			echo "Sori Yeee wkwkwkwk";
+		}
+	}
+	public function ajukan_cuti(){
+		cek_session_admin1();
+		$uri3 = $this->uri->segment(3);
+		$uri4 = $this->uri->segment(4);
+		$kepeg = $this->model_sitas->rowDataBy("a.id_pegawai,b.nama,b.no_hp",
+					"petugas_terima a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.menu = 'cuti'","a.id_petugas asc")->row();
+		$cuti = $this->model_sitas->rowDataBy("*","trs_cuti","id_cuti = $uri3")->row();
+		$pjb_atasan = $this->model_sitas->rowDataBy("nama,no_hp","pegawai","id_pegawai=$cuti->pejabat_atasan_langsung")->row();
+		$id_pemohon = $this->model_sitas->get_user_by($cuti->username);
+		$is_before = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai = $id_pemohon->id_pegawai")->num_rows();
+		if($is_before > 0){
+			$no_wa = substr_replace($pjb_atasan->no_hp,62,0,1);
+            $links = base_url('primer/verif_cuti2/'.$uri3.'/'.$uri4);
+            $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+            //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+			echo $no_wa."-----".$pesan;
+		} else {
+			$no_wa = substr_replace($kepeg->no_hp,62,0,1);
+            $links = base_url('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
+            $pesan = "*Layanan Aplikasi BSIP TAS* Tentukan jumlah cuti pegawai sebelumnya, dengan klik link berikut $links";
+            //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+			echo $no_wa."-----".$pesan;
+		}
+	}
     public function drive(){
 	    $uri3 = $this->uri->segment(3);
 	    $thn = $this->session->tahun;
@@ -1825,6 +1865,56 @@ class Primer extends CI_Controller {
 		$user = $this->model_sitas->get_user();
 	    $this->db->query("update lap_spt set keterangan = '$ket', pj_ttd = $user->id_pegawai where id_spt = $id_spt");
 	    redirect('primer/verif_lap_spt');
+	}
+	function input_cuti_sebelum(){
+		$uri3 = $this->uri->segment(3);
+		$uri4 = $this->uri->segment(4);
+		$cuti = $this->model_sitas->rowDataBy("*","trs_cuti","id_cuti=$uri3")->row();
+		$user_pemohon = $this->model_sitas->get_user_by($cuti->username);
+		$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai")->num_rows();
+		if($cek_cuti_lalu > 0){
+			$cuti_lalu = $this->model_sitas->rowDataBy("jumlah","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai")->row();
+			$jumlah_cuti_lalu = $cuti_lalu->jumlah;
+		} else {
+			$jumlah_cuti_lalu = 0;
+		}
+		$data['nama'] = $user_pemohon->nama;
+		$data['alasan'] = $cuti->alasan_cuti;
+		$data['tanggal'] = $cuti->tgl_mulai;
+		$data['lama'] = $cuti->lama_cuti;
+		$data['pejabat_atasan_langsung'] = $cuti->pejabat_atasan_langsung;
+		$data['sisa'] = $jumlah_cuti_lalu + 12;
+		$data['jumlah_cuti_lalu'] = $jumlah_cuti_lalu;
+		$data['id_pegawai'] = $user_pemohon->id_pegawai;
+		$data['uri3'] = $uri3;
+		$data['uri4'] = $uri4;
+		$this->template->load('sitas/template_form','sitas/input_sebelum_cuti',$data);
+	}
+	function proses_cuti_sebelum(){
+		$id_pegawai = _POST('id_pegawai');
+		$jumlah = _POST('jumlah');
+		$pejabat_atasan_langsung = _POST('pejabat_atasan_langsung');
+		$uri3 = _POST('uri3');
+		$uri4 = _POST('uri4');
+		if(get_kode_uniks($uri3) == $uri4){
+			$pejabat_atasan = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai=$pejabat_atasan_langsung")->row();
+			$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$id_pegawai")->num_rows();
+			$no_wa = substr_replace($pejabat_atasan->no_hp,62,0,1);
+            $links = base_url('primer/verif_cuti2/'.$uri3.'/'.$uri4);
+            $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+			if($cek_cuti_lalu > 0){
+				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
+				$this->model_sitas->update_data("cuti_sebelum","id_pegawai",$id_pegawai,$data);
+				redirect('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
+			} else {
+				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
+				$this->model_sitas->saveData("cuti_sebelum",$data);
+				//$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+				redirect('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
+			}
+		} else {
+			echo "Sori Yeee wkwkwk";
+		}
 	}
     function logout(){
 		$this->session->sess_destroy();

@@ -105,6 +105,14 @@ class Nonlogin extends CI_Controller
         echo "zonk";
     }
   }
+  public function status_cuti(){
+    $uri3 = $this->uri->segment(3);
+    $rowx = $this->bsip->rowDataBy("*","trs_cuti","id_cuti = $uri3")->row();
+    $data['bio'] = $this->bsip->rowDataBy("*","pegawai","id_pegawai='$rowx->username'")->row();
+    $data['jns_cuti'] = $this->bsip->rowDataBy("*","jenis_cuti","id_jenis_cuti='$rowx->id_jenis_cuti'")->row();
+    $data['data'] = $rowx;
+    $this->load->view('preview/status_cuti',$data);
+  }
   public function tes_wa_gateway(){
     $nox = "6281282410448";
     $pesan = "tes kirim";
