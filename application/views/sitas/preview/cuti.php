@@ -48,7 +48,7 @@ if($bio->gol == ""){
     <tr>
         <td></td>
         <td></td>
-        <td colspan="2" style="text-align:left">Yth. Kepala BPSIP Jawa Timur</td>
+        <td colspan="2" style="text-align:left">Yth. Kepala BPSI Tanaman Pemanis dan Serat</td>
     </tr>
     <tr>
         <td></td>
@@ -109,13 +109,13 @@ if($bio->gol == ""){
     <tr>
         <td>&nbsp;3. Cuti Sakit</td>
         <td style="text-align:center"><?php if($data->id_jenis_cuti == 3){ echo "v"; } ?></td>
-        <td>4. Cuti Melahirkan</td>
+        <td>&nbsp;4. Cuti Melahirkan</td>
         <td style="text-align:center"><?php if($data->id_jenis_cuti == 4){ echo "v"; } ?></td>
     </tr>
     <tr>
         <td>&nbsp;5. Cuti Karena Alasan Penting</td>
         <td style="text-align:center"><?php if($data->id_jenis_cuti == 5){ echo "v"; } ?></td>
-        <td>6. Cuti diluar Tanggungan Negara</td>
+        <td>&nbsp;6. Cuti diluar Tanggungan Negara</td>
         <td style="text-align:center"><?php if($data->id_jenis_cuti == 6){ echo "v"; } ?></td>
     </tr>
 </table>
@@ -184,7 +184,7 @@ if($bio->gol == ""){
     <tr>
         <td style="height:5%;vertical-align:top"><?= wordwrap($data->alamat_cuti,25,"<br>") ?></td>
         <td style="text-align:center" colspan="2">
-            Hormat saya,<br><br><br><br><u><?= $bio->nama ?></u><br>NIP.<?= $nipx ?>
+            Hormat saya,<br><br><br><br><u><?= konversi_nama_peg($bio->nama) ?></u><br>NIP.<?= $nipx ?>
         </td>
     </tr>
 </table>
@@ -205,7 +205,7 @@ if($bio->gol == ""){
     <tr>
         <td colspan="3" style="height:5%;vertical-align:top"></td>
         <td style="text-align:center">
-            Atasan Langsung<br><br><br><br><br><u><?= $atasan_langsung->nama ?></u><br>NIP.<?= $atasan_langsung->nip ?>
+            Atasan Langsung<br><br><br><br><br><u><?= konversi_nama_peg($atasan_langsung->nama) ?></u><br>NIP.<?= $atasan_langsung->nip ?>
         </td>
     </tr>
 </table>
@@ -218,19 +218,19 @@ if($bio->gol == ""){
         <td style="width:40%">TIDAK DISETUJUI</td>
     </tr>
     <tr>
-        <td style="text-align:center">v</td>
-        <td style="text-align:center"></td>
-        <td style="text-align:center"></td>
-        <td style="text-align:center"></td>
+        <td style="text-align:center"><?php if($data->verif_atasan == 1){ echo "v"; } ?></td>
+        <td style="text-align:center"><?php if($data->verif_atasan == 2){ echo "v"; } ?></td>
+        <td style="text-align:center"><?php if($data->verif_atasan == 3){ echo "v"; } ?></td>
+        <td style="text-align:center"><?php if($data->verif_atasan == 4){ echo "v"; } ?></td>
     </tr>
     <tr>
         <td colspan="3" style="height:5%;vertical-align:middle;text-align:center">
-        <?php if($data->verif_atasan_langsung == 1){ ?>
+        <?php if($data->verif_atasan == 1){ ?>
         <img style="height:100px;width:auto" src="<?= base_url() ?>assets/qr_code/cuti_<?= $data->id_cuti ?>.png">
         <?php } ?>
         </td>
         <td style="text-align:center">
-            Keputusan Pejabat<br>Berwenang Memberikan Cuti<br><br><br><br><br><u><?= $atasan->nama ?></u><br>NIP.<?= $atasan->nip ?>
+            Keputusan Pejabat<br>Berwenang Memberikan Cuti<br><br><br><br><br><u><?= konversi_nama_peg($atasan->nama) ?></u><br>NIP.<?= $atasan->nip ?>
         </td>
     </tr>
 </table>

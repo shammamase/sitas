@@ -220,6 +220,25 @@
                       </p>
                     </a>
                   </li>
+                  <?php
+                  $list_user_atasan = $this->model_sitas->listDataBy("b.username",
+                                      "struktur_organisasi a inner join user b on a.id_pegawai=b.id_pegawai",
+                                      "a.id_struktur in (1,2,3,4)","a.id_struktur asc");
+                  $user_atasan = array();
+                  foreach($list_user_atasan as $lua){
+                      array_push($user_atasan,$lua->username);
+                  }
+                  if(in_array($username,$user_atasan)){
+                  ?>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>sekunder/list_verif_cuti2" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Verif Cuti (Atasan Langsung)
+                      </p>
+                    </a>
+                  </li>
+                  <?php } ?>
                   <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/logbook" class="nav-link">
                       <i class="fa fa-list"></i>

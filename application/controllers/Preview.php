@@ -239,7 +239,14 @@ class Preview extends CI_Controller {
           $data['data'] = $qw_spt;
           $data['n'] = 12 - $jml_thn_ini->jml;
           if($jml_thn_lalu->jml==null){
-            $data['n_1'] = 0;
+            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai");
+            $cek_cuti_lalu = $cuti_lalu->num_rows();
+            if($cek_cuti_lalu > 0){
+              $row_cuti_lalu = $cuti_lalu->row();
+              $data['n_1'] = $row_cuti_lalu->jumlah;
+            } else {
+              $data['n_1'] = 0;
+            }
           } else {
             $data['n_1'] = $jml_thn_lalu->jml;
           }

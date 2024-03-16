@@ -1388,7 +1388,7 @@ class Primer extends CI_Controller {
 		$is_before = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai = $id_pemohon->id_pegawai")->num_rows();
 		if($is_before > 0){
 			$no_wa = substr_replace($pjb_atasan->no_hp,62,0,1);
-            $links = base_url('primer/verif_cuti2/'.$uri3.'/'.$uri4);
+            $links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
             $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
             //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 			echo $no_wa."-----".$pesan;
@@ -1900,7 +1900,7 @@ class Primer extends CI_Controller {
 			$pejabat_atasan = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai=$pejabat_atasan_langsung")->row();
 			$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$id_pegawai")->num_rows();
 			$no_wa = substr_replace($pejabat_atasan->no_hp,62,0,1);
-            $links = base_url('primer/verif_cuti2/'.$uri3.'/'.$uri4);
+            $links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
             $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
 			if($cek_cuti_lalu > 0){
 				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
