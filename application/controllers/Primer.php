@@ -55,19 +55,37 @@ class Primer extends CI_Controller {
 
 	function home(){
 		cek_session_admin1();
+		$username = $this->session->username;
 		$thn = $this->session->tahun;
+		$get_kabalai = $this->model_sitas->get_verifikator_akhir();
+		$get_ktu = $this->model_sitas->get_verifikator_awal();
+		$kepeg = $this->model_sitas->listDataBy("a.id_pegawai,b.username","petugas_terima a inner join user b on a.id_pegawai=b.id_pegawai",
+				"menu = 'cuti'","a.id_petugas asc");
+		$tim_kepeg = array();
+		foreach($kepeg as $kp){
+			array_push($tim_kepeg,$kp->username);
+		}
+		$idn_peg_log = $this->model_sitas->get_user();
 		$data['thn'] = $thn;
 		$data['jml_v1'] = 0;//$this->model_more->daftar_spt_kabalai()->num_rows();
 		$data['jml_v2'] = $this->model_sitas->jmlDataBy("id_surat_keluar","surat_keluar","tanggal like '%$thn%' and id_verif1 != 0 and id_verif = 0");
 		$data['jml_v3'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","id_verifikasi = 0");
 		$data['jml_v4'] = $this->model_sitas->jmlDataBy("id_lap_spt","lap_spt","verif_kabalai = 0 and is_publish = 1");
-		$data['jml_v5'] = 0;
+		$data['jml_v5'] = $this->model_sitas->jmlDataBy("id_cuti","trs_cuti","verif_atasan_langsung = 1 and pejabat_atasan = 0");
 		$data['jml_surat_masuk'] = $this->model_sitas->jmlDataBy("id_surat_masuk","surat_masuk","tanggal_masuk like '%$thn%'");
 		$data['jml_surat_keluar'] = $this->model_sitas->jmlDataBy("id_surat_keluar","surat_keluar","no_surat_keluar != '' and tanggal like '%$thn%'");
 		$data['jml_surat'] = 0;//$this->model_more->daftar_surat()->num_rows();
-		$data['jml_spt'] = $this->model_sitas->jmlDataAll("id_spt","spt");
-		$data['jml_perjadin'] = $this->model_sitas->jmlDataAll("id_lap_spt","lap_spt");
+		$data['jml_spt'] = $this->model_sitas->jmlDataBy("id_spt","spt","tanggal like '%$thn%'");
+		$data['jml_perjadin'] = $this->model_sitas->jmlDataBy("id_lap_spt","lap_spt","tanggal_input like '%$thn%'");
 		$data['jml_anggaran'] = 0;//$this->db->query("select id_pengajuan from sijuara_simpan_pengajuan a
+		if(in_array($username,array($get_kabalai->username,$get_ktu->username))){
+			$data['jml_cuti'] = $this->model_sitas->jmlDataBy("id_cuti","trs_cuti","tgl_mulai like '%$thn%'");
+		} else if(in_array($username,$tim_kepeg)){
+			$data['jml_cuti'] = $this->model_sitas->jmlDataBy("id_cuti","trs_cuti","tgl_mulai like '%$thn%'");
+		} else {
+			$data['jml_cuti'] = $this->model_sitas->jmlDataBy("id_cuti","trs_cuti",
+								"tgl_mulai like '%$thn%' and pejabat_atasan_langsung = $idn_peg_log->id_pegawai or username = '$username'");
+		}
 		/*									
 		inner join sijuara_detil b on a.id_detil=b.id_detil
 											inner join sijuara_subkomp c on b.id_subkomp=c.id_subkomp
@@ -1290,14 +1308,6 @@ class Primer extends CI_Controller {
             $tbl = "trs_cuti";
             $idx = "id_cuti";
             $this->model_sitas->save_all_wa($inp,$tbl,$idx);
-            /*
-			$atasanx = $this->input->post("atasan_langsung");
-            $no_peg = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai = $atasanx")->row();
-            $no_wa = substr_replace("$no_peg->no_hp",62,0,1);
-            $links = base_url('primer/verif_cuti2');
-            $pesan = "*Layanan Aplikasi* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
-            $this->model_sitas->kirim_wa($no_wa,$pesan);
-			*/
 			redirect('primer/buat_cuti');
         } else {
             if(empty($uri3)){
@@ -1385,19 +1395,36 @@ class Primer extends CI_Controller {
 		$cuti = $this->model_sitas->rowDataBy("*","trs_cuti","id_cuti = $uri3")->row();
 		$pjb_atasan = $this->model_sitas->rowDataBy("nama,no_hp","pegawai","id_pegawai=$cuti->pejabat_atasan_langsung")->row();
 		$id_pemohon = $this->model_sitas->get_user_by($cuti->username);
+		$get_kabalai = $this->model_sitas->get_verifikator_akhir();
 		$is_before = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai = $id_pemohon->id_pegawai")->num_rows();
 		if($is_before > 0){
-			$no_wa = substr_replace($pjb_atasan->no_hp,62,0,1);
-            $links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
-            $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
-            //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-			echo $no_wa."-----".$pesan;
+			if($cuti->verif_atasan_langsung == 1){
+				if($cuti->verif_atasan == 1){
+					$this->load->view('sitas/verif_surat/setuju');
+				} else {
+					$no_wa = substr_replace($get_kabalai->no_hp,62,0,1);
+					$links = base_url('sekunder/verif_cuti/'.$uri3.'/'.$uri4);
+					$pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+					$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+					//echo $no_wa."-----".$pesan;
+					redirect('primer/buat_cuti');
+				}
+			} else {
+				$no_wa = substr_replace($pjb_atasan->no_hp,62,0,1);
+				$links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
+				//$links = base_url('sekunder/list_verif_cuti2/'.$uri3.'/'.$uri4);
+				$pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+				$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+				//echo $no_wa."-----".$pesan;
+				redirect('primer/buat_cuti');
+			}
 		} else {
 			$no_wa = substr_replace($kepeg->no_hp,62,0,1);
             $links = base_url('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
             $pesan = "*Layanan Aplikasi BSIP TAS* Tentukan jumlah cuti pegawai sebelumnya, dengan klik link berikut $links";
-            //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-			echo $no_wa."-----".$pesan;
+            $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+			//echo $no_wa."-----".$pesan;
+			redirect('primer/buat_cuti');
 		}
 	}
     public function drive(){
@@ -1462,16 +1489,6 @@ class Primer extends CI_Controller {
 	    $data['thn'] = $this->session->tahun;
 	    $data['user'] = $user;
         $this->template->load('sitas/template_form','sitas/logbook',$data);
-	}
-	function logbook_detail(){
-	    $waktu = $this->uri->segment(3);
-	    $user = $this->uri->segment(4);
-	    $data['waktu'] = $waktu;
-	    $data['username'] = $user;
-	    $data['bio'] = $this->db->query("select a.* from pegawai a 
-	                                    inner join user b on a.id_pegawai=b.id_pegawai
-	                                    where b.username='$user'")->row();
-	    $this->template->load('sitas/template_form','sitas/logbook_detail',$data);
 	}
     function verif_spt(){
 	    cek_session_admin1();
@@ -1900,7 +1917,8 @@ class Primer extends CI_Controller {
 			$pejabat_atasan = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai=$pejabat_atasan_langsung")->row();
 			$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$id_pegawai")->num_rows();
 			$no_wa = substr_replace($pejabat_atasan->no_hp,62,0,1);
-            $links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
+            //$links = base_url('sekunder/list_verif_cuti2/'.$uri3.'/'.$uri4);
+			$links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
             $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
 			if($cek_cuti_lalu > 0){
 				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
@@ -1909,7 +1927,8 @@ class Primer extends CI_Controller {
 			} else {
 				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
 				$this->model_sitas->saveData("cuti_sebelum",$data);
-				//$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+				$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+				//echo $no_wa."---".$pesan;
 				redirect('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
 			}
 		} else {

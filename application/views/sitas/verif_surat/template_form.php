@@ -134,6 +134,14 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>sekunder/list_verif_cuti" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Verifikasi Cuti
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/ganti_password" class="nav-link">
                       <i class="fa fa-key"></i>
                       <p>

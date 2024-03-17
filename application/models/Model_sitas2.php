@@ -38,13 +38,13 @@ class Model_sitas2 extends CI_model{
         $nor = 0;
         foreach($dtx as $dt){
             if($dt->verif_atasan_langsung != 0){
-                $verif_atasan_langsung = $this->model_silayak2->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan_langsung")->row();
+                $verif_atasan_langsung = $this->model_sitas->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan_langsung")->row();
                 $status_atasan_langsung = $verif_atasan_langsung->verif." Atasan Langsung";
             } else {
                 $status_atasan_langsung = "";
             }
             if($dt->verif_atasan != 0){
-                $verif_atasan = $this->model_silayak2->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan")->row();
+                $verif_atasan = $this->model_sitas->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan")->row();
                 $status_atasan = $verif_atasan->verif." Kepala Balai";
             } else {
                 $status_atasan = "";
@@ -119,13 +119,13 @@ class Model_sitas2 extends CI_model{
         $nor = 0;
         foreach($dtx as $dt){
             if($dt->verif_atasan_langsung != 0){
-                $verif_atasan_langsung = $this->model_silayak2->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan_langsung")->row();
+                $verif_atasan_langsung = $this->model_sitas->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan_langsung")->row();
                 $status_atasan_langsung = $verif_atasan_langsung->verif." Atasan Langsung";
             } else {
                 $status_atasan_langsung = "";
             }
             if($dt->verif_atasan != 0){
-                $verif_atasan = $this->model_silayak2->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan")->row();
+                $verif_atasan = $this->model_sitas->rowDataBy("*","verif_cuti","id_verif_atasan = $dt->verif_atasan")->row();
                 $status_atasan = $verif_atasan->verif." Kepala Balai";
             } else {
                 $status_atasan = "";

@@ -17,7 +17,7 @@
       </div>
         <div class="card-body">
           <div style="text-align:center">
-            <img src="<?php echo base_url() ?>assets/valid.png">
+            <img src="<?php echo base_url() ?>asset/valid.png">
           </div>
           <table style="margin-top:20px" class="table table-striped">
             <thead>
@@ -37,7 +37,7 @@
               </tr>
               <tr>
                 <td>Lama Cuti</td>
-                <td><?php echo $data->lama_cuti ?></td>
+                <td><?php echo $data->lama_cuti ?> Hari</td>
               </tr>
               <tr>
                 <td>Tanggal Mulai Cuti</td>

@@ -255,6 +255,7 @@ class Preview extends CI_Controller {
           } else {
             $data['n_2'] = $jml_thn_lalux->jml;
           }
+          $data['kabalai'] = $this->model_sitas->get_verifikator_akhir();
           $data['bio'] = $this->model_sitas->rowDataBy("*","pegawai","id_pegawai=$get_peg->id_pegawai")->row();
           $data['atasan_langsung'] = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$qw_spt->pejabat_atasan_langsung")->row();
           $data['atasan'] = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$pjb->id_pegawai")->row();

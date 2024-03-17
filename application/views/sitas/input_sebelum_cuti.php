@@ -22,7 +22,11 @@
                                 <td><?= $alasan ?></td>
                                 <td><?= tgl_indoo($tanggal) ?> (<b><?= $lama ?> Hari</b>)</td>
                                 <td><?= $sisa ?></td>
-                                <td></td>
+                                <td>
+                                    <a target="_blank" href="<?= base_url() ?>preview/cuti/<?= $uri3 ?>/<?= $uri4 ?>">
+                                    <i class="fa fa-file-pdf"> PDF</i>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -37,7 +41,7 @@
                         <input type="hidden" name="uri4" value="<?= $uri4 ?>">
                         <input type="hidden" name="pejabat_atasan_langsung" value="<?= $pejabat_atasan_langsung ?>">
                         <div class="form-group">
-                            <input type="submit" name="simpan" class="btn btn-primary" value="Submit">
+                            <input type="submit" name="simpan" class="btn btn-primary btn-block" value="Submit">
                         </div>
                     </form>
                 </div>

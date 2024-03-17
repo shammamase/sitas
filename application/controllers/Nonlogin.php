@@ -107,11 +107,12 @@ class Nonlogin extends CI_Controller
   }
   public function status_cuti(){
     $uri3 = $this->uri->segment(3);
-    $rowx = $this->bsip->rowDataBy("*","trs_cuti","id_cuti = $uri3")->row();
-    $data['bio'] = $this->bsip->rowDataBy("*","pegawai","id_pegawai='$rowx->username'")->row();
-    $data['jns_cuti'] = $this->bsip->rowDataBy("*","jenis_cuti","id_jenis_cuti='$rowx->id_jenis_cuti'")->row();
+    $rowx = $this->model_sitas->rowDataBy("*","trs_cuti","id_cuti = $uri3")->row();
+    $idn_pemohon = $this->model_sitas->get_user_by($rowx->username);
+    $data['bio'] = $this->model_sitas->rowDataBy("*","pegawai","id_pegawai=$idn_pemohon->id_pegawai")->row();
+    $data['jns_cuti'] = $this->model_sitas->rowDataBy("*","jenis_cuti","id_jenis_cuti='$rowx->id_jenis_cuti'")->row();
     $data['data'] = $rowx;
-    $this->load->view('preview/status_cuti',$data);
+    $this->load->view('sitas/preview/status_cuti',$data);
   }
   public function tes_wa_gateway(){
     $nox = "6281282410448";

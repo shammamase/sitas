@@ -34,10 +34,35 @@ if($bio->gol == ""){
     </tr>
     <tr>
         <td></td>
-        <td style="text-align:right">Malang, <?= tgl_indoo($data->tgl_input) ?></td>
+        <td style="text-align:left">Malang, <?= tgl_indoo($data->tgl_input) ?></td>
         <td></td>
         <td></td>
     </tr>
+    <?php if($kabalai->id_pegawai == $bio->id_pegawai){ ?>
+    <!--
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:left">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Kepada</td>
+    </tr>
+    -->
+    <tr>
+        <td></td>
+        <td style="text-align:left">Yth. Kepala Pusat Standardisasi Instrumen Perkebunan</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <!--
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:left">Melalui Kasubag Tata Usaha</td>
+    </tr>
+    -->
+    <?php } else { ?>
+    <!--
     <tr>
         <td></td>
         <td></td>
@@ -55,6 +80,27 @@ if($bio->gol == ""){
         <td></td>
         <td colspan="2" style="text-align:left">Melalui Kasubag Tata Usaha</td>
     </tr>
+    -->
+    <tr>
+        <td></td>
+        <td style="text-align:left">Kepada</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="text-align:left">Yth. Kepala BPSI Tanaman Pemanis dan Serat</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="text-align:left">Melalui Kasubag Tata Usaha</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <?php } ?>
+    <!--
     <tr>
         <td></td>
         <td></td>
@@ -62,6 +108,31 @@ if($bio->gol == ""){
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Di</td>
     </tr>
+    -->
+    <tr>
+        <td></td>
+        <td style="text-align:left">Di</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <?php if($kabalai->id_pegawai==$bio->id_pegawai){?>
+    <!--
+    <tr>
+        <td></td>
+        <td></td>
+        <td colspan="2" style="text-align:left">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Bogor</td>
+    </tr>
+    -->
+    <tr>
+        <td></td>
+        <td style="text-align:left">Bogor</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <?php } else { ?>
+    <!--
     <tr>
         <td></td>
         <td></td>
@@ -69,6 +140,14 @@ if($bio->gol == ""){
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Malang</td>
     </tr>
+    -->
+    <tr>
+        <td></td>
+        <td style="text-align:left">Malang</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <?php } ?>
     <tr>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -81,7 +160,7 @@ if($bio->gol == ""){
     <tr><td colspan="4"><b>I. DATA PEGAWAI</b></td></tr>
     <tr>
         <td style="width:10%">&nbsp;Nama</td>
-        <td style="width:40%">&nbsp;<?= $bio->nama ?></td>
+        <td style="width:40%">&nbsp;<?= konversi_nama_peg($bio->nama) ?></td>
         <td style="width:10%">&nbsp;NIP</td>
         <td style="width:40%">&nbsp;<?= $nipx ?></td>
     </tr>
@@ -196,17 +275,43 @@ if($bio->gol == ""){
         <td style="width:20%">DITANGGUHKAN</td>
         <td style="width:40%">TIDAK DISETUJUI</td>
     </tr>
+    <?php if($kabalai->id_pegawai == $bio->id_pegawai){ ?>
     <tr>
+        <td style="text-align:center;height:10px"></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
+    </tr>
+    <?php } else { ?>
+     <tr>
         <td style="text-align:center"><?php if($data->verif_atasan_langsung == 1){ echo "v"; } ?></td>
         <td style="text-align:center"><?php if($data->verif_atasan_langsung == 2){ echo "v"; } ?></td>
         <td style="text-align:center"><?php if($data->verif_atasan_langsung == 3){ echo "v"; } ?></td>
         <td style="text-align:center"><?php if($data->verif_atasan_langsung == 4){ echo "v"; } ?></td>
     </tr>
+    <?php } ?>
     <tr>
         <td colspan="3" style="height:5%;vertical-align:top"></td>
+        <?php if($kabalai->id_pegawai==$bio->id_pegawai){ ?>
+        <td style="text-align:left">
+            <br><br><br><br><br>
+            &nbsp;(
+            <u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+            )
+            <br>&nbsp;NIP.
+        </td>
+        <?php } else { ?>
         <td style="text-align:center">
             Atasan Langsung<br><br><br><br><br><u><?= konversi_nama_peg($atasan_langsung->nama) ?></u><br>NIP.<?= $atasan_langsung->nip ?>
         </td>
+        <?php } ?>
     </tr>
 </table>
 <table style='margin-left:10px;margin-top:10px;width:95%;border-collapse:collapse' border='1'>
@@ -217,20 +322,46 @@ if($bio->gol == ""){
         <td style="width:20%">DITANGGUHKAN</td>
         <td style="width:40%">TIDAK DISETUJUI</td>
     </tr>
+    <?php if($kabalai->id_pegawai == $bio->id_pegawai){ ?>
+    <tr>
+        <td style="text-align:center;height:10px"></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
+        <td style="text-align:center"></td>
+    </tr>
+    <?php } else { ?>
     <tr>
         <td style="text-align:center"><?php if($data->verif_atasan == 1){ echo "v"; } ?></td>
         <td style="text-align:center"><?php if($data->verif_atasan == 2){ echo "v"; } ?></td>
         <td style="text-align:center"><?php if($data->verif_atasan == 3){ echo "v"; } ?></td>
         <td style="text-align:center"><?php if($data->verif_atasan == 4){ echo "v"; } ?></td>
     </tr>
+    <?php } ?>
     <tr>
         <td colspan="3" style="height:5%;vertical-align:middle;text-align:center">
         <?php if($data->verif_atasan == 1){ ?>
-        <img style="height:100px;width:auto" src="<?= base_url() ?>assets/qr_code/cuti_<?= $data->id_cuti ?>.png">
+        <img style="height:100px;width:auto" src="<?= base_url() ?>asset/qr_code/cuti_<?= $data->id_cuti ?>.png">
         <?php } ?>
         </td>
+        <?php if($kabalai->id_pegawai==$bio->id_pegawai){ ?>
+        <td style="text-align:left">
+            <br><br><br><br><br>
+            &nbsp;(
+            <u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+            )
+            <br>&nbsp;NIP.
+        </td>
+        <?php } else { ?>
         <td style="text-align:center">
             Keputusan Pejabat<br>Berwenang Memberikan Cuti<br><br><br><br><br><u><?= konversi_nama_peg($atasan->nama) ?></u><br>NIP.<?= $atasan->nip ?>
         </td>
+        <?php } ?>
     </tr>
 </table>
