@@ -31,12 +31,19 @@ class Sekunder extends CI_Controller {
         $tahun_ini = $rowx->tahun;
         $tahun_lalu = $tahun_ini - 1;
         $tahun_lalux = $tahun_ini - 2;
+        $cuti_thn_ini = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai and tahun='$tahun_ini'");
+        $cek_cuti_thn_ini = $cuti_thn_ini->num_rows();
         $jml_thn_ini = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_ini")->row();
         $jml_thn_lalu = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalu")->row();
         $jml_thn_lalux = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalux")->row();
-        $data['n'] = 12 - $jml_thn_ini->jml;
+        if($cek_cuti_thn_ini > 0){
+          $row_cuti_ini = $cuti_thn_ini->row();
+          $data['n'] = $row_cuti_ini->jumlah - $jml_thn_ini->jml;
+        } else {
+          $data['n'] = 12 - $jml_thn_ini->jml;
+        }
           if($jml_thn_lalu->jml==null){
-            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai");
+            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai and tahun='$tahun_lalu'");
             $cek_cuti_lalu = $cuti_lalu->num_rows();
             if($cek_cuti_lalu > 0){
               $row_cuti_lalu = $cuti_lalu->row();
@@ -48,7 +55,14 @@ class Sekunder extends CI_Controller {
             $data['n_1'] = $jml_thn_lalu->jml;
           }
           if($jml_thn_lalux->jml==null){
-            $data['n_2'] = 0;
+            $cuti_lalux = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai and tahun='$tahun_lalux'");
+            $cek_cuti_lalux = $cuti_lalux->num_rows();
+            if($cek_cuti_lalux > 0){
+              $row_cuti_lalux = $cuti_lalux->row();
+              $data['n_2'] = $row_cuti_lalux->jumlah;
+            } else {
+              $data['n_2'] = 0;
+            }
           } else {
             $data['n_2'] = $jml_thn_lalux->jml;
           }
@@ -132,12 +146,19 @@ class Sekunder extends CI_Controller {
         $tahun_ini = $rowx->tahun;
         $tahun_lalu = $tahun_ini - 1;
         $tahun_lalux = $tahun_ini - 2;
+        $cuti_thn_ini = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_pemohon->id_pegawai and tahun='$tahun_ini'");
+        $cek_cuti_thn_ini = $cuti_thn_ini->num_rows();
         $jml_thn_ini = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_ini")->row();
         $jml_thn_lalu = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalu")->row();
         $jml_thn_lalux = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalux")->row();
-        $data['n'] = 12 - $jml_thn_ini->jml;
+        if($cek_cuti_thn_ini > 0){
+          $row_cuti_ini = $cuti_thn_ini->row();
+          $data['n'] = $row_cuti_ini->jumlah - $jml_thn_ini->jml;
+        } else {
+          $data['n'] = 12 - $jml_thn_ini->jml;
+        }
           if($jml_thn_lalu->jml==null){
-            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai");
+            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_pemohon->id_pegawai and tahun='$tahun_lalu'");
             $cek_cuti_lalu = $cuti_lalu->num_rows();
             if($cek_cuti_lalu > 0){
               $row_cuti_lalu = $cuti_lalu->row();
@@ -149,7 +170,14 @@ class Sekunder extends CI_Controller {
             $data['n_1'] = $jml_thn_lalu->jml;
           }
           if($jml_thn_lalux->jml==null){
-            $data['n_2'] = 0;
+            $cuti_lalux = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_pemohon->id_pegawai and tahun='$tahun_lalux'");
+            $cek_cuti_lalux = $cuti_lalux->num_rows();
+            if($cek_cuti_lalux > 0){
+              $row_cuti_lalux = $cuti_lalux->row();
+              $data['n_2'] = $row_cuti_lalux->jumlah;
+            } else {
+              $data['n_2'] = 0;
+            }
           } else {
             $data['n_2'] = $jml_thn_lalux->jml;
           }
