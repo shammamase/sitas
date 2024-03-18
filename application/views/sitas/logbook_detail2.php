@@ -247,7 +247,7 @@ $jml_surat_keluar = count($surat_keluar);
                     <td><?= $tm->alamat ?></td>
                     <td><?= $tm->maksud_tujuan ?></td>
                     <td><?= tgl_indoo(substr($tm->waktu,0,11))  ?></td>
-                    <td><img src=<?= base_url()."asset/foto_tamu/".$tm->foto_tamu ?>></td>
+                    <td><img style="height:100px;width:auto" src="<?= base_url()."asset/foto_tamu/".$tm->foto_tamu ?>.jpg"></td>
                 </tr>
                 <?php $no_tm++; } ?>
             </tbody>
