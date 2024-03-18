@@ -1886,47 +1886,68 @@ class Primer extends CI_Controller {
 	function input_cuti_sebelum(){
 		$uri3 = $this->uri->segment(3);
 		$uri4 = $this->uri->segment(4);
+		$tahun = $this->session->tahun;
 		$cuti = $this->model_sitas->rowDataBy("*","trs_cuti","id_cuti=$uri3")->row();
 		$user_pemohon = $this->model_sitas->get_user_by($cuti->username);
 		$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai")->num_rows();
+		$tahun_ini = $tahun;
+		$tahun_lalu = $tahun - 1;
+		$dua_tahun_lalu = $tahun - 2;
 		if($cek_cuti_lalu > 0){
-			$cuti_lalu = $this->model_sitas->rowDataBy("jumlah","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai")->row();
+			$cuti_ini = $this->model_sitas->rowDataBy("jumlah","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai and tahun='$tahun_ini'")->row();
+			$cuti_lalu = $this->model_sitas->rowDataBy("jumlah","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai and tahun='$tahun_lalu'")->row();
+			$cuti_lalu_sekali = $this->model_sitas->rowDataBy("jumlah","cuti_sebelum","id_pegawai=$user_pemohon->id_pegawai and tahun='$dua_tahun_lalu'")->row();
+			$jumlah_cuti_ini = $cuti_ini->jumlah;
 			$jumlah_cuti_lalu = $cuti_lalu->jumlah;
+			$jumlah_cuti_lalu_sekali = $cuti_lalu_sekali->jumlah;
 		} else {
+			$jumlah_cuti_ini = 0;
 			$jumlah_cuti_lalu = 0;
+			$jumlah_cuti_lalu_sekali = 0;
 		}
 		$data['nama'] = $user_pemohon->nama;
 		$data['alasan'] = $cuti->alasan_cuti;
 		$data['tanggal'] = $cuti->tgl_mulai;
 		$data['lama'] = $cuti->lama_cuti;
 		$data['pejabat_atasan_langsung'] = $cuti->pejabat_atasan_langsung;
-		$data['sisa'] = $jumlah_cuti_lalu + 12;
+		$data['sisa'] = $jumlah_cuti_ini + $jumlah_cuti_lalu + $jumlah_cuti_lalu_sekali - $cuti->lama_cuti;
+		$data['jumlah_cuti_ini'] = $jumlah_cuti_ini;
 		$data['jumlah_cuti_lalu'] = $jumlah_cuti_lalu;
+		$data['jumlah_cuti_lalu_sekali'] = $jumlah_cuti_lalu_sekali;
 		$data['id_pegawai'] = $user_pemohon->id_pegawai;
 		$data['uri3'] = $uri3;
 		$data['uri4'] = $uri4;
+		$data['thn_lalu_sekali'] = $dua_tahun_lalu;
+		$data['thn_lalu'] = $tahun_lalu;
+		$data['thn_ini'] = $tahun_ini;
 		$this->template->load('sitas/template_form','sitas/input_sebelum_cuti',$data);
 	}
 	function proses_cuti_sebelum(){
 		$id_pegawai = _POST('id_pegawai');
-		$jumlah = _POST('jumlah');
 		$pejabat_atasan_langsung = _POST('pejabat_atasan_langsung');
 		$uri3 = _POST('uri3');
 		$uri4 = _POST('uri4');
+		$jumlah = $_POST['jumlah'];
+		$tahun = $_POST['thnx'];
 		if(get_kode_uniks($uri3) == $uri4){
 			$pejabat_atasan = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai=$pejabat_atasan_langsung")->row();
 			$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$id_pegawai")->num_rows();
 			$no_wa = substr_replace($pejabat_atasan->no_hp,62,0,1);
-            //$links = base_url('sekunder/list_verif_cuti2/'.$uri3.'/'.$uri4);
 			$links = base_url('sekunder/verif_cuti2/'.$uri3.'/'.$uri4);
             $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
 			if($cek_cuti_lalu > 0){
-				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
-				$this->model_sitas->update_data("cuti_sebelum","id_pegawai",$id_pegawai,$data);
+				for($yy = 0; $yy < $cek_cuti_lalu; $yy++){
+					$this->db->query("update cuti_sebelum set jumlah = $jumlah[$yy] where id_pegawai = $id_pegawai and tahun = $tahun[$yy]");
+				}
 				redirect('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
 			} else {
-				$data = array('id_pegawai'=>$id_pegawai,'jumlah'=>$jumlah);
-				$this->model_sitas->saveData("cuti_sebelum",$data);
+				$data = array();
+				$indx = 0;
+				foreach($jumlah as $jmlx){
+					array_push($data,array('id_pegawai'=>$id_pegawai,'jumlah'=>$jmlx,'tahun'=>$tahun[$indx]));
+					$indx++;
+				}
+				$this->model_sitas->saveDataBanyak('cuti_sebelum',$data);
 				$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 				//echo $no_wa."---".$pesan;
 				redirect('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);

@@ -33,12 +33,23 @@
                     <br>
                     <form method="post" action="<?= site_url('primer/proses_cuti_sebelum') ?>">
                         <div class="form-group">
-                            <label>Jumlah cuti sebelumnya</label>
-                            <input type="number" class="form-control" name="jumlah" value="<?= $jumlah_cuti_lalu ?>">
+                            <label>Jumlah sisa cuti 2022</label>
+                            <input type="number" class="form-control" name="jumlah[]" value="<?= $jumlah_cuti_lalu_sekali ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Jumlah sisa cuti 2023</label>
+                            <input type="number" class="form-control" name="jumlah[]" value="<?= $jumlah_cuti_lalu ?>">
+                        </div>
+                        <div class="form-group">
+                            <label>Jumlah sisa cuti 2024</label>
+                            <input type="number" class="form-control" name="jumlah[]" value="<?= $jumlah_cuti_ini ?>">
                         </div>
                         <input type="hidden" name="id_pegawai" value="<?= $id_pegawai ?>">
                         <input type="hidden" name="uri3" value="<?= $uri3 ?>">
                         <input type="hidden" name="uri4" value="<?= $uri4 ?>">
+                        <input type="hidden" name="thnx[]" value="<?= $thn_lalu_sekali?>">
+                        <input type="hidden" name="thnx[]" value="<?= $thn_lalu ?>">
+                        <input type="hidden" name="thnx[]" value="<?= $thn_ini ?>">
                         <input type="hidden" name="pejabat_atasan_langsung" value="<?= $pejabat_atasan_langsung ?>">
                         <div class="form-group">
                             <input type="submit" name="simpan" class="btn btn-primary btn-block" value="Submit">
