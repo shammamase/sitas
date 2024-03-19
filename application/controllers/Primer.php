@@ -1361,7 +1361,7 @@ class Primer extends CI_Controller {
                                         $send
                                         );
             }
-			$heads = array("No","Nama","Jenis Cuti","Alasan","Tanggal","Status","Aksi");
+			$heads = array("No","Nama","Jenis Cuti","Alasan","Tanggal","Sisa","Status","Aksi");
             $data['judul2'] = "Daftar Cuti Pegawai";
             $data['heads'] = $heads;
             $data['list'] = $dtx;
