@@ -6,7 +6,7 @@
                     <h3 class="card-title"><?= $judul ?></h3>
                 </div>
                 <div class="card-body">
-                    <form method="<?= $metod ?>" action="<?= $aktion ?>" enctype="<?= $enctype ?>">
+                    <form <?= $idx ?> method="<?= $metod ?>" action="<?= $aktion ?>" enctype="<?= $enctype ?>">
                         <?php
                             foreach($forms as $ls){
                                 if($ls[0] == "submit"){
@@ -123,11 +123,22 @@
 </div>
 
 <?php 
-if(empty($jsy)){
-    
-} else {
+if($uri2 == "buat_cuti"){
 ?>
-<script src="<?= $jsy ?>"></script>
+    <script>
+        function cekTanggal() {
+            var tanggalMulai = new Date(document.getElementById("tanggal_mulai").value);
+            var tanggalSelesai = new Date(document.getElementById("tanggal_selesai").value);
+
+            // Memeriksa apakah tanggal selesai lebih kecil dari tanggal mulai
+            if (tanggalSelesai < tanggalMulai) {
+                alert("Tanggal Selesai harus lebih besar dari Tanggal Mulai");
+                return false; // Menghentikan proses submit form
+            }
+            return true; // Lanjutkan proses submit form jika tanggal Selesai >= tanggal Mulai
+        }
+    </script>
+
 <?php
-}
+} 
 ?>

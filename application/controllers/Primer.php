@@ -1318,13 +1318,14 @@ class Primer extends CI_Controller {
                 $data['metod'] = "post";
                 $data['aktion'] = "";
                 $data['enctype'] = "";
+				$data['idx'] = "onsubmit='return cekTanggal()'";
                 // (type,name,value,placeholder,label,option (for select),required/readonly)
                 $data['forms'] = array(
                                         array("select","id_jenis_cuti","","Jenis Cuti","Jenis Cuti",$jn_cuti,"required"),
                                         array("textarea","alasan_cuti","","Masukkan Alasan Cuti","Masukkan Alasan Cuti","","required"),
                                         array("number","lama_cuti","","Lama Cuti","Lama Cuti","","required"),
-                                        array("date","tgl_mulai",$tgl,"Tanggal Mulai","Tanggal Mulai","","required"),
-                                        array("date","tgl_akhir",$tgl,"Tanggal Akhir","Tanggal Akhir","","required"),
+                                        array("date","tgl_mulai",$tgl,"Tanggal Mulai","Tanggal Mulai","","id='tanggal_mulai' required"),
+                                        array("date","tgl_akhir",$tgl,"Tanggal Akhir","Tanggal Akhir","","id='tanggal_selesai' required"),
                                         array("textarea","alamat_cuti","","Masukkan Alamat Cuti","Masukkan Alamat Cuti","","required"),
                                         array("select","pejabat_atasan_langsung","","Atasan Langsung","Atasan Langsung",$atasan,"required"),
                                         array("hidden","tgl_input",$tgl_wkt,"","","",""),
@@ -1340,6 +1341,7 @@ class Primer extends CI_Controller {
                 $data['metod'] = "post";
                 $data['aktion'] = "";
                 $data['enctype'] = "";
+				$data['idx'] = "onsubmit='return cekTanggal()'";
                 if($qwx->verif_atasan_langsung != 1){
                     $send = array("submit","submit","Simpan","","","","");
                 } else {
@@ -1350,8 +1352,8 @@ class Primer extends CI_Controller {
                                        array("select","id_jenis_cuti","","Jenis Cuti","Jenis Cuti",$jn_cutix,"required"),
                                         array("textarea","alasan_cuti",$qwx->alasan_cuti,"Masukkan Alasan Cuti","Masukkan Alasan Cuti","","required"),
                                         array("text","lama_cuti",$qwx->lama_cuti,"Lama Cuti","Lama Cuti","","required"),
-                                        array("date","tgl_mulai",$qwx->tgl_mulai,"Tanggal Mulai","Tanggal Mulai","","required"),
-                                        array("date","tgl_akhir",$qwx->tgl_akhir,"Tanggal Akhir","Tanggal Akhir","","required"),
+                                        array("date","tgl_mulai",$qwx->tgl_mulai,"Tanggal Mulai","Tanggal Mulai","","id='tanggal_mulai' required"),
+                                        array("date","tgl_akhir",$qwx->tgl_akhir,"Tanggal Akhir","Tanggal Akhir","","id='tanggal_selesai' required"),
                                         array("textarea","alamat_cuti",$qwx->alamat_cuti,"Masukkan Alamat Cuti","Masukkan Alamat Cuti","","required"),
                                         array("select","pejabat_atasan_langsung","","Atasan Langsung","Atasan Langsung",$atasan_selex,"required"),
                                         array("hidden","tgl_input",$qwx->tgl_input,"","","",""),
@@ -1371,7 +1373,8 @@ class Primer extends CI_Controller {
 						array("margin-top:2px","btn-sm","btn-danger","primer/delete_cuti/","<i class='fas fa-trash-alt'></i>","Hapus","return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ?')"),
 						array("","btn-sm","btn-warning","preview/cuti/","<i class='fas fa-file-pdf'></i>","PDF",""),
 						array("","btn-sm","btn-success","primer/ajukan_cuti/","<i class='fas fa-share'></i>","Ajukan","")
-						);   
+						);
+			$data['uri2'] = $this->uri->segment(2);
             $this->template->load('sitas/template_form','sitas/view_ini',$data);
         }
     }
