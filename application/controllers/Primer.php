@@ -1884,6 +1884,7 @@ class Primer extends CI_Controller {
 	    redirect('primer/verif_lap_spt');
 	}
 	function input_cuti_sebelum(){
+		cek_session_admin1();
 		$uri3 = $this->uri->segment(3);
 		$uri4 = $this->uri->segment(4);
 		$tahun = $this->session->tahun;
