@@ -1825,7 +1825,7 @@ class Primer extends CI_Controller {
 		$get_kabalai = $this->model_sitas->get_verifikator_akhir();
 		$no_hp = $get_kabalai->no_hp;
         $no_wa = substr_replace("$no_hp","62",0,1);
-		$links = base_url()."primer/verif_lap_spt_detail/".$uri3;
+		$links = base_url()."primer?redir=verif_lap_spt_detail/".$uri3;
         $pesan = "*Layanan Aplikasi BSIP TAS* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
 		$data = ['is_publish' => 1];
 		$this->model_sitas->update_data("lap_spt","id_spt",$uri3,$data);
