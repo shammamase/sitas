@@ -1423,7 +1423,7 @@ class Primer extends CI_Controller {
 			}
 		} else {
 			$no_wa = substr_replace($kepeg->no_hp,62,0,1);
-            $links = base_url('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
+            $links = base_url('primer?redir=input_cuti_sebelum/'.$uri3.'/'.$uri4);
             $pesan = "*Layanan Aplikasi BSIP TAS* Tentukan jumlah cuti pegawai sebelumnya, dengan klik link berikut $links";
             $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 			//echo $no_wa."-----".$pesan;
