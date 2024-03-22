@@ -34,7 +34,7 @@
             ?> 
             (<b><?= $row->lama_cuti ?> Hari</b>)</td>
         <td>
-            <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>sekunder/verif_cuti/<?php echo $row->id_cuti ?>/<?= get_kode_uniks($row->id_cuti) ?>"><i class='fas fa-file'></i> Verifikasi</a>
+            <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>primer/verif_cuti/<?php echo $row->id_cuti ?>/<?= get_kode_uniks($row->id_cuti) ?>"><i class='fas fa-file'></i> Verifikasi</a>
         </td>
       </tr>
      <?php

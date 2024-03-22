@@ -6,76 +6,19 @@ class Sekunder extends CI_Controller {
         $username = $this->session->username;
         $tahun = $this->session->tahun;
         $get_pegawai = $this->model_sitas->get_user_by($username);
-		$cek_list_cuti = $this->model_sitas->rowDataBy("*","trs_cuti","pejabat_atasan_langsung = $get_pegawai->id_pegawai")->num_rows();
-		if($cek_list_cuti > 0){
-            $data['rec'] = $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
-                            inner join user b on a.username=b.username 
-                            inner join pegawai c on b.id_pegawai=c.id_pegawai
-                            inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
-                            where pejabat_atasan_langsung = $get_pegawai->id_pegawai and verif_atasan_langsung = 0 order by a.id_cuti asc")->result();
-			$this->template->load('sitas/template_form','sitas/verif_surat/daftar_cuti2',$data);
-		} else {
-			$this->load->view('sitas/verif_surat/no_akses');
-		}
-    }
-    public function verif_cuti2(){
-        cek_session_admin1();
-        $uri3 = $this->uri->segment(3);
-        $uri4 = $this->uri->segment(4);
-        $rowx = $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
-                    inner join user b on a.username=b.username 
-                    inner join pegawai c on b.id_pegawai=c.id_pegawai
-                    inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
-                    where a.id_cuti = $uri3")->row();
-        $get_peg = $this->model_sitas->get_user_by($rowx->username);
-        $tahun_ini = $rowx->tahun;
-        $tahun_lalu = $tahun_ini - 1;
-        $tahun_lalux = $tahun_ini - 2;
-        $cuti_thn_ini = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai and tahun='$tahun_ini'");
-        $cek_cuti_thn_ini = $cuti_thn_ini->num_rows();
-        $jml_thn_ini = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_ini")->row();
-        $jml_thn_lalu = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalu")->row();
-        $jml_thn_lalux = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalux")->row();
-        if($cek_cuti_thn_ini > 0){
-          $row_cuti_ini = $cuti_thn_ini->row();
-          $data['n'] = $row_cuti_ini->jumlah - $jml_thn_ini->jml;
+        $cek_list_cuti = $this->model_sitas->rowDataBy("*","trs_cuti","pejabat_atasan_langsung = $get_pegawai->id_pegawai")->num_rows();
+        if($cek_list_cuti > 0){
+                $data['rec'] = $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
+                                inner join user b on a.username=b.username 
+                                inner join pegawai c on b.id_pegawai=c.id_pegawai
+                                inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
+                                where pejabat_atasan_langsung = $get_pegawai->id_pegawai and verif_atasan_langsung = 0 order by a.id_cuti asc")->result();
+          $this->template->load('sitas/template_form','sitas/verif_surat/daftar_cuti2',$data);
         } else {
-          $data['n'] = 12 - $jml_thn_ini->jml;
+          $this->load->view('sitas/verif_surat/no_akses');
         }
-          if($jml_thn_lalu->jml==null){
-            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai and tahun='$tahun_lalu'");
-            $cek_cuti_lalu = $cuti_lalu->num_rows();
-            if($cek_cuti_lalu > 0){
-              $row_cuti_lalu = $cuti_lalu->row();
-              $data['n_1'] = $row_cuti_lalu->jumlah;
-            } else {
-              $data['n_1'] = 0;
-            }
-          } else {
-            $data['n_1'] = $jml_thn_lalu->jml;
-          }
-          if($jml_thn_lalux->jml==null){
-            $cuti_lalux = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_peg->id_pegawai and tahun='$tahun_lalux'");
-            $cek_cuti_lalux = $cuti_lalux->num_rows();
-            if($cek_cuti_lalux > 0){
-              $row_cuti_lalux = $cuti_lalux->row();
-              $data['n_2'] = $row_cuti_lalux->jumlah;
-            } else {
-              $data['n_2'] = 0;
-            }
-          } else {
-            $data['n_2'] = $jml_thn_lalux->jml;
-          }
-        $data['uri3'] = $uri3;
-        $data['uri4'] = $uri4;
-        $data['rec'] = $rowx;
-        $data['tahun_ini'] = $tahun_ini;
-        $data['tahun_lalu'] = $tahun_lalu;
-        $data['tahun_lalux'] = $tahun_lalux;
-        $data['verif_cuti'] = $this->model_sitas->listData("*","verif_cuti","id_verif_atasan asc");
-        $data['id_pegawai'] = $get_peg->id_pegawai;
-		$this->template->load('sitas/template_form','sitas/verif_surat/verif_cuti2',$data);
     }
+    
     public function proses_verif_cuti2(){
         cek_session_admin1();
         $pjb_atasan = $this->model_sitas->get_verifikator_akhir();
@@ -95,7 +38,7 @@ class Sekunder extends CI_Controller {
                 $idn_pemohon = $this->model_sitas->get_user_by($cuti->username);
                 $this->model_sitas->update_data("trs_cuti","id_cuti",$uri3,$data);
                 $no_wa = substr_replace($idn_pemohon->no_hp,62,0,1);
-                $links = base_url('primer/buat_cuti');
+                $links = base_url('primer?redir=buat_cuti');
                 $pesan = "*Layanan Aplikasi BSIP TAS* Cuti anda telah diverifikasi, silahkan klik link berikut $links";
                 $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 			    //echo $no_wa."-----".$pesan;
@@ -106,7 +49,7 @@ class Sekunder extends CI_Controller {
                 );
                 $this->model_sitas->update_data("trs_cuti","id_cuti",$uri3,$data);
                 $no_wa = substr_replace($pjb_atasan->no_hp,62,0,1);
-                $links = base_url('sekunder/verif_cuti/'.$uri3.'/'.$uri4);
+                $links = base_url('primer?redir=verif_cuti/'.$uri3.'/'.$uri4);
                 $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
                 $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
                 //echo $no_wa."-----".$pesan;
@@ -121,77 +64,18 @@ class Sekunder extends CI_Controller {
         $tahun = $this->session->tahun;
         $username = $this->session->username;
         $get_kabalai = $this->model_sitas->get_verifikator_akhir();
-		if($username == $get_kabalai->username){
-            $data['rec'] = $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
-                            inner join user b on a.username=b.username 
-                            inner join pegawai c on b.id_pegawai=c.id_pegawai
-                            inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
-                            where verif_atasan_langsung = 1 and verif_atasan = 0 order by a.id_cuti asc")->result();
-			$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/daftar_cuti',$data);
-		} else {
-			$this->load->view('sitas/verif_surat/no_akses');
-		}
-    }
-    public function verif_cuti(){
-        cek_session_admin1();
-        $uri3 = $this->uri->segment(3);
-        $uri4 = $this->uri->segment(4);
-        $rowx = $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
-                    inner join user b on a.username=b.username 
-                    inner join pegawai c on b.id_pegawai=c.id_pegawai
-                    inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
-                    where a.id_cuti = $uri3")->row();
-        $get_peg = $this->model_sitas->get_verifikator_akhir();
-        $get_pemohon = $this->model_sitas->get_user_by($rowx->username);
-        $tahun_ini = $rowx->tahun;
-        $tahun_lalu = $tahun_ini - 1;
-        $tahun_lalux = $tahun_ini - 2;
-        $cuti_thn_ini = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_pemohon->id_pegawai and tahun='$tahun_ini'");
-        $cek_cuti_thn_ini = $cuti_thn_ini->num_rows();
-        $jml_thn_ini = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_ini")->row();
-        $jml_thn_lalu = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalu")->row();
-        $jml_thn_lalux = $this->model_sitas->rowDataBy("sum(lama_cuti) as jml","trs_cuti","username = '$rowx->username' and tahun = $tahun_lalux")->row();
-        if($cek_cuti_thn_ini > 0){
-          $row_cuti_ini = $cuti_thn_ini->row();
-          $data['n'] = $row_cuti_ini->jumlah - $jml_thn_ini->jml;
+        if($username == $get_kabalai->username){
+                $data['rec'] = $this->db->query("select a.*, c.nama, d.jenis_cuti from trs_cuti a 
+                                inner join user b on a.username=b.username 
+                                inner join pegawai c on b.id_pegawai=c.id_pegawai
+                                inner join jenis_cuti d on a.id_jenis_cuti=d.id_jenis_cuti
+                                where verif_atasan_langsung = 1 and verif_atasan = 0 order by a.id_cuti asc")->result();
+          $this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/daftar_cuti',$data);
         } else {
-          $data['n'] = 12 - $jml_thn_ini->jml;
+          $this->load->view('sitas/verif_surat/no_akses');
         }
-          if($jml_thn_lalu->jml==null){
-            $cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_pemohon->id_pegawai and tahun='$tahun_lalu'");
-            $cek_cuti_lalu = $cuti_lalu->num_rows();
-            if($cek_cuti_lalu > 0){
-              $row_cuti_lalu = $cuti_lalu->row();
-              $data['n_1'] = $row_cuti_lalu->jumlah;
-            } else {
-              $data['n_1'] = 0;
-            }
-          } else {
-            $data['n_1'] = $jml_thn_lalu->jml;
-          }
-          if($jml_thn_lalux->jml==null){
-            $cuti_lalux = $this->model_sitas->rowDataBy("id_pegawai,jumlah","cuti_sebelum","id_pegawai=$get_pemohon->id_pegawai and tahun='$tahun_lalux'");
-            $cek_cuti_lalux = $cuti_lalux->num_rows();
-            if($cek_cuti_lalux > 0){
-              $row_cuti_lalux = $cuti_lalux->row();
-              $data['n_2'] = $row_cuti_lalux->jumlah;
-            } else {
-              $data['n_2'] = 0;
-            }
-          } else {
-            $data['n_2'] = $jml_thn_lalux->jml;
-          }
-        $data['uri3'] = $uri3;
-        $data['uri4'] = $uri4;
-        $data['rec'] = $rowx;
-        $data['tahun_ini'] = $tahun_ini;
-        $data['tahun_lalu'] = $tahun_lalu;
-        $data['tahun_lalux'] = $tahun_lalux;
-        $data['verif_cuti'] = $this->model_sitas->listData("*","verif_cuti","id_verif_atasan asc");
-        $data['pejabat_atasan'] = $get_peg->id_pegawai;
-        $data['no_pemohon'] = $get_pemohon->no_hp;
-		$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_cuti',$data);
     }
+    
     public function proses_verif_cuti(){
         cek_session_admin1();
         $pjb_atasan = $this->model_sitas->get_verifikator_akhir();
@@ -206,7 +90,7 @@ class Sekunder extends CI_Controller {
             );
             $this->model_sitas->update_data("trs_cuti","id_cuti",$uri3,$data);
             $no_wa = substr_replace($no_pemohon,62,0,1);
-            $links = base_url('primer/buat_cuti');
+            $links = base_url('primer?redir=buat_cuti');
             $pesan = "*Layanan Aplikasi BSIP TAS* Cuti anda telah diverifikasi, silahkan klik link berikut $links";
             $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 			//echo $no_wa."-----".$pesan;
