@@ -210,7 +210,7 @@ class Sekunder extends CI_Controller {
             $pesan = "*Layanan Aplikasi BSIP TAS* Cuti anda telah diverifikasi, silahkan klik link berikut $links";
             $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 			//echo $no_wa."-----".$pesan;
-            //redirect('sekunder/list_verif_cuti');
+            redirect('sekunder/list_verif_cuti');
         } else {
             echo "Sori Yee wkwkwk";
         }
