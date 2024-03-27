@@ -64,7 +64,7 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-12 col-12" style="text-align:center;margin-bottom:10px"><img class="img-fluid" src="<?= base_url() ?>asset/gambar/logo_lintas1.png"></div>
+            <div class="col-lg-12 col-12" style="text-align:center;margin-bottom:10px"><img class="img-fluid" src="<?= base_url() ?>asset/gambar/logo_lintas3.png"></div>
             
             <div class="col-lg-12 col-12">
                 <div class="card">
