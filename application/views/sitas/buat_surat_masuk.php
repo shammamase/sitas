@@ -69,7 +69,7 @@
                   </select>
             </div>
             <div class="form-group">
-              <label>Upload File PDF : <?= $file_pdf ?></label>
+              <label>Upload File PDF (Batas Ukuran File 8 MB) : <?= $file_pdf ?></label>
               <input type="file" class="form-control" name="file_pdf">
             </div>
             <input type="hidden" name="status" value="<?= $status ?>">

@@ -195,7 +195,7 @@ class Model_sitas extends CI_model{
     function upload_surat_masuk($folder) {
         $config['upload_path'] = $folder;
         $config['allowed_types'] = 'pdf|jpg|jpeg|png';
-        $config['max_size'] = 4096; // ukuran maksimum dalam kilobita
+        $config['max_size'] = 8192; // ukuran maksimum dalam kilobita
         $config['file_name'] = uniqid(); // nama unik untuk file foto
         $this->upload->initialize($config);
 
