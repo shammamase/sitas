@@ -216,7 +216,7 @@ class Primer extends CI_Controller {
         if($id_surat_masuk == 0){
             //(tabel,data,folder_tujuan,folder_tujuan_compres)
             $this->model_sitas->saveDataWithFile("surat_masuk",$data,"asset/surat_masuk","");
-			//$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+			$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
         } else {
             $this->model_sitas->updateDataWithFile("surat_masuk","id_surat_masuk",$id_surat_masuk,$data,"asset/surat_masuk");
         }
