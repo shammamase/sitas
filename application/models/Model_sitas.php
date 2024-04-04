@@ -20,14 +20,20 @@ class Model_sitas extends CI_model{
     }
     function saveDataWithFile($tabel,$data,$folder,$folder_compres){
         $data['file_pdf'] = $this->upload_surat_masuk($folder);
+        $data['file_word'] = $this->upload_lampiran_word($folder);
         $this->db->insert($tabel, $data);
     }
     function updateDataWithFile($tabel,$kol,$val_kol,$data,$folder){
-        $row = $this->rowDataBy("file_pdf",$tabel,"$kol = $val_kol")->row();
-        if ($_FILES['file_pdf']['name']) {
+        $row = $this->rowDataBy("file_pdf,file_word",$tabel,"$kol = $val_kol")->row();
+        if($_FILES['file_pdf']['name']) {
             $path = "./".$folder."/";
             $this->hapus_pdf($path,$row->file_pdf);
             $data['file_pdf'] = $this->upload_surat_masuk($folder);
+        }
+        if($_FILES['file_word']['name']){
+            $path = "./".$folder."/";
+            $this->hapus_pdf($path,$row->file_word);
+            $data['file_word'] = $this->upload_lampiran_word($folder);
         }
         $this->db->where($kol, $val_kol);
         $this->db->update($tabel, $data);
@@ -203,6 +209,25 @@ class Model_sitas extends CI_model{
             // Jika upload gagal, tampilkan pesan error
             $error = $this->upload->display_errors();
             $this->form_validation->set_message('upload_pdf', $error);
+            return FALSE;
+        } else {
+            // Jika upload sukses, kembalikan nama file foto yang diunggah
+            $upload_data = $this->upload->data();
+            $file_name = $upload_data['file_name'];
+            return $file_name;
+        }
+    }
+    function upload_lampiran_word($folder) {
+        $config['upload_path'] = $folder;
+        $config['allowed_types'] = 'doc|docx|xls|xlsx';
+        $config['max_size'] = 8192; // ukuran maksimum dalam kilobita
+        $config['file_name'] = uniqid(); // nama unik untuk file foto
+        $this->upload->initialize($config);
+
+        if (!$this->upload->do_upload('file_word')) {
+            // Jika upload gagal, tampilkan pesan error
+            $error = $this->upload->display_errors();
+            $this->form_validation->set_message('upload_word', $error);
             return FALSE;
         } else {
             // Jika upload sukses, kembalikan nama file foto yang diunggah

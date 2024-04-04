@@ -72,6 +72,10 @@
               <label>Upload File PDF (Batas Ukuran File 8 MB) : <?= $file_pdf ?></label>
               <input type="file" class="form-control" name="file_pdf">
             </div>
+            <div class="form-group">
+              <label>Upload File Lampiran Word (jika ada) : <?= $file_word ?></label>
+              <input type="file" class="form-control" name="file_word">
+            </div>
             <input type="hidden" name="status" value="<?= $status ?>">
             <input type="hidden" name="id_surat_masuk" value="<?= $id_surat_masuk ?>">
             <input type="hidden" name="file_pdfx" value="<?= $nama_file ?>">
@@ -150,6 +154,11 @@
             if(!empty($row->file_pdf)){
             ?>
             <a class='btn btn-warning btn-xs' target='_blank' title='PDF' href="<?php echo base_url() ?>asset/surat_masuk/<?php echo $row->file_pdf ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+            <?php
+            }
+            if(!empty($row->file_word)){
+            ?>
+            <a class='btn btn-primary btn-xs' target='_blank' title='Word' href="<?php echo base_url() ?>asset/surat_masuk/<?php echo $row->file_word ?>"><i class='fas fa-file-word'></i> Lampiran (Word)</a>
             <?php
             }
             ?>

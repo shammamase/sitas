@@ -126,6 +126,7 @@ class Primer extends CI_Controller {
         $data['status'] = "save";
         $data['read'] = "";
         $data['file_pdf'] = "";
+		$data['file_word'] = "";
         $data['nama_file'] = "";
 		$data['id_sub_arsip'] = "";
         $data['kode_klasifikasi'] = "Pilih Klasifikasi";
@@ -152,6 +153,11 @@ class Primer extends CI_Controller {
             } else {
                 $data['file_pdf'] = "";
             }
+			if(!empty($qw->file_word)){
+				$data['file_word'] = "<a class='btn btn-primary btn-xs' title='Word' target='_blank' href='".base_url()."asset/surat_masuk/".$qw->file_word."'><i class='fas fa-file-word'></i> Lihat Word</a>";
+			} else {
+				$data['file_word'] = "";
+			}
             
             $data['nama_file'] = $qw->file_pdf;
 			$data['id_sub_arsip'] = $qw->id_sub_arsip;
@@ -175,6 +181,7 @@ class Primer extends CI_Controller {
             $data['status'] = "save";
             $data['read'] = "";
             $data['file_pdf'] = "";
+			$data['file_word'] = "";
             $data['nama_file'] = "";
 			$data['id_sub_arsip'] = $qw->id_sub_arsip;
             $data['kode_klasifikasi'] = $kode_kl->kode_sub_arsip." - ".$kode_kl->sub_arsip;
@@ -209,7 +216,7 @@ class Primer extends CI_Controller {
         if($id_surat_masuk == 0){
             //(tabel,data,folder_tujuan,folder_tujuan_compres)
             $this->model_sitas->saveDataWithFile("surat_masuk",$data,"asset/surat_masuk","");
-			$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+			//$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
         } else {
             $this->model_sitas->updateDataWithFile("surat_masuk","id_surat_masuk",$id_surat_masuk,$data,"asset/surat_masuk");
         }
@@ -217,6 +224,10 @@ class Primer extends CI_Controller {
   }
   public function hapus_surat_masuk(){
     $uri = $this->uri->segment(3);
+	$file_word = $this->model_sitas->rowDataBy("file_word","surat_masuk","id_surat_masuk = $uri")->row();
+	if($file_word->file_word != ""){
+		$this->model_sitas->hapus_pdf("./asset/surat_masuk/",$file_word->file_word);
+	}
     $this->model_sitas->deleteDataWithFile("surat_masuk","id_surat_masuk = '$uri'","./asset/surat_masuk/");
     redirect('primer/buat_surat_masuk');
   }
