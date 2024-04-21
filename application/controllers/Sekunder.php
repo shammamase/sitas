@@ -139,6 +139,11 @@ class Sekunder extends CI_Controller {
                                     "surat_masuk a inner join klasifikasi_sub_arsip b on a.id_sub_arsip=b.id_sub_arsip
                                     inner join sifat_surat c on a.id_sifat=c.id_sifat",
                                     "a.id_verifikasi = $idn_peg->id_pegawai and a.tanggal_masuk like '%$waktu%'","a.id_surat_masuk desc");
+        $data['terima_disposisi'] = $this->model_sitas->listDataBy("a.no_agenda,a.no_surat_masuk,a.asal_surat,a.perihal,a.disposisi,
+                                    a.diteruskan,a.isi_disposisi,a.tanggal_masuk,b.kode_sub_arsip,b.sub_arsip,c.sifat",
+                                    "surat_masuk a inner join klasifikasi_sub_arsip b on a.id_sub_arsip=b.id_sub_arsip
+                                    inner join sifat_surat c on a.id_sifat=c.id_sifat",
+                                    "a.disposisi like '%$idn_peg->nama%' and a.tanggal_masuk like '%$waktu%'","a.id_surat_masuk desc");
         $data['tamu'] = $this->model_sitas->listDataBy("nik,nama,asal_instansi,alamat,maksud_tujuan,waktu,foto_tamu","buku_tamu",
                         "id_pegawai = $idn_peg->id_pegawai and waktu like '%$waktu%'","id_tamu desc");
         $data['surat_masuk'] = $this->model_sitas->listDataBy("a.no_agenda,a.no_surat_masuk,a.asal_surat,a.perihal,a.disposisi,

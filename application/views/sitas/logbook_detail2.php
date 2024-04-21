@@ -5,6 +5,7 @@ $jml_verif_surat1 = count($verif_surat1);
 $jml_verif_cuti1 = count($verif_cuti1);
 $jml_verif_lap_perjadin = count($verif_lap_perjadin);
 $jml_disposisi_surat = count($disposisi_surat);
+$jml_terima_disposisi = count($terima_disposisi);
 $jml_tamu = count($tamu);
 $jml_surat_masuk = count($surat_masuk);
 $jml_surat_keluar = count($surat_keluar);
@@ -43,6 +44,36 @@ $jml_surat_keluar = count($surat_keluar);
                     <td><?= tgl_indoo($ds->tanggal_masuk) ?></td>
                 </tr>
                 <?php $no_sm++; } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php } ?>
+    <?php if($jml_terima_disposisi > 0){ ?>
+    <span class="badge badge-success" style="font-size:14px">Menerima Disposisi <?= $jml_terima_disposisi ?> Surat Masuk</span>
+    <br><br>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>No</th>  
+                    <th>Perihal</th>
+                    <th>Asal Surat</th>
+                    <th>Disposisi</th>
+                    <th>Isi Disposisi</th>
+                    <th>Tanggal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $no_tsm = 1;foreach($terima_disposisi as $tds){ ?>
+                <tr>
+                    <td><?= $no_tsm ?></td>
+                    <td><?= $tds->perihal ?></td>
+                    <td><?= $tds->asal_surat ?></td>
+                    <td><?= $tds->disposisi ?></td>
+                    <td><?= $tds->isi_disposisi ?></td>
+                    <td><?= tgl_indoo($tds->tanggal_masuk) ?></td>
+                </tr>
+                <?php $no_tsm++; } ?>
             </tbody>
         </table>
     </div>
