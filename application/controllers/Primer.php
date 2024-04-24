@@ -236,7 +236,7 @@ class Primer extends CI_Controller {
 	$thn = $this->session->tahun;
 	date_default_timezone_set("Asia/Jakarta");
 	$qw_surat_masuk = $this->model_sitas->listData("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
-						"surat_masuk","id_surat_masuk desc limit 50");
+						"surat_masuk","id_surat_masuk desc limit 200");
 	$data['list_sm'] = $qw_surat_masuk;
 	$data['tanggal'] = date('Y-m-d');
 	$data['lampiran'] = "";
@@ -626,7 +626,7 @@ class Primer extends CI_Controller {
 			}
         }
 		$qw_surat_masuk = $this->model_sitas->listDataBy("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf",
-						"surat_masuk","id_verifikasi != 0","id_surat_masuk desc limit 50");
+						"surat_masuk","id_verifikasi != 0","id_surat_masuk desc limit 200");
 		$data['list_sm'] = $qw_surat_masuk;
         $data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%' and id_verif!=0","id_surat_keluar desc"); 
 		$data['ars'] = $this->model_sitas->listData("a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip",
@@ -1031,9 +1031,9 @@ class Primer extends CI_Controller {
             $get_tgl = date('Y-m-d');
             $get_lama = "1";
         }
-		$qw_surat_masuk = $this->db->query("select id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf from surat_masuk order by id_surat_masuk desc limit 50")->result();
+		$qw_surat_masuk = $this->db->query("select id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf from surat_masuk order by id_surat_masuk desc limit 200")->result();
 		$data['list'] = $this->model_sitas->listDataBy("*","spt","tanggal_input like '%$tahun%' and is_dipa = 0","id_spt desc");
-        $data['list_sm'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$tahun%' and id_pegawai_disposisi != 0","id_surat_masuk desc limit 50");
+        $data['list_sm'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$tahun%' and id_pegawai_disposisi != 0","id_surat_masuk desc limit 200");
 		$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai ASC");
 		$data['list_sm'] = $qw_surat_masuk;
 		if(empty($uri3)){
@@ -1587,6 +1587,7 @@ class Primer extends CI_Controller {
 	    $id_sm = $this->uri->segment(3);
 	    $qw_sm =  $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk=$id_sm")->row();
         $data['sm'] = $qw_sm;
+		$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
 	    $this->template->load('sitas/template_form','sitas/sm_detail',$data);
 	}
 	function file_disposisi(){
