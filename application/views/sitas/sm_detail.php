@@ -159,9 +159,14 @@
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->isi_disposisi ?></p></div>
     <div class="col-md-3 col-3 no_srt"><p>Catatan</p></div>
     <div class="col-md-9 col-9 no_srt"><p>: <?= $sm->catatan ?></p></div>
-    <!--
-    <div class="col-md-12 col-12" style="margin-bottom:10px"><button class="btn btn-success" data-target="#dispox" data-toggle="modal">Disposisi <i class="fa fa-share"></i></button></div>
-    -->
+    <?php
+        $arr_id_disposisi = explode(",",$sm->id_pegawai_disposisi);
+        if(in_array($id_pegawai_log, $arr_id_disposisi)){
+    ?>
+        <div class="col-md-12 col-12" style="margin-bottom:10px"><button class="btn btn-success" data-target="#dispox" data-toggle="modal">Disposisi <i class="fa fa-share"></i></button></div>
+    <?php
+        }
+    ?>
     <!--
     <div class="col-md-12 col-12" style="margin-bottom:10px">
         <a target="_blank" class="btn btn-success" href="">Buat SPT</a>
@@ -181,7 +186,7 @@
     
 </div>
 </div>
-
+<?php if(in_array($id_pegawai_log, $arr_id_disposisi)){ ?>
 <div class="modal fade" id="dispox" role="dialog">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -198,65 +203,30 @@
                   <div class="row">
                   <div class="col-md-6 col-12">
                   <div class="col-md-12"><b>Diteruskan Kepada :</b></div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb1" name="diteruskan[]" value="Kepala Balai">Kepala Balai
-                      </label>
-                    </div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb2" name="diteruskan[]" value="Kepala Sub Bagian Tata Usaha">Kepala Sub Bagian Tata Usaha
-                      </label>
-                    </div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb3" name="diteruskan[]" value="Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi">Ketua Tim Kerja Program, Evaluasi, dan Penyebarluasan Hasil Standardisasi
-                      </label>
-                    </div>
-                  <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb4" name="diteruskan[]" value="Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar">Ketua Tim Kerja Layanan Pengujian dan Penilaian Standar
-                      </label>
-                    </div>
+                  <?php 
+                    foreach($sub_disposisi as $sd){ 
+                    if(in_array($sd->no_hp,$arr_dispo)){
+                        $centang = "checked";
+                    } else {
+                        $centang = "";
+                    }
+                  ?>
                     <div class="form-check">
                       <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb5" name="diteruskan[]" value="Pejabat Pembuat Komitmen">Pejabat Pembuat Komitmen
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="<?= $sd->no_hp ?>" <?= $centang ?>>
+                        <?= $sd->sub_struktur ?> - <?= $sd->nama ?>
                       </label>
                     </div>
-                    <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb6" name="diteruskan[]" value="IP2SIP">IP2SIP
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb7" name="diteruskan[]" value="Manajer UPBS">Manajer UPBS
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb8" name="diteruskan[]" value="Manajer Laboratorium">Manajer Laboratorium
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb9" name="diteruskan[]" value="Manajer Keuangan">Manajer Keuangan
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <label class="form-check-label" for="radio1">
-                        <input type="checkbox" class="form-check-input" id="cb10" name="diteruskan[]" value="Jabatan Fungsional">Jabatan Fungsional
-                      </label>
-                    </div>
+                  <?php } ?>
                   </div>
                   
                   <div class="col-md-6 col-12">
                     <div class="form-group">
                       <label>Catatan:</label>
-                      <textarea name="catatan" class="form-control"></textarea>
+                      <textarea name="catatan" class="form-control"><?= $catatan ?></textarea>
                     </div>
                   </div>
-                  
+                  <!--
                   <div style="margin-top:20px" class="col-md-12 col-12">
                       <select id="selectBox" multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2" required>
                         <?php
@@ -268,10 +238,10 @@
                         ?>
                       </select>
                   </div>
-                  
+                  -->
                   </div>
               </div>
-              <button type="submit" name="submit" class="btn btn-danger">Submit</button>
+              <button type="submit" name="submit" class="btn btn-primary btn-block">Submit</button>
           </form>
         </div>
       </div>
@@ -279,3 +249,4 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+  <?php } ?>

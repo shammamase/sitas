@@ -200,7 +200,7 @@ class Primer extends CI_Controller {
         $no_hp = $get_pjb_ttd->no_hp;
         $links = base_url('primer?redir=disposisi');
         $no_wa = substr_replace("$no_hp","62",0,1);
-        $pesan = "*Layanan BSIP TAS* Ada surat masuk, silahkan klik link berikut $links ";
+        $pesan = "*Layanan LinTAS* Ada surat masuk, silahkan klik link berikut $links ";
         $data = [
             'id_sub_arsip' => $this->input->post('id_sub_arsip'),
 			'id_sifat' => _POST('sifat'),
@@ -705,7 +705,7 @@ class Primer extends CI_Controller {
 		$get_verif_awal = $this->model_sitas->get_verifikator_awal();
 		$links = base_url('primer?redir=verif_surat_detail1/'.$uri_kd.'/'.$uri3);
         $no_wa = substr_replace($get_verif_awal->no_hp,"62",0,1);
-        $pesan = "*Layanan BSIP TAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links ";
+        $pesan = "*Layanan LinTAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links ";
 		$data = array(
 			'waktu_verif1'=>"",
 			'id_verif1'=>0,
@@ -792,7 +792,7 @@ class Primer extends CI_Controller {
 	    $this->db->query("update surat_keluar set keterangan = '$ket', waktu_verif1 = '$tgl', id_verif1 = $user->id_pegawai where id_surat_keluar = $id_spt");
 	    $no_wa = substr_replace($get_verif_akhir->no_hp,62,0,1);
         $links = base_url('primer?redir=verif_surat_detail/'.md5($id_spt).'/'.$id_spt);
-        $pesan = "*Layanan Aplikasi BSIP TAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links";
+        $pesan = "*Layanan LinTAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/list_ver_surat_keluar1');
 	}
@@ -808,7 +808,7 @@ class Primer extends CI_Controller {
 	    $this->db->query("update surat_keluar set alasan_tolak = '$ket', ajukan = 0 where id_surat_keluar = $id_spt");
 	    $no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
         $links = base_url('primer?redir=buat_surat');
-        $pesan = "*Layanan Aplikasi BSIP TAS* Pengajuan surat ditolak, silahkan klik link berikut $links";
+        $pesan = "*Layanan LinTAS* Pengajuan surat ditolak, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/list_ver_surat_keluar1');
 	}
@@ -825,7 +825,7 @@ class Primer extends CI_Controller {
 	    $this->db->query("update surat_keluar set keterangan = '$ket', waktu_verif = '$tgl', id_verif = $user->id_pegawai where id_surat_keluar = $id_spt");
 		$no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
         $links = base_url('primer?redir=buat_surat_keluar');
-        $pesan = "*Layanan Aplikasi BSIP TAS* Pemberian nomor surat, silahkan klik link berikut $links";
+        $pesan = "*Layanan LinTAS* Pemberian nomor surat, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/verif_surat');
 	}
@@ -841,7 +841,7 @@ class Primer extends CI_Controller {
 	    $this->db->query("update surat_keluar set alasan_tolak = '$ket', ajukan = 0 where id_surat_keluar = $id_spt");
 	    $no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
         $links = base_url('primer?redir=buat_surat');
-        $pesan = "*Layanan Aplikasi BSIP TAS* Pengajuan surat ditolak, silahkan klik link berikut $links";
+        $pesan = "*Layanan LinTAS* Pengajuan surat ditolak, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/verif_surat');
 	}
@@ -1418,26 +1418,23 @@ class Primer extends CI_Controller {
 				} else {
 					$no_wa = substr_replace($get_kabalai->no_hp,62,0,1);
 					$links = base_url('primer?redir=verif_cuti/'.$uri3.'/'.$uri4);
-					$pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+					$pesan = "*Layanan LinTAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
 					$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-					//echo $no_wa."-----".$pesan;
 					redirect('primer/buat_cuti');
 				}
 			} else {
 				$no_wa = substr_replace($pjb_atasan->no_hp,62,0,1);
 				$links = base_url('primer?redir=verif_cuti2/'.$uri3.'/'.$uri4);
 				//$links = base_url('sekunder/list_verif_cuti2/'.$uri3.'/'.$uri4);
-				$pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+				$pesan = "*Layanan LinTAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
 				$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-				//echo $no_wa."-----".$pesan;
 				redirect('primer/buat_cuti');
 			}
 		} else {
 			$no_wa = substr_replace($kepeg->no_hp,62,0,1);
             $links = base_url('primer?redir=input_cuti_sebelum/'.$uri3.'/'.$uri4);
-            $pesan = "*Layanan Aplikasi BSIP TAS* Tentukan jumlah cuti pegawai sebelumnya, dengan klik link berikut $links";
+            $pesan = "*Layanan LinTAS* Tentukan jumlah cuti pegawai sebelumnya, dengan klik link berikut $links";
             $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-			//echo $no_wa."-----".$pesan;
 			redirect('primer/buat_cuti');
 		}
 	}
@@ -1557,7 +1554,7 @@ class Primer extends CI_Controller {
 		$penerima = implode(",",$this->input->post('diteruskan'));
 		$id_surat_masuk = _POST('id_surat_masuk');
 		$links = base_url('primer?redir=sm_detail/').$id_surat_masuk;
-		$pesan = "*Layanan Aplikasi BSIP TAS* Disposisi Surat kepada $penerima , silahkan klik link berikut $links ";
+		$pesan = "*Layanan LinTAS* Disposisi Surat kepada $penerima , silahkan klik link berikut $links ";
 		$row_peg = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai in ($peg)","id_pegawai asc")->result();
 		$ls_peg = $this->model_sitas->listDataBy("nama","pegawai","id_pegawai in ($peg)","id_pegawai asc");
 		$nm_peg = "";
@@ -1585,10 +1582,61 @@ class Primer extends CI_Controller {
 	function sm_detail(){
 	    cek_session_admin1();
 	    $id_sm = $this->uri->segment(3);
+		$user_log = $this->model_sitas->get_user($this->session->username);
 	    $qw_sm =  $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk=$id_sm")->row();
-        $data['sm'] = $qw_sm;
-		$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
+		$qw_dispox = $this->model_sitas->rowDataBy("catatan_disposisi","disposisi_tk_bawah","id_surat_masuk=$id_sm");
+        $cek_qw_dispox = $qw_dispox->num_rows();
+		if($qw_dispox->num_rows() > 0){
+			$catatan = $qw_dispox->row()->catatan_disposisi;
+		} else {
+			$catatan = "";
+		}
+		$peg_dispo = $this->model_sitas->listDataBy("b.no_hp","disposisi_tk_bawah a inner join pegawai b on a.id_pegawai_terima_disposisi=b.id_pegawai",
+					"a.id_surat_masuk=$id_sm","a.id_disposisi_bawah asc");
+		$arr_peg_dispo = array();
+		foreach($peg_dispo as $peg_dis){
+			array_push($arr_peg_dispo,$peg_dis->no_hp);
+		}
+		$data['sm'] = $qw_sm;
+		$data['id_pegawai_log'] = $user_log->id_pegawai;
+		$data['sub_disposisi'] = $this->model_sitas->listDataBy("a.sub_struktur,b.nama,b.no_hp",
+									"sub_struktur_organisasi a inner join struktur_organisasi aa on a.id_struktur=aa.id_struktur
+									inner join pegawai b on a.id_pegawai=b.id_pegawai",
+									"aa.id_pegawai=$user_log->id_pegawai","a.id_sub_struktur asc");
+		$data['arr_dispo'] = $arr_peg_dispo;
+		$data['catatan'] = $catatan;
+		//$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
 	    $this->template->load('sitas/template_form','sitas/sm_detail',$data);
+	}
+	function kirim_disposisi_kebawah(){
+		date_default_timezone_set('Asia/Jakarta');
+		$user = $this->model_sitas->get_user();
+		$id_surat_masuk = _POST('id_surat_masuk');
+		$diteruskan = $this->input->post('diteruskan');
+		$catatan = _POST('catatan');
+		$pengirim = $this->model_sitas->rowDataBy("struktur","struktur_organisasi","id_pegawai=$user->id_pegawai")->row();
+		$links = base_url('primer?redir=sm_detail/').$id_surat_masuk;
+		$pesan = "*Layanan LinTAS* Anda menerima disposisi surat dari $pengirim->struktur, silahkan klik link berikut $links\nCatatan : $catatan";
+		$data_ins = array();
+		foreach($diteruskan as $rp){
+		  $pegx = $this->model_sitas->rowDataBy("id_pegawai","pegawai","no_hp=$rp")->row();
+		  array_push($data_ins,array(
+			'id_surat_masuk'=>$id_surat_masuk,
+			'id_pegawai_kirim_disposisi'=>$user->id_pegawai,
+			'id_pegawai_terima_disposisi'=>$pegx->id_pegawai,
+			'catatan_disposisi'=>$catatan
+		  ));
+		  $no_wa = substr_replace("$rp","62",0,1);
+		  $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		}
+		$cek_surat_masuk = $this->model_sitas->rowDataBy("id_surat_masuk","disposisi_tk_bawah","id_surat_masuk=$id_surat_masuk")->num_rows();
+		if($cek_surat_masuk > 0){
+			$this->db->query("delete from disposisi_tk_bawah where id_surat_masuk=$id_surat_masuk");
+			$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+		} else {
+			$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+		}
+		redirect('primer/buat_surat_masuk');
 	}
 	function file_disposisi(){
 		ob_start();    
@@ -1838,7 +1886,7 @@ class Primer extends CI_Controller {
 		$no_hp = $get_kabalai->no_hp;
         $no_wa = substr_replace("$no_hp","62",0,1);
 		$links = base_url()."primer?redir=verif_lap_spt_detail/".$uri3;
-        $pesan = "*Layanan Aplikasi BSIP TAS* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
+        $pesan = "*Layanan LinTAS* Mohon untuk mengecek Laporan Perjalanan Dinas, silahkan klik link $links";
 		$data = ['is_publish' => 1];
 		$this->model_sitas->update_data("lap_spt","id_spt",$uri3,$data);
 		$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
@@ -1955,7 +2003,7 @@ class Primer extends CI_Controller {
 			$cek_cuti_lalu = $this->model_sitas->rowDataBy("id_pegawai","cuti_sebelum","id_pegawai=$id_pegawai")->num_rows();
 			$no_wa = substr_replace($pejabat_atasan->no_hp,62,0,1);
 			$links = base_url('primer?redir=verif_cuti2/'.$uri3.'/'.$uri4);
-            $pesan = "*Layanan Aplikasi BSIP TAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
+            $pesan = "*Layanan LinTAS* Ada Cuti Pegawai yang akan diverifikasi, silahkan klik link berikut $links";
 			if($cek_cuti_lalu > 0){
 				for($yy = 0; $yy < $cek_cuti_lalu; $yy++){
 					$this->db->query("update cuti_sebelum set jumlah = $jumlah[$yy] where id_pegawai = $id_pegawai and tahun = $tahun[$yy]");
@@ -1970,7 +2018,6 @@ class Primer extends CI_Controller {
 				}
 				$this->model_sitas->saveDataBanyak('cuti_sebelum',$data);
 				$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-				//echo $no_wa."---".$pesan;
 				redirect('primer/input_cuti_sebelum/'.$uri3.'/'.$uri4);
 			}
 		} else {
