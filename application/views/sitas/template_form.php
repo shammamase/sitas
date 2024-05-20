@@ -108,7 +108,7 @@
                     </a>
                   </li>
                   <?php if($username == $get_verif_awal->username){ ?>
-                    <li class="nav-item">
+                  <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>
@@ -121,6 +121,25 @@
                         <a href="<?php echo base_url(); ?>primer/list_ver_surat_keluar1" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                           <p>Surat Keluar</p>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <?php } ?>
+                  <?php if($username == "agnestiyan"){ ?>
+                  <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Data Master
+                        <i class="fas fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>sekunder/master_pegawai" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Pegawai</p>
                         </a>
                       </li>
                     </ul>

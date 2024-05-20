@@ -158,4 +158,119 @@ class Sekunder extends CI_Controller {
 								"a.user = '$user' and a.tanggal like '%$waktu%'","a.id_surat_keluar desc");
 	    $this->template->load('sitas/template_form','sitas/logbook_detail2',$data);
 	}
+    function master_pegawai(){
+        cek_session_admin1();
+        $uri3 = $this->uri->segment(3);
+        $uri4 = $this->uri->segment(4);
+        if(empty($uri3)){
+            $data['nama'] = "";
+            $data['nip'] = "";
+            $data['jabatan'] = "";
+            $data['pangkat'] = "";
+            $data['gol'] = "";
+            $data['no_hp'] = "";
+            $data['status'] = "tambah";
+            $data['id_pegawai'] = 0;
+        } else {
+            if(get_kode_uniks($uri3) == $uri4){
+                $peg = $this->model_sitas->rowDataBy("*","pegawai","id_pegawai=$uri3")->row();
+                $data['nama'] = $peg->nama;
+                $data['nip'] = $peg->nip;
+                $data['jabatan'] = $peg->jabatan;
+                $data['pangkat'] = $peg->pangkat;
+                $data['gol'] = $peg->gol;
+                $data['no_hp'] = $peg->no_hp;
+                $data['status'] = "edit";
+                $data['id_pegawai'] = $peg->id_pegawai;
+            } else {
+                $data['nama'] = "Sori Yeeee";
+                $data['nip'] = "Sori Yeeee";
+                $data['jabatan'] = "Sori Yeeee";
+                $data['pangkat'] = "Sori Yeeee";
+                $data['gol'] = "Sori Yeeee";
+                $data['no_hp'] = "Sori Yeeee";
+                $data['status'] = "tambah";
+                $data['id_pegawai'] = 0;
+            }
+        }
+        $data['rec'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
+        $this->template->load('sitas/template_form','sitas/master/pegawai',$data);
+    }
+    function save_pegawai(){
+        cek_session_admin1();
+        $data_peg = array(
+            'nama' => _POST('nama'),
+            'nip' => _POST('nip'),
+            'jabatan' => _POST('jabatan'),
+            'pangkat' => _POST('pangkat'),
+            'gol' => _POST('gol'),
+            'no_hp' => _POST('no_hp'),
+        );
+       if(_POST('status') == "tambah"){
+        $this->db->insert('pegawai',$data_peg);
+        $data_spt = array(
+            'id_pegawai'=>$this->db->insert_id(),
+            'nama'=>_POST('nama'),
+            'uk'=>"Balai Pengujian Standar Instrumen Tanaman Pemanis dan Serat",
+            'is_internal'=>1
+        );
+        $this->db->insert('peserta_spt',$data_spt);
+       } else {
+        $this->db->where('id_pegawai',_POST('id_pegawai'));
+        $this->db->update('pegawai',$data_peg);
+        $data_spt = array(
+            'nama'=>_POST('nama')
+        );
+        $this->db->where('id_pegawai',_POST('id_pegawai'));
+        $this->db->update('peserta_spt',$data_spt);
+       }
+       redirect('sekunder/master_pegawai');
+    }
+    function hapus_pegawai(){
+        $uri3 = $this->uri->segment(3);
+        $uri4 = $this->uri->segment(4);
+        if(get_kode_uniks($uri3)==$uri4){
+            $this->model_sitas->hapus_data("pegawai","id_pegawai=$uri3");
+            $this->model_sitas->hapus_data("peserta_spt","id_pegawai=$uri3");
+            $this->model_sitas->hapus_data("user","id_pegawai=$uri3");
+            redirect('sekunder/master_pegawai');
+        } else {
+            echo "Sori Yeeee";
+        }
+    }
+    function lihat_user(){
+        cek_session_admin1();
+        if(isset($_POST['id_pegawai'])){
+            $id_pegawai = $_POST['id_pegawai'];
+            $rowUser = $this->model_sitas->rowDataBy("*","user","id_pegawai=$id_pegawai");
+            $cekUser = $rowUser->num_rows();
+            if($cekUser > 0){
+                $getUser = $rowUser->row();
+                $data['username'] = $getUser->username;
+            } else {
+                $data['username'] = "";
+            }
+            $data['id_pegawai'] = $id_pegawai;
+            $this->load->view('sitas/master/userx',$data);
+        }
+    }
+    function simpan_user(){
+        cek_session_admin1();
+        $id_pegawai = _POST('id_pegawai');
+        $getPeg = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$id_pegawai")->row();
+        $data = array(
+            'id_pegawai'=> $id_pegawai,
+            'nama'=> $getPeg->nama,
+            'nip'=> $getPeg->nip,
+            'username'=> _POST('username'),
+            'password'=> md5(_POST('password'))
+        );
+        $cekUser = $this->model_sitas->rowDataBy("*","user","id_pegawai=$id_pegawai")->num_rows();
+        if($cekUser > 0){
+            $this->model_sitas->update_data('user','id_pegawai',$id_pegawai,$data);
+        } else {
+            $this->model_sitas->saveData('user',$data);
+        }
+        redirect('sekunder/master_pegawai');
+    }
 }
