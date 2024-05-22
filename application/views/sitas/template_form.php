@@ -260,6 +260,14 @@
                   </li>
                   <?php } ?>
                   <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>primer/lap_gratifikasi" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Lap.Gratifikasi
+                      </p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/logbook" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>

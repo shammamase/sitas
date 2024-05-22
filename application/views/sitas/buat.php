@@ -9,13 +9,39 @@
           <div class="card-body">
             <!-- Date -->
             <form method="post" action="<?= base_url() ?>primer/save_surat_keluar" enctype="multipart/form-data">
+            <div <?= $toggle_spt ?> class="form-group">
+                <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" name="isSPT">
+                <label class="custom-control-label" for="customSwitch1">Buat Surat Penugasan</label>
+                </div>
+            </div>
             <div class="form-group">
               <label>No Surat :</label>
               <input type="text" class="form-control" name="no_surat_keluar" value="<?= $no_surat ?>" <?= $read ?>>
             </div>
-            <div class="form-group">
+            <div id="wadah_tujuan_surat" class="form-group">
               <label>Tujuan Surat:</label>
-              <textarea name="tujuan_surat" class="form-control"><?= $tujuan_surat ?></textarea>
+              <textarea id="tujuan_surat" name="tujuan_surat" class="form-control"><?= $tujuan_surat ?></textarea>
+            </div>
+            <div style="display:none" id="peserta_spt" class="form-group">
+                  <label>Kepada:</label>
+                  <select class="form-control select2" multiple="multiple" id="selek_peserta" name="tujuan_surat[]" data-placeholder="Pilih Pegawai" style="width: 100%;" required disabled>
+                    <?php
+                        foreach($peg as $ar){
+                        ?>
+                        <option value="<?= $ar->id_pegawai ?>"><?= $ar->nama ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
+            </div>
+            <div style="display:none" id="tanggal_spt" class="form-group">
+              <label>Tanggal Penugasan</label>
+              <input type="date" id="tanggal_sptx" name="tanggal_spt" class="form-control" required disabled/>
+            </div>
+            <div style="display:none" id="lama_spt" class="form-group">
+                <label>Lamanya</label>
+                <input type="number" id="lama_sptx" name="lama_hari" class="form-control" required disabled>
             </div>
             <div class="form-group">
               <label>Tanggal</label>
@@ -32,7 +58,7 @@
             </div>
             <div class="form-group">
               <label>Sifat:</label>
-              <select class="form-control select2" name="sifat" style="width: 100%;" required>
+              <select class="form-control select2" id="sifat" name="sifat" style="width: 100%;" required>
                     <option value="<?= $sifat ?>"><?= $sifat_val ?></option>
                     <?php
                         foreach($sif as $sf){
@@ -45,7 +71,7 @@
             </div>
             <div class="form-group">
               <label>Kode Klasifikasi:</label>
-              <select class="form-control select2" name="arsip" style="width: 100%;">
+              <select id="arsip" class="form-control select2" name="arsip" style="width: 100%;">
                     <option value="<?= $arsip ?>"><?= $arsip_val ?></option>
                     <?php
                         foreach($ars as $ar){
@@ -67,7 +93,7 @@
             <input type="hidden" name="status" value="<?= $status ?>">
             <input type="hidden" name="id_surat_keluar" value="<?= $id_surat_keluar ?>">
             <input type="hidden" id="id_surat_masuk" name="id_surat_masuk" value="<?= $id_surat_masuk ?>">
-            <input type="hidden" name="lokasi_tujuan_surat" value="<?= $lokasi_tujuan_surat ?>">
+            <input type="hidden" id="lokasi_tujuan_surat" name="lokasi_tujuan_surat" value="<?= $lokasi_tujuan_surat ?>">
             <input type="hidden" name="user" value="<?= $user ?>">
             <input type="hidden" name="id_verif" value="<?= $id_verif ?>">
             <input type="hidden" name="waktu_verif" value="<?= $waktu_verif ?>">
@@ -219,7 +245,37 @@
           $("#surat_masuk").click(function(){
               $("#modalku").modal();
           });
-      });
+
+          $("#customSwitch1").click(function(){
+              if ($(this).is(':checked')) {
+                $("#wadah_tujuan_surat").css("display","none");
+                $("#tujuan_surat").prop("disabled", true);
+                $("#peserta_spt").css("display","block");
+                $("#selek_peserta").prop("disabled",false);
+                $("#sifat").val('1').trigger('change');
+                $("#arsip").val('45').trigger('change');
+                $("#lokasi_tujuan_surat").val('SPT');
+                $("#tanggal_spt").css("display","block");
+                $("#tanggal_sptx").prop("disabled",false);
+                $("#lama_spt").css("display","block");
+                $("#lama_sptx").prop("disabled",false);
+                //$("#input4, #input5, #input6").show().prop("disabled", false);
+              } else {
+                //$("#input4, #input5, #input6").hide().prop("disabled", true);
+                $("#wadah_tujuan_surat").css("display","block");
+                $("#tujuan_surat").prop("disabled", false);
+                $("#peserta_spt").css("display","none");
+                $("#selek_peserta").prop("disabled",true);
+                $("#sifat").val('').trigger('change');
+                $("#arsip").val('').trigger('change');
+                $("#lokasi_tujuan_surat").val('Tempat');
+                $("#tanggal_spt").css("display","none");
+                $("#tanggal_sptx").prop("disabled",true);
+                $("#lama_spt").css("display","none");
+                $("#lama_sptx").prop("disabled",true);
+              }
+            });
+          });
       
       $("#modalku").on('click','.pilih',function (e) {
           document.getElementById("id_surat_masuk").value = $(this).attr('data-id_surat_masuk');

@@ -484,11 +484,28 @@ class Primer extends CI_Controller {
 	date_default_timezone_set('Asia/Jakarta');
 	$status = _POST('status');
 	$id_surat_keluar = _POST('id_surat_keluar');
+	$isSPT = $this->input->post('isSPT');
+	$data_spt = array();
+	$data_pelaku_spt = array();
+	if($isSPT == "on"){
+		$tujuan_suratx = $this->input->post('tujuan_surat');
+		$nmPeg = "";
+		foreach($tujuan_suratx as $ts){
+			$rowPeg = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai=$ts")->row();
+			$nmPeg .= $rowPeg->nama.",";
+		}
+		$nmPeg2 = substr($nmPeg,0,-1);
+		$tujuan_surat = $nmPeg2;
+		$perihal = _POST('perihal')." ".sd_tgl(_POST('tanggal_spt'),_POST('lama_hari'));
+	} else {
+		$tujuan_surat = _POST('tujuan_surat');
+		$perihal = _POST('perihal');
+	}
 	$data = [
 		'no_surat_keluar'=>_POST('no_surat_keluar'),
-		'tujuan_surat'=>_POST('tujuan_surat'),
+		'tujuan_surat'=>$tujuan_surat,
 		'tanggal'=>_POST('tanggal'),
-		'perihal'=>_POST('perihal'),
+		'perihal'=>$perihal,
 		'sifat'=>_POST('sifat'),
 		'id_sub_arsip'=>_POST('arsip'),
 		'lokasi_tujuan_surat'=>_POST('lokasi_tujuan_surat'),
@@ -500,7 +517,37 @@ class Primer extends CI_Controller {
 		'id_surat_masuk'=>_POST('id_surat_masuk')
 	];
 	if($status=="save"){
-		$this->model_sitas->saveDataWithFile("surat_keluar",$data,"asset/surat_keluar","");
+		if($isSPT == "on"){
+			$tgl_anggota_spt = no_anggota_spt(_POST('tanggal_spt'),_POST('lama_hari'));
+			$this->model_sitas->saveDataWithFile("surat_keluar",$data,"asset/surat_keluar","");
+			$id_surat_keluar = $this->db->insert_id();
+			$data_spt = [
+				'id_surat_masuk'=>_POST('id_surat_masuk'),
+				'id_surat_keluar'=>$id_surat_keluar,
+				'id_sub_arsip'=>_POST('arsip'),
+				'dasar'=>"<ul><li>Peraturan Menteri Pertanian Nomor 13 Tahun 2023 tentang Organisasi dan Tata Kerja Unit Pelaksana Teknis Lingkup Badan Standardisasi Instrumen Pertanian</li></ul>",
+				'menimbang'=>"Bahwa dalam rangka mendukung terlaksananya kegiatan standardisasi instrumen tanaman perkebunan, maka dipandang perlu menugaskan pegawai yang berkompeten sesuai bidangnya dibawah ini.",
+				'untuk' => _POST('perihal'),
+				'tanggal' => _POST('tanggal_spt'),
+				'lama_hari' => _POST('lama_hari'),
+				'is_dipa' => "1",
+				'user' => _POST('user'),
+				'tanggal_input' => _POST('tanggal_input'),
+				'keterangan' => null
+			];
+			$this->model_sitas->saveData('spt', $data_spt);
+			$id_spt = $this->db->insert_id();
+			foreach($this->input->post('tujuan_surat') as $tsx){
+				array_push($data_pelaku_spt, array(
+					'id_spt'=> $id_spt,
+					'id_pegawai' => $tsx,
+					'tanggal_spt' => $tgl_anggota_spt,
+				));
+			}
+			$this->model_sitas->saveDataBanyak('anggota_spt', $data_pelaku_spt);
+		} else {
+			$this->model_sitas->saveDataWithFile("surat_keluar",$data,"asset/surat_keluar","");
+		}
 	} else {
 		$this->model_sitas->updateDataWithFile("surat_keluar","id_surat_keluar",$id_surat_keluar,$data,"asset/surat_keluar");
 	}
@@ -517,8 +564,10 @@ class Primer extends CI_Controller {
         $no_surat_now = $no_urut + 1;
         $no_suratx = "".sprintf("%03s", $no_surat_now);
 		$data['sif'] = $this->model_sitas->listData("*","sifat_surat","id_sifat asc");
+		$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai ASC");
 		$uri3 = $this->uri->segment(3);
 		if(empty($uri3)){
+			$data['toggle_spt'] = "";
 			$data['no_surat'] = $no_suratx;
 			$data['lokasi_tujuan_surat'] = "Tempat";
 			$data['user'] = $user;
@@ -549,6 +598,7 @@ class Primer extends CI_Controller {
 								inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip",
 								"a.id_sub_arsip = $qw->id_sub_arsip")->row();
 			$get_sa = $qw_sa->kode_sub_arsip." - ".$qw_sa->arsip." - ".$qw_sa->sub_arsip;
+			$data['toggle_spt'] = "style='display:none'";
 			$data['no_surat'] = $qw->no_surat_keluar;
 			$data['user'] = $qw->user;
 			$data['id_verif'] = $qw->id_verif;
@@ -574,6 +624,7 @@ class Primer extends CI_Controller {
 		}
 
         if(isset($_GET['id_sk'])){
+			$data['toggle_spt'] = "style='display:none'";
             $id_sk = $_GET['id_sk'];
             $qw = $this->db->query("select * from surat_keluar where id_surat_keluar = '$id_sk'")->row();
 			$qw_sf = $this->model_sitas->rowDataBy("id_sifat,sifat","sifat_surat","id_sifat = $qw->sifat")->row();
@@ -637,6 +688,11 @@ class Primer extends CI_Controller {
 	function delete_surat_keluar(){
 		$uri = $this->uri->segment(3);
 		$this->model_sitas->deleteDataWithFile("surat_keluar","id_surat_keluar = '$uri'","./asset/surat_keluar/");
+		$cekSPT = $this->model_sitas->rowDataBy("id_surat_keluar","spt","id_surat_keluar=$uri")->num_rows();
+		if($cekSPT > 0){
+			$data = array('id_surat_keluar'=>NULL);
+			$this->model_sitas->update_data("spt","id_surat_keluar",$uri,$data);
+		}
 		redirect('primer/buat_surat_keluar');
 	}
 	function delete_surat(){
@@ -2142,6 +2198,17 @@ class Primer extends CI_Controller {
         $data['no_pemohon'] = $get_pemohon->no_hp;
 		$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_cuti',$data);
     }
+	function lap_gratifikasi(){
+		$data['jenis_gratifikasi'] = "";
+		$data['jenis_gratifikasi_val'] = "--Pilih Jenis Gratifikasi--";
+		$data['nilai'] = "";
+		$data['tgl_terima'] = date('Y-m-d');
+		$data['lokasi_terima'] = "";
+		$data['pemberi'] = "";
+		$data['hub_pemberi'] = "";
+		$data['status'] = "";
+		$this->template->load('sitas/template_form','sitas/lap_gratifikasi',$data);
+	}
     function logout(){
 		$this->session->sess_destroy();
 		redirect('primer');
