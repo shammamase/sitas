@@ -2199,6 +2199,9 @@ class Primer extends CI_Controller {
 		$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_cuti',$data);
     }
 	function lap_gratifikasi(){
+		$user = $this->model_sitas->get_user();
+		$data['list_data'] = $this->model_sitas->listDataBy("*","lapor_gratifikasi","id_pegawai=$user->id_pegawai",
+							"id_lap_gratifikasi desc");
 		$data['jenis_gratifikasi'] = "";
 		$data['jenis_gratifikasi_val'] = "--Pilih Jenis Gratifikasi--";
 		$data['nilai'] = "";
@@ -2206,7 +2209,13 @@ class Primer extends CI_Controller {
 		$data['lokasi_terima'] = "";
 		$data['pemberi'] = "";
 		$data['hub_pemberi'] = "";
-		$data['status'] = "";
+		$data['status'] = "add";
+		$data['id_pegawai'] = $user->id_pegawai;
+		$data['id_lap_gratifikasi'] = 0;
+		$data['list_surat'] = $this->model_sitas->listDataBy("a.id_surat_keluar,a.perihal",
+								"surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar
+								 inner join anggota_spt c on b.id_spt=c.id_spt",
+								"c.id_pegawai=$user->id_pegawai","a.id_surat_keluar desc");
 		$this->template->load('sitas/template_form','sitas/lap_gratifikasi',$data);
 	}
     function logout(){

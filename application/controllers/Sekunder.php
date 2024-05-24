@@ -273,4 +273,36 @@ class Sekunder extends CI_Controller {
         }
         redirect('sekunder/master_pegawai');
     }
+    function save_lap_gratifikasi(){
+        cek_session_admin1();
+		$status = _POST('status');
+		$id_lap_gratifikasi = _POST('id_lap_gratifikasi');
+		$data = array(
+			'id_pegawai'=>_POST('id_pegawai'),
+			'id_surat_keluar'=>_POST('id_surat_keluar'),
+			'tgl_terima'=>_POST('tgl_terima'),
+			'jenis_gratifikasi'=>_POST('jenis_gratifikasi'),
+			'nilai'=>str_replace('.','',_POST('nilai')),
+			'lokasi_terima'=>_POST('lokasi_terima'),
+			'pemberi'=>_POST('pemberi'),
+			'hub_pemberi'=>_POST('hub_pemberi')
+		);
+		if($status == "add"){
+			$this->model_sitas->saveData("lapor_gratifikasi",$data);
+		} else {
+			$this->model_sitas->update_data("lapor_gratifikasi","id_lap_gratifikasi",$id_lap_gratifikasi,$data);
+		}
+        redirect('primer/lap_gratifikasi');
+	}
+    function get_row_lap_gratifikai(){
+        cek_session_admin1();
+        $id_lap = _POST('id');
+        $qw = $this->model_sitas->rowDataBy("*","lapor_gratifikasi","id_lap_gratifikasi=$id_lap")->row();
+        echo json_encode($qw);
+    }
+    function hapus_gratifikasi(){
+        $uri3 = $this->uri->segment(3);
+        $this->model_sitas->hapus_data("lapor_gratifikasi","id_lap_gratifikasi=$uri3");
+        redirect('primer/lap_gratifikasi');
+    }
 }
