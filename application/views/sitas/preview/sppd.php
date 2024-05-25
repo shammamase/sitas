@@ -26,7 +26,7 @@ foreach($list as $ls){
     <tr style="border-right:1px solid"><td style="border-right:1px solid"></td><td style="border-right:1px solid" colspan="3">DALAM NEGERI BAGI PEJABAT NEGARA,</td></tr>
     <tr style="border-right:1px solid"><td style="border-right:1px solid"></td><td style="border-right:1px solid" colspan="3">PEGAWAI NEGERI, DAN PEGAWAI </td></tr>
     <tr style="border-right:1px solid"><td style="border-right:1px solid"></td><td style="border-right:1px solid;border-bottom:1px solid" colspan="3">TIDAK TETAP</td></tr>
-    <tr><td></td><td>Kode No.</td><td>:</td><td>KU.140/H.12.15/<?= $pc_tgl_sppd[1] ?>/<?= $pc_tgl_sppd[0] ?></td></tr>
+    <tr><td></td><td>Kode No.</td><td>:</td><td>KU.140/H.4.2/<?= $pc_tgl_sppd[1] ?>/<?= $pc_tgl_sppd[0] ?></td></tr>
     <tr><td></td><td>Nomor</td><td>:</td><td><?= $no ?></td></tr>
 </table>
 <h3 style='text-align:center'>SURAT PERJALANAN DINAS (SPD)</h3>
