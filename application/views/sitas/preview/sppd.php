@@ -89,7 +89,7 @@ foreach($list as $ls){
     <tr>
         <td style='padding:10px'>10. </td>
         <td style='padding:10px'>Keterangan Lain-lain</td>
-        <td style='padding:10px'> SPT No. B-<?= $no_surat_keluar ?>/TU.040/H.12.15/<?= $bulan_surat_keluar ?>/<?= $tahun_surat_keluar ?> tanggal <br> <?= tgl_indoo($tanggal_surat_keluar) ?></td>
+        <td style='padding:10px'> SPT No. B-<?= $no_surat_keluar ?>/TU.040/H.4.2/<?= $bulan_surat_keluar ?>/<?= $tahun_surat_keluar ?> tanggal <br> <?= tgl_indoo($tanggal_surat_keluar) ?></td>
     </tr>
 </table>
 <table style='margin-left:5%;width:90%' border='0'>
