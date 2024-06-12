@@ -437,4 +437,16 @@ class Model_sitas extends CI_model{
         $this->db->where('id_pegawai', $id_pegawai);
         return $this->db->get('anggota_spt')->row();
     }
+    function get_info_drive($x){
+        $arr = explode("_",$x);
+        $jml_arr = count($arr);
+        $nama_folder = "";
+        for($i = 1; $i <= $jml_arr; $i++){
+            $current = implode("_",array_slice($arr, 0, $i));
+            $get_folder = $this->rowDataBy("folder","folder","url='$current'")->row();
+            $nama_folder .= $get_folder->folder." > ";
+        }
+        $nama_folder_fix = substr($nama_folder,0,-3);
+        return $nama_folder_fix;
+    }
 }

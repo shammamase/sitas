@@ -305,4 +305,44 @@ class Sekunder extends CI_Controller {
         $this->model_sitas->hapus_data("lapor_gratifikasi","id_lap_gratifikasi=$uri3");
         redirect('primer/lap_gratifikasi');
     }
+    function edit_drive(){
+        cek_session_admin1();
+        $id_folder = _POST('id_folder');
+        $qwx = $this->model_sitas->rowDataBy("*","folder","id_folder=$id_folder")->row();
+        $data['nama'] = $qwx->folder;
+        $data['id_folder'] = $id_folder;
+        $this->load->view('sitas/edit_drive',$data);
+    }
+    function proses_edit_folder(){
+        $folder = _POST('folder');
+        $id_folder = _POST('id_folder');
+        $qw_curent = $this->model_sitas->rowDataBy("*","folder","id_folder=$id_folder")->row();
+        $qw_root = $this->model_sitas->rowDataBy("*","folder","id_folder=$qw_curent->root")->row();
+        /*
+        $cek_qw_down = $this->model_sitas->rowDataBy("*","folder","root=$id_folder")->num_rows();
+        $url_folder = strtolower($folder);
+	    $url_folder_fix = str_replace(" ","-",$url_folder);
+        $url = $qw_root->url."_".$url_folder_fix;
+        */
+        $data = array(
+            'folder'=>$folder,
+            //'url'=>$url,
+            //'tgl_buat'=>date('Y-m-d'),
+            //'root'=>$qw_curent->root
+        );
+        $this->model_sitas->update_data("folder","id_folder",$id_folder,$data);
+        /*
+        if($cek_qw_down > 0){
+            $qw_down = $this->model_sitas->listDataBy("*","folder","root=$id_folder","id_folder asc");
+            foreach($qw_down as $qwd){
+                $pisah_url = explode("_",$qwd->url);
+                $url_down = end($pisah_url);
+                $url_fix = $url."_".$url_down;
+                //echo $url_fix."--".$id_folder."<br>";
+                $this->db->query("update folder set url = '$url_fix' where id_folder = $qwd->id_folder and root = $id_folder");
+            }
+        }
+        */
+        redirect('primer/drive/'.$qw_root->url);
+    }
 }

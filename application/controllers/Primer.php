@@ -1495,6 +1495,7 @@ class Primer extends CI_Controller {
 		}
 	}
     public function drive(){
+		cek_session_admin1();
 	    $uri3 = $this->uri->segment(3);
 	    $thn = $this->session->tahun;
 	    if(empty($uri3)){
@@ -1508,8 +1509,9 @@ class Primer extends CI_Controller {
 	        $data['uri3'] = $uri3;
 	        $data['thn'] = $thn;
 	        $data['vw_hapus'] = "display:none";
+			$data['vw_edit'] = "display:none";
 	    } else {
-	        $id_folder = $this->db->query("select id_folder from folder where url = '$uri3'")->row();
+	        $id_folder = $this->db->query("select id_folder,folder from folder where url = '$uri3'")->row();
 	        $qw_folder = $this->db->query("select folder,url from folder where root = $id_folder->id_folder")->result();
 	        $qw_surat_keluar = $this->db->query("select id_surat_keluar,perihal,no_surat_keluar from surat_keluar where tanggal like '%$thn%' order by id_surat_keluar desc")->result();
 	        $qw_file = $this->db->query("select * from file where id_folder = $id_folder->id_folder and tahun='$thn'")->result();
@@ -1526,9 +1528,12 @@ class Primer extends CI_Controller {
 	        foreach($qw_folder as $qf){
 	            array_push($folder_utama,$qf->url."#".$qf->folder);
 	        }
-	        $judul = str_replace("_"," > ",$uri3);
+	        /*
+			$judul = str_replace("_"," > ",$uri3);
 	        $judull = str_replace("-"," ",$judul);
 	        $judulll = ucwords($judull);
+			*/
+			$judulll = $this->model_sitas->get_info_drive($uri3);
 	        $data['title'] = $judulll;
 	        $data['buat_folder'] = "<button type='button' class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModalFolder'><b><i class='fa fa-folder-open'></i> Buat Folder</b></button>";
 	        $data['upload_file'] = "<button type='button' class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModalFile'><b><i class='fa fa-upload'></i> Upload File</b></button>";
@@ -1540,6 +1545,7 @@ class Primer extends CI_Controller {
 	        $data['thn'] = $thn;
 	        $data['surat_keluar'] = $qw_surat_keluar;
 	        $data['vw_hapus'] = "display:";
+			$data['vw_edit'] = "display:";
 	    }
 	    $this->template->load('sitas/template_form','sitas/folder',$data);
 	}
