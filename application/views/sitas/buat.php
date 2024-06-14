@@ -71,7 +71,7 @@
             </div>
             <div class="form-group">
               <label>Kode Klasifikasi:</label>
-              <select id="arsip" class="form-control select2" name="arsip" style="width: 100%;">
+              <select id="arsip" class="form-control select2" name="arsip" style="width: 100%;" required>
                     <option value="<?= $arsip ?>"><?= $arsip_val ?></option>
                     <?php
                         foreach($ars as $ar){
