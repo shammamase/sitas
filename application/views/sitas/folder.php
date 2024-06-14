@@ -25,10 +25,10 @@
                           <tr>
                             <td><a href="<?= base_url() ?>primer/drive/<?= $pc[0] ?>"><i style="font-size:20px;color:#fcba03" class="fa fa-folder"></i> <b><?= $pc[1] ?></b></a></td>
                             <td>
+                            <a style="<?= $vw_edit ?>" class="btn btn-primary btn-xs" data-target="#modalEditDrive" data-toggle="modal" data-id="<?= $qw_folder->id_folder ?>"><i class="fa fa-edit"></i> Edit</a>
                                 <?php if($jumlah_inodes == 0){ ?>
                                 <a style="<?= $vw_hapus ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('primer/hapus_folder/') ?><?= $uri3 ?>/<?= $qw_folder->id_folder ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
                                 <?php } ?>
-                                <a style="<?= $vw_edit ?>" class="btn btn-primary btn-xs" data-target="#modalEditDrive" data-toggle="modal" data-id="<?= $qw_folder->id_folder ?>"><i class="fa fa-edit"></i> Edit</a>
                             </td>
                           </tr>
                           <?php 
@@ -74,7 +74,12 @@
                           ?>
                           <tr>
                             <td><a target="_blank" href="<?= $link_file ?>"><?= $isi_file ?> <b><?= $flx->nama_file ?></b></a></td>
-                            <td><a onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('primer/hapus_file/') ?><?= $uri3 ?>/<?= $flx->id_file ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a></td>
+                            <td>
+                              <?php if($flx->username == $this->session->username){ ?>
+                              <a data-target="#editFile" data-toggle="modal" data-id="<?= $flx->id_file ?>" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>
+                              <a onclick="return confirm('Apa anda yakin untuk hapus Data ini?')" href="<?= base_url('primer/hapus_file/') ?><?= $uri3 ?>/<?= $flx->id_file ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
+                              <?php } ?>
+                            </td>
                           </tr>
                           <?php 
                             }
@@ -194,6 +199,27 @@
     <!-- /.modal-dialog -->
   </div>
 
+  <div class="modal fade" id="editFile" role="dialog">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit File</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="fetch_data_edit_file"></div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
 <script>
         $(document).ready(function(){
           $('#modalEditDrive').on('show.bs.modal',function (e) {
@@ -204,6 +230,17 @@
               data : 'id_folder='+ rowId,
               success : function(data){
                 $('.fetch_data').html(data);
+              }
+            });
+          });
+          $('#editFile').on('show.bs.modal',function (e) {
+            var idFile = $(e.relatedTarget).data('id');
+            $.ajax({
+              type : 'post',
+              url : '<?= base_url() ?>sekunder/edit_file',
+              data : 'id_file='+ idFile,
+              success : function(data){
+                $('.fetch_data_edit_file').html(data);
               }
             });
           });

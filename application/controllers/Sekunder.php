@@ -345,4 +345,21 @@ class Sekunder extends CI_Controller {
         */
         redirect('primer/drive/'.$qw_root->url);
     }
+    function edit_file(){
+        cek_session_admin1();
+        $id_file = _POST('id_file');
+        $qwx = $this->model_sitas->rowDataBy("id_file,nama_file","file","id_file=$id_file")->row();
+        $data['nama_file'] = $qwx->nama_file;
+        $data['id_file'] = $id_file;
+        $this->load->view('sitas/edit_file',$data);
+    }
+    function proses_edit_file(){
+        $nama_file = _POST('nama_file');
+        $id_file = _POST('id_file');
+        $qwx = $this->model_sitas->rowDataBy("b.url","file a inner join folder b on a.id_folder=b.id_folder",
+                                                "a.id_file=$id_file")->row();
+        $data = array('nama_file'=>$nama_file);
+        $this->model_sitas->update_data("file","id_file",$id_file,$data);
+        redirect('primer/drive/'.$qwx->url);
+    }
 }
