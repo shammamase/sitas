@@ -1675,7 +1675,7 @@ class Primer extends CI_Controller {
 		$data['arr_dispo'] = $arr_peg_dispo;
 		$data['catatan'] = $catatan;
 		$data['vw_btn_dispo'] = $view_btn_disposisi;
-		//$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
+		$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
 	    $this->template->load('sitas/template_form','sitas/sm_detail',$data);
 	}
 	function kirim_disposisi_kebawah(){
