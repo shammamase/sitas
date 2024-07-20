@@ -167,6 +167,9 @@
     <?php
         }
     ?>
+    <?php if($vw_btn_dispo == 1){ ?>
+    <div class="col-md-12 col-12" style="margin-bottom:10px"><button class="btn btn-success" data-target="#dispol" data-toggle="modal">Disposisi</button></div>
+    <?php } ?>
     <!--
     <div class="col-md-12 col-12" style="margin-bottom:10px">
         <a target="_blank" class="btn btn-success" href="">Buat SPT</a>
@@ -249,4 +252,217 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
+  <?php } ?>
+
+  <?php if($vw_btn_dispo == 1){ ?>
+  <div class="modal fade" id="dispol" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Disposisi :</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="return validateForm();" class="" method="post" action="<?= base_url() ?>primer/kirim_disposisi">
+              <input type="hidden" name="id_surat_masuk" value="<?= $sm->id_surat_masuk ?>">
+              <div class="form-group">
+                  <div class="row">
+                  <div class="col-md-6 col-12">
+                  <div class="col-md-12"><b>Diteruskan Kepada :</b></div>
+                  <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb1" name="diteruskan[]" value="Kepala Balai">Kepala Balai
+                      </label>
+                    </div>
+                  <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb2" name="diteruskan[]" value="Kepala Sub Bagian Tata Usaha">Kepala Sub Bagian Tata Usaha
+                      </label>
+                    </div>
+                  <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb3" name="diteruskan[]" value="Ketua Tim Kerja Program Evaluasi<br>dan Penyebarluasan Hasil<br>Standardisasi">Ketua Tim Kerja Program, Evaluasi, dan Penyebarluasan Hasil Standardisasi
+                      </label>
+                    </div>
+                  <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb4" name="diteruskan[]" value="Ketua Tim Kerja Layanan Pengujian<br>dan Penilaian Standar">Ketua Tim Kerja Layanan Pengujian dan Penilaian Standar
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb5" name="diteruskan[]" value="Pejabat Pembuat Komitmen">Pejabat Pembuat Komitmen
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb6" name="diteruskan[]" value="IP2SIP">IP2SIP
+                      </label>
+                    </div>
+                    <!--
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" name="diteruskan[]" value="IP2SIP Bajeng">IP2SIP Bajeng
+                      </label>
+                    </div>
+                    -->
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb7" name="diteruskan[]" value="Manajer UPBS">Manajer UPBS
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb8" name="diteruskan[]" value="Manajer Laboratorium">Manajer Laboratorium
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb9" name="diteruskan[]" value="Manajer Keuangan">Manajer Keuangan
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio1">
+                        <input type="checkbox" class="form-check-input" id="cb10" name="diteruskan[]" value="Jabatan Fungsional">Jabatan Fungsional
+                      </label>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-6 col-12">
+                  <div class="col-md-12"><b>Isi Disposisi :</b></div>
+                  <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Untuk Diketahui">Untuk Diketahui
+                      </label>
+                    </div>
+                  <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Untuk Penyelesaian Selanjutnya">Untuk Penyelesaian Selanjutnya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Harap Saran/Pertimbangan">Harap Saran/Pertimbangan
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Untuk dibicarakan dengan saya">Untuk Dibicarakan dengan saya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Harap Mewakili Saya">Harap Mewakili Saya
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Konsutasi/diskusi dengan">Konsutasi/diskusi dengan
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <label class="form-check-label" for="radio2">
+                        <input type="checkbox" class="form-check-input" name="isi_disposisi[]" value="Siapkan Bahan">Siapkan Bahan
+                      </label>
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Catatan:</label>
+                      <textarea name="catatan" class="form-control"></textarea>
+                    </div>
+                  </div>
+                  
+                  <div style="margin-top:20px" class="col-md-12 col-12">
+                      <select id="selectBox" multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2" required>
+                        <?php
+                        foreach($peg as $pg){
+                        ?>
+                        <option value="<?= $pg->id_pegawai ?>"><?= $pg->nama ?></option>
+                        <?php
+                        }
+                        ?>
+                      </select>
+                  </div>
+                  
+                  </div>
+              </div>
+              <button type="submit" name="submit" class="btn btn-danger">Submit</button>
+          </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  
+
+  <script>
+    function validateForm() {
+            var diteruskanCheckboxes = document.getElementsByName('diteruskan[]');
+            var untukCheckboxes = document.getElementsByName('isi_disposisi[]');
+
+            var diteruskanChecked = false;
+            var untukChecked = false;
+
+            for (var i = 0; i < diteruskanCheckboxes.length; i++) {
+                if (diteruskanCheckboxes[i].checked) {
+                    diteruskanChecked = true;
+                    break;
+                }
+            }
+
+            for (var i = 0; i < untukCheckboxes.length; i++) {
+                if (untukCheckboxes[i].checked) {
+                    untukChecked = true;
+                    break;
+                }
+            }
+
+            if (!diteruskanChecked || !untukChecked) {
+                alert("Minimal satu checkbox dari kedua grup harus dicentang.");
+                return false;
+            }
+        }
+
+    const cb1 = document.getElementById('cb1');
+    const cb2 = document.getElementById('cb2');
+    const cb3 = document.getElementById('cb3');
+    const cb4 = document.getElementById('cb4');
+    const cb5 = document.getElementById('cb5');
+    const selectBox = document.getElementById('selectBox');
+    cb1.addEventListener('change', updateSelect);
+    cb2.addEventListener('change', updateSelect);
+    cb3.addEventListener('change', updateSelect);
+    cb4.addEventListener('change', updateSelect);
+    cb5.addEventListener('change', updateSelect);
+    function updateSelect(){
+        if(cb1.checked){
+            selectBox.querySelector('option[value="1"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="1"]').removeAttribute('selected');
+        }
+        if(cb2.checked){
+            selectBox.querySelector('option[value="12"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="12"]').removeAttribute('selected');
+        }
+        if(cb3.checked){
+            selectBox.querySelector('option[value="13"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="13"]').removeAttribute('selected');
+        }
+        if(cb4.checked){
+            selectBox.querySelector('option[value="31"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="31"]').removeAttribute('selected');
+        }
+        if(cb5.checked){
+            selectBox.querySelector('option[value="5"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="5"]').removeAttribute('selected');
+        }
+    }
+  </script>
   <?php } ?>

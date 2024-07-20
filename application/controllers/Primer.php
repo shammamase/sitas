@@ -1645,6 +1645,13 @@ class Primer extends CI_Controller {
 	    cek_session_admin1();
 	    $id_sm = $this->uri->segment(3);
 		$user_log = $this->model_sitas->get_user($this->session->username);
+		$kabalai = $this->model_sitas->rowDataBy("a.id_pegawai,b.nama",
+							"pejabat_verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.level = 'akhir'")->row();
+		if($user_log->id_pegawai == $kabalai->id_pegawai){
+			$view_btn_disposisi = 1;
+		} else {
+			$view_btn_disposisi = 0;
+		}
 	    $qw_sm =  $this->model_sitas->rowDataBy("*","surat_masuk","id_surat_masuk=$id_sm")->row();
 		$qw_dispox = $this->model_sitas->rowDataBy("catatan_disposisi","disposisi_tk_bawah","id_surat_masuk=$id_sm");
         $cek_qw_dispox = $qw_dispox->num_rows();
@@ -1667,6 +1674,7 @@ class Primer extends CI_Controller {
 									"aa.id_pegawai=$user_log->id_pegawai","a.id_sub_struktur asc");
 		$data['arr_dispo'] = $arr_peg_dispo;
 		$data['catatan'] = $catatan;
+		$data['vw_btn_dispo'] = $view_btn_disposisi;
 		//$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
 	    $this->template->load('sitas/template_form','sitas/sm_detail',$data);
 	}
