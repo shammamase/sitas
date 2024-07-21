@@ -7,12 +7,12 @@
       <thead>
       <tr>
         <th style="width:2%">No</th>
-        <th style="width:10%">No Surat</th>
+        <th style="width:30%">Perihal</th>
         <th style="width:18%">Asal Surat</th>
+        <th style="width:10%">No Surat</th>
         <th style="width:10%">Tanggal Masuknya Surat</th>
         <th style="width:10%">Tanggal Surat</th>
-        <th style="width:30%">Perihal Surat</th>
-        <th style="width:20%">Action</th>
+        <th style="width:20%">Action</th> 
       </tr>
       </thead>
       <tbody>
@@ -23,11 +23,11 @@
      ?>
       <tr>
         <td><?php echo $no ?></td>
-        <td><?php echo $row->no_surat_masuk ?></td>
+        <td><?= $row->perihal ?></td>
         <td><?= $row->asal_surat ?></td>
+        <td><?php echo $row->no_surat_masuk ?></td>
         <td><?= tgl_indoo($row->tanggal_masuk) ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
-        <td><?= $row->perihal ?></td>
         <td>
             <a class='btn btn-warning btn-xs' title='Lihat' href="<?php echo base_url() ?>primer/disposisi_detail/<?php echo $row->id_surat_masuk ?>"><i class='fas fa-file'></i> Lihat</a>
         </td>
