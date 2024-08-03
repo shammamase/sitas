@@ -144,8 +144,14 @@
             <label for="email">Dasar</label>
             <select name="id_surat_keluar" id="id_surat_keluar" class="form-control select2">
                 <option value="0">--Pilih Dasar Surat--</option>
-                <?php foreach($surat_keluar as $sk){ ?>
-                <option value="<?= $sk->id_surat_keluar ?>"><?= $sk->no_lengkap ?> - <?= $sk->perihal ?></option>
+                <?php 
+                foreach($surat_keluar as $sk){ 
+                $pc_tgl = explode("-",$sk->tanggal);
+                $kd_sifat = $this->model_sitas->rowDataBy("kode","sifat_surat","id_sifat=$sk->sifat")->row();
+                $kd_arsip = $this->model_sitas->rowDataBy("kode_sub_arsip","klasifikasi_sub_arsip","id_sub_arsip=$sk->id_sub_arsip")->row();
+                $no_surat_lengkap = $kd_sifat->kode."-".$sk->no_surat_keluar."/".$kd_arsip->kode_sub_arsip."/H.4.2/".$pc_tgl[1]."/".$pc_tgl[0];
+                ?>
+                <option value="<?= $sk->id_surat_keluar ?>"><?= $no_surat_lengkap ?> - <?= $sk->perihal ?></option>
                 <?php } ?>
             </select>
           </div>

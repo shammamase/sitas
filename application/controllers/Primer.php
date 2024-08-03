@@ -1513,7 +1513,7 @@ class Primer extends CI_Controller {
 	    } else {
 	        $id_folder = $this->db->query("select id_folder,folder from folder where url = '$uri3'")->row();
 	        $qw_folder = $this->db->query("select folder,url from folder where root = $id_folder->id_folder")->result();
-	        $qw_surat_keluar = $this->db->query("select id_surat_keluar,perihal,no_surat_keluar from surat_keluar where tanggal like '%$thn%' order by id_surat_keluar desc")->result();
+	        $qw_surat_keluar = $this->db->query("select id_surat_keluar,id_sub_arsip,perihal,no_surat_keluar,sifat,tanggal from surat_keluar where tanggal like '%$thn%' order by id_surat_keluar desc")->result();
 	        $qw_file = $this->db->query("select * from file where id_folder = $id_folder->id_folder and tahun='$thn'")->result();
 	        $pc_url = explode("_",$uri3);
 	        $panjang_url = count($pc_url);
