@@ -1,0 +1,732 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<VFPData xml:space="preserve">
+	<xsd:schema id="VFPData" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="VFPData" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="c_kmpnen" minOccurs="0" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="thang">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdjendok">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsatker">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="6"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kddept">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdunit">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdprogram">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdgiat">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdlokasi">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdkabkota">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kddekon">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdkmpnen" minOccurs="0">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdbiaya">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsbiaya">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="urkmpnen" minOccurs="0">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="200"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdtema" minOccurs="0">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="250"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphpls1">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="15"/>
+											<xsd:fractionDigits value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphpls2">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="15"/>
+											<xsd:fractionDigits value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphpls3">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="15"/>
+											<xsd:fractionDigits value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphmin1">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="15"/>
+											<xsd:fractionDigits value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="thangawal">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="thangakhir">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="indekskali">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdib">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="indeksout">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="n1">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="n2">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="n3">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="n4">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphn1">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="14"/>
+											<xsd:fractionDigits value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphn2">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="14"/>
+											<xsd:fractionDigits value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphn3">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="14"/>
+											<xsd:fractionDigits value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="rphn4">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="14"/>
+											<xsd:fractionDigits value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+				<xsd:anyAttribute namespace="http://www.w3.org/XML/1998/namespace" processContents="lax"/>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>ADA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>110</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Konsep Rancangan Standar Instrumen Perkebunan</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2023</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>AEF</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Hasil Standardisasi Instrumen Perkebunan yang disebarluaskan</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2023</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>BJA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>104</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Instrumen Tanaman Perkebunan yang diuji</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2023</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>CAG</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Sarana Laboratorium Standardisasi Perkebunan</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2023</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Layanan Kerumahtanggaan dan Umum</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>052</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Layanan Pengelolaan PNBP</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2023</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>994</kdsoutput>
+		<kdkmpnen>001</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Gaji dan Tunjangan</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>994</kdsoutput>
+		<kdkmpnen>002</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Operasional dan Pemeliharaan Kantor</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBC</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>954</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Pengelolaan Manajemen Kepegawaian</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>952</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Penyusunan Rencana Program dan Anggaran</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>953</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Pelaksanaan Monitoring dan Evaluasi</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+	<c_kmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>955</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdbiaya>1</kdbiaya>
+		<kdsbiaya>1</kdsbiaya>
+		<urkmpnen>Pengelolaan Keuangan</urkmpnen>
+		<kdtema></kdtema>
+		<rphpls1>0</rphpls1>
+		<rphpls2>0</rphpls2>
+		<rphpls3>0</rphpls3>
+		<rphmin1>0</rphmin1>
+		<thangawal>2022</thangawal>
+		<thangakhir></thangakhir>
+		<indekskali>0</indekskali>
+		<kdib>00</kdib>
+		<indeksout>1</indeksout>
+		<n1>1</n1>
+		<n2>1</n2>
+		<n3>1</n3>
+		<n4>1</n4>
+		<rphn1>0</rphn1>
+		<rphn2>0</rphn2>
+		<rphn3>0</rphn3>
+		<rphn4>0</rphn4>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_kmpnen>
+</VFPData>

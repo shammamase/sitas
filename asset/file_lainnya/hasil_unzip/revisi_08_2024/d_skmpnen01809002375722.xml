@@ -1,0 +1,655 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<VFPData xml:space="preserve">
+	<xsd:schema id="VFPData" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="VFPData" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="c_skmpnen" minOccurs="0" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="thang">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdjendok">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsatker">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="6"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kddept">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdunit">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdprogram">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdgiat">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdlokasi">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdkabkota">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kddekon">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdkmpnen">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdskmpnen">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="urskmpnen">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="200"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdib">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+				<xsd:anyAttribute namespace="http://www.w3.org/XML/1998/namespace" processContents="lax"/>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>ADA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>110</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Perumusan Usulan PNPS Tanaman Pemanis dan Serat</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>AEF</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>Pengelolaan Informasi dan Dokumentasi Tanaman Pemanis dan Serat (PPID)</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>AEF</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Layanan Kemitraan</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>BJA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>104</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>Pengujian Produk Pertanian</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>CAG</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>Sarana laboratoriun  BPSI Tanaman Pemanis dan Serat</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>OPTIMALISASI KEBUN PERCOBAAN</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>SISTEM PENGENDALIAN INTERNAL PEMERINTAH (SPIP)</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> C</kdskmpnen>
+		<urskmpnen>PERAWATAN SERTIFIKASI SISTEM MANAJEMEN MUTU (ISO)</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>ADA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>110</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>Konsep Rancangan Standar Instrumen Tanaman Pemanis dan SeraT</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> D</kdskmpnen>
+		<urskmpnen>PENGELOLAAN ASET DAN ADMINISTRASI SARANA  BPSITAS</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> E</kdskmpnen>
+		<urskmpnen>AKREDITASI   LAB ISO/IEC 17025</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> F</kdskmpnen>
+		<urskmpnen>Blokir Automatic  Adjustment</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>052</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>Pengelolaan IP2SIP BPSI Tanaman Pemanis dan Serat</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<kdkmpnen>052</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Pengelolaan Laboratorium</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>994</kdsoutput>
+		<kdkmpnen>001</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>GAJI DAN TUNJANGAN</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>994</kdsoutput>
+		<kdkmpnen>002</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>OPERASIONAL PERKANTORAN</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBC</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>954</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>PENGELOLAAN  ADMINISTRASI KEPEGAWAIAN</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBC</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>954</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Automatic Adjustment</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>952</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>PENYUSUNAN PROGRAM, RENCANA KERJA/TEKNIS/RKAKL/DIPA</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>952</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Automatic Adjustment</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>953</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>MONITORING, PENGAWASAN PROGRAM/ KEGIATAN DAN EVALUASI/LAPORAN KEGIATAN</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>953</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Automatic Adjustments</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>953</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> C</kdskmpnen>
+		<urskmpnen>Koordinasi Program Strategis Kementerian Pertanian</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>955</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> A</kdskmpnen>
+		<urskmpnen>MANAJEMEN ADMINISTRASI KEUANGAN DAN PERLENGKAPAN</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+	<c_skmpnen>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>955</kdsoutput>
+		<kdkmpnen>051</kdkmpnen>
+		<kdskmpnen> B</kdskmpnen>
+		<urskmpnen>Blokir Automatic Adjustment</urskmpnen>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_skmpnen>
+</VFPData>

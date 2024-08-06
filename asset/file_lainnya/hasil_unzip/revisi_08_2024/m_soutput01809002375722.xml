@@ -1,0 +1,429 @@
+<?xml version = "1.0" encoding="UTF-8" standalone="yes"?>
+<VFPData xml:space="preserve">
+	<xsd:schema id="VFPData" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="VFPData" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="c_soutput" minOccurs="0" maxOccurs="unbounded">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="thang">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdjendok">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsatker">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="6"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kddept">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdunit">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdprogram">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdgiat">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdlokasi">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdkabkota">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kddekon">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="3"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="ursoutput">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="250"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="sbmkvol" minOccurs="0">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="10"/>
+											<xsd:fractionDigits value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="sbmksat">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="25"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="sbmkmin1">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="10"/>
+											<xsd:fractionDigits value="0"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="sbmkket">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="250"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdsb">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="1"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="volsout">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="19"/>
+											<xsd:fractionDigits value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="volsbk">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:decimal">
+											<xsd:totalDigits value="19"/>
+											<xsd:fractionDigits value="4"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+								<xsd:element name="kdib">
+									<xsd:simpleType>
+										<xsd:restriction base="xsd:string">
+											<xsd:maxLength value="2"/>
+										</xsd:restriction>
+									</xsd:simpleType>
+								</xsd:element>
+							</xsd:sequence>
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+				<xsd:anyAttribute namespace="http://www.w3.org/XML/1998/namespace" processContents="lax"/>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>ADA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>110</kdsoutput>
+		<ursoutput>Konsep Rancangan Standar Instrumen Perkebunan</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>2</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>AEF</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<ursoutput>Hasil Standardisasi Instrumen Perkebunan yang disebarluaskan</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>25</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>BJA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>104</kdsoutput>
+		<ursoutput>Instrumen Tanaman Perkebunan yang diuji</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>50</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>EC</kdprogram>
+		<kdgiat>6916</kdgiat>
+		<kdoutput>CAG</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>102</kdsoutput>
+		<ursoutput>Sarana Laboratorium Standardisasi Perkebunan</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>11</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>962</kdsoutput>
+		<ursoutput>Layanan Umum</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>1</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBA</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>994</kdsoutput>
+		<ursoutput>Layanan Perkantoran</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>1</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBC</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>954</kdsoutput>
+		<ursoutput>Layanan Manajemen SDM</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>63</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>952</kdsoutput>
+		<ursoutput>Layanan Perencanaan dan Penganggaran</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>1</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>953</kdsoutput>
+		<ursoutput>Layanan Pemantauan dan Evaluasi</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>1</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+	<c_soutput>
+		<thang>2024</thang>
+		<kdjendok>01</kdjendok>
+		<kdsatker>237572</kdsatker>
+		<kddept>018</kddept>
+		<kdunit>09</kdunit>
+		<kdprogram>WA</kdprogram>
+		<kdgiat>6918</kdgiat>
+		<kdoutput>EBD</kdoutput>
+		<kdlokasi>05</kdlokasi>
+		<kdkabkota>13</kdkabkota>
+		<kddekon>2</kddekon>
+		<kdsoutput>955</kdsoutput>
+		<ursoutput>Layanan Manajemen Keuangan</ursoutput>
+		<sbmkvol>0</sbmkvol>
+		<sbmksat></sbmksat>
+		<sbmkmin1>0</sbmkmin1>
+		<sbmkket></sbmkket>
+		<kdsb></kdsb>
+		<volsout>1</volsout>
+		<volsbk>0</volsbk>
+		<kdib>00</kdib>
+		<levelrev></levelrev>
+		<revrkaklke></revrkaklke>
+		<revdipake></revdipake>
+	</c_soutput>
+</VFPData>
