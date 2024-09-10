@@ -43,6 +43,14 @@
                 <label>Lamanya</label>
                 <input type="number" id="lama_sptx" name="lama_hari" class="form-control" required disabled>
             </div>
+            <div style="display:none" id="is_dipa" class="form-group">
+                 <div class="icheck-primary d-inline">
+                        <input type="checkbox" name="is_dipa" id="is_dipax">
+                        <label for="is_dipax">
+                        </label>
+                  </div>
+                  <label>DIPA BPSI TAS Tahun <?= date('Y') ?></label>
+            </div>
             <div class="form-group">
               <label>Tanggal</label>
                 <div class="input-group date" id="reservationdates" data-target-input="nearest">
@@ -259,6 +267,8 @@
                 $("#tanggal_sptx").prop("disabled",false);
                 $("#lama_spt").css("display","block");
                 $("#lama_sptx").prop("disabled",false);
+                $("#is_dipa").css("display","block");
+                $("#is_dipax").prop("disabled",false);
                 //$("#input4, #input5, #input6").show().prop("disabled", false);
               } else {
                 //$("#input4, #input5, #input6").hide().prop("disabled", true);
@@ -273,6 +283,8 @@
                 $("#tanggal_sptx").prop("disabled",true);
                 $("#lama_spt").css("display","none");
                 $("#lama_sptx").prop("disabled",true);
+                $("#is_dipa").css("display","none");
+                $("#is_dipax").prop("disabled",true);
               }
             });
           });

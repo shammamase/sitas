@@ -131,7 +131,7 @@
         $no_srt = " - ";
     }
 ?>
-<img class="img-fluid" style="width:100%" src="<?= base_url() ?>asset/kop_surat.png">
+<img class="img-fluid" style="width:100%" src="<?= base_url() ?>asset/kop_surat1.png">
 <div class="row">
     <div class="col-md-12 col-12"><p  style="text-align:center"><b><u>LAPORAN PERJALANAN DINAS</u></b></p></div>
     <div class="col-md-12 col-12 no_srt"><p  style="text-align:center">SPT NO. <?= $no_srt ?>/TU.040/H.4.2/<?= $bln ?>/<?= $thn ?></p></div>

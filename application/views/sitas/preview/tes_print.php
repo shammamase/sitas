@@ -80,7 +80,7 @@
                 $no_srt = " - ";
             }
         ?>
-		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_surat.png' ?>"></div>
+		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_surat1.png' ?>"></div>
 		<table style="margin-left:5%;margin-top:10px;width:87%" border="0">
           <tr>
               <td style="width:15%;vertical-align:top">Nomor</td>

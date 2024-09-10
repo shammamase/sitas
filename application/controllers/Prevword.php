@@ -36,7 +36,7 @@ class Prevword extends CI_Controller {
             $rata_tengah = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
             $section = $phpWord->addSection($sectionStyle);
             $header = $section->addHeader();
-            $header->addImage('./asset/kop_surat.png',array(
+            $header->addImage('./asset/kop_surat1.png',array(
                                     'width'         => 580,
                                     //'height'         => 100,
                                     'marginTop'     => -2,

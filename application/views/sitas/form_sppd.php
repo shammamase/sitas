@@ -35,6 +35,7 @@
             <input type="text" name="kode_pembiayaan" value="<?= $kode_pembiayaan ?>" class="form-control" required>
         </div>
     </div>
+    <!--
     <div class="form-group row">
         <div class="col-lg-12">
             <label for="tes">Kelompok/Instansi yang dikunjungi</label>
@@ -53,6 +54,7 @@
             <input type="text" name="nip_ttd_yg_dikunjungi" value="<?= $nip_ttd_instansi_tujuan ?>" class="form-control">
         </div>
     </div>
+    -->
     <div class="form-group row">
         <div class="col-lg-12">
             <label for="tes">Tanggal SPPD</label>

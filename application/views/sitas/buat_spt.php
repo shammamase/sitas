@@ -4,7 +4,7 @@
       <div class="col-12 col-md-12 col-lg-12">
         <div class="card card-primary">
           <div class="card-header">
-            <h3 class="card-title">Buat SPT</h3>
+            <h3 class="card-title">Buat Pengajuan SPT</h3>
           </div>
           <div class="card-body">
             <!-- Date -->
@@ -23,6 +23,14 @@
             <div class="form-group">
               <label>Surat Masuk :</label>
               <input class="form-control" id="surat_masuk" name="pilih_surat_masuk">
+            </div>
+            <div class="form-group">
+                 <div class="icheck-primary d-inline">
+                        <input type="checkbox" name="is_dipa" <?= $ceck ?> id="checkboxPrimary1">
+                        <label for="checkboxPrimary1">
+                        </label>
+                  </div>
+                  <label>DIPA BPSI TAS Tahun <?= date('Y') ?></label>
             </div>
             <div class="form-group">
               <label>Menimbang :</label>
@@ -54,17 +62,61 @@
                     ?>
                   </select>
             </div>
+            <div style="display:none" id="wadah_tempat_berangkat" class="form-group">
+              <label>Tempat Berangkat :</label>
+              <input class="form-control" id="tempat_berangkat" name="tempat_berangkat" value="<?= $tempat_berangkat ?>" disabled required>
+            </div>
+            <div style="display:none" id="wadah_tempat_tujuan" class="form-group">
+              <label>Tempat Tujuan :</label>
+              <input class="form-control" id="ket_wilayah" name="ket_wilayah" value="<?= $ket_wilayah ?>" disabled required>
+            </div>
             <div class="form-group">
                   <label>Untuk: <div id="srt_msk"></div></label>
                   <textarea class="form-control" name="untuk" required><?= $untuk ?></textarea>
             </div>
-            <div class="form-group">
-                 <div class="icheck-primary d-inline">
-                        <input type="checkbox" name="is_dipa" <?= $ceck ?> id="checkboxPrimary1">
-                        <label for="checkboxPrimary1">
-                        </label>
-                  </div>
-                  <label>DIPA BPSI TAS Tahun <?= date('Y') ?></label>
+            <div style="display:none" id="wadah_transportasi" class="form-group">
+                  <label>Transpostasi:</label>
+                  <select class="form-control select2" id="transportasi" name="id_transport" style="width: 100%;" disabled required>
+                    <?php
+                        foreach($transportasi as $trsp){
+                        ?>
+                        <option value="<?= $trsp->id_transport ?>"><?= $trsp->transportasi ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
+            </div>
+            <div style="display:none" id="wadah_anggaran" class="form-group">
+                  <label>Anggaran Kegiatan:</label>
+                  <select class="form-control select2bs4" id="id_subkomp" style="width: 100%;" disabled required>
+                  <option value="">Pilih Kegiatan</option>
+                    <?php
+                        foreach($subkomp as $skmp){
+                        ?>
+                        <option value="<?= $skmp->id_subkomp ?>"><?= $skmp->subkomp ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
+            </div>
+            <div style="display:none" id="wadah_mak" class="form-group">
+                  <label>MAK (Mata Anggaran Kegiatan):</label>
+                  <select class="form-control select2" id="id_subdetil" name="id_subdetil" style="width: 100%;" disabled required>
+                    <option value=""></option>
+                  </select>
+            </div>
+            <div style="display:none" id="wadah_pj" class="form-group">
+                  <label>PJ Kegiatan:</label>
+                  <select class="form-control select2" id="id_pj" name="pj" style="width: 100%;" disabled required>
+                  <option value="">Pilih Pegawai</option>
+                    <?php
+                        foreach($pegawai as $pegx){
+                        ?>
+                        <option value="<?= $pegx->id_pegawai ?>"><?= $pegx->nama ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
             </div>
             <div class="form-group">
               <label>Tanggal Input:</label>
@@ -175,6 +227,20 @@
                   el_mdl[0].parentNode.removeChild(el_mdl[0]);
               }
           });
+          $('#id_subkomp').change(function(){
+              var id_subkomp = $(this).val();
+              $('#id_subdetil').html('<option value="">Pilih MAK</option>');
+              if(id_subkomp){
+                $.ajax({
+                  type: 'POST',
+                  url: '<?= base_url() ?>sekunder/get_subkomponen',
+                  data: 'id_subkomp=' + id_subkomp,
+                  success: function(html){
+                    $('#id_subdetil').html(html);
+                  }
+                })
+              }
+          });
       });
       
       $("#modalku").on('click','.pilih',function (e) {
@@ -207,8 +273,32 @@
       is_dipa.addEventListener("change", function () {
         if(is_dipa.checked) {
           arr_dasar.push("<li>DIPA BPSI TAS Tahun 2024 Nomor: 018.09.2.237572/2023, Tanggal  30 November 2023</li>");
+          document.getElementById("wadah_tempat_berangkat").style.display = 'block';
+          document.getElementById("tempat_berangkat").disabled = false;
+          document.getElementById("wadah_tempat_tujuan").style.display = 'block';
+          document.getElementById("ket_wilayah").disabled = false;
+          document.getElementById("wadah_transportasi").style.display = 'block';
+          document.getElementById("transportasi").disabled = false;
+          document.getElementById("wadah_anggaran").style.display = 'block';
+          document.getElementById("id_subkomp").disabled = false;
+          document.getElementById("wadah_mak").style.display = 'block';
+          document.getElementById("id_subdetil").disabled = false;
+          document.getElementById("wadah_pj").style.display = 'block';
+          document.getElementById("id_pj").disabled = false;
         } else {
           arr_dasar.pop();
+          document.getElementById("wadah_tempat_berangkat").style.display = 'none';
+          document.getElementById("tempat_berangkat").disabled = true;
+          document.getElementById("wadah_tempat_tujuan").style.display = 'none';
+          document.getElementById("ket_wilayah").disabled = true;
+          document.getElementById("wadah_transportasi").style.display = 'none';
+          document.getElementById("transportasi").disabled = true;
+          document.getElementById("wadah_anggaran").style.display = 'none';
+          document.getElementById("id_subkomp").disabled = true;
+          document.getElementById("wadah_mak").style.display = 'none';
+          document.getElementById("id_subdetil").disabled = true;
+          document.getElementById("wadah_pj").style.display = 'none';
+          document.getElementById("id_pj").disabled = true;
         }
           let join_dasar2 = arr_dasar.join(" ");
           let dasar_surat_masuk2 = "<ul>"+join_dasar2+"</ul>";

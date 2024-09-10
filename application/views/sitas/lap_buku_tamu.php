@@ -10,7 +10,7 @@
     </head>
     <body>
     <div class="container">
-        <img style="width:95%; margin-left:15px" src="<?= base_url() ?>asset/kop_surat.png">
+        <img style="width:95%; margin-left:15px" src="<?= base_url() ?>asset/kop_surat1.png">
         <h5 style="margin-top:30px;text-align:center"><u>Daftar Buku Tamu Periode <?php echo tgl_indo($timex) ?></u></h5>
         <table style="width:100%;margin-top:20px" class="table table-striped">
         <thead>

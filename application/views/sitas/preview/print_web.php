@@ -86,7 +86,7 @@
             $no_sub = "TU.040";
             $arr_dasar = clir_ul_li($spt->dasar);
         ?>
-		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_surat.png' ?>"></div>
+		<div><img style="width:100%" src="<?php echo base_url().'asset/kop_surat1.png' ?>"></div>
 		<!--<div><img style="position:absolute;top:300px;left:200px" src="<?php echo base_url().'asset/file_lainnya/cap_bptp.png' ?>"></div>-->
 		<p style="text-align:center;margin-top:0px"><b>SURAT TUGAS</b></p>
 		<p style="text-align:center;margin-top:-10px"><b>Nomor : B-<?= $sk->no_surat_keluar ?>/<?= $no_sub ?>/H.4.2/<?= $bln ?>/<?= $thn ?></b></p>

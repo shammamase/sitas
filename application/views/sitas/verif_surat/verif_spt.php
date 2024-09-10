@@ -282,6 +282,7 @@
         <div class="modal-body">
           <form class="" method="post" action="<?= base_url() ?>primer/setuju_surat">
               <input type="hidden" name="id_buat_surat" value="<?= $spt->id_surat_keluar ?>">
+              <input type="hidden" name="id_spt" value="<?= $spt->id_spt ?>">
               <div class="form-group">
                   <textarea class="form-control" name="keterangan"></textarea>
               </div>

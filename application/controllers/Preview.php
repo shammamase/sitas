@@ -102,33 +102,37 @@ class Preview extends CI_Controller {
         $data['no_surat'] = "";
 		$this->load->view('sitas/preview/print_web',$data);
 	}
-    function sppd(){
+  function sppd(){
         ob_start();
         $uri3 = $this->uri->segment(3);
         $rowx = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
-        $surat_keluar = $this->model_sitas->rowDataBy("no_surat_keluar,tanggal","surat_keluar","id_surat_keluar=$rowx->id_surat_keluar")->row();
-        $pc_tgl_surat_keluar = explode("-",$surat_keluar->tanggal);
-        $ppk = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$rowx->id_ppk")->row();
-        $list_pegawai = $this->model_sitas->listDataBy("a.*,b.nama,b.nip,b.jabatan,b.pangkat,b.gol,b.uk,b.is_internal","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt = $uri3","b.id_peserta asc");
-        if($rowx->no_sppd == 0){
-          echo "SPPD belum dibuat";
+        if($rowx->id_surat_keluar == NULL or $rowx->id_surat_keluar == 0){
+          echo "SPPD akan muncul jika pengajuan SPT ini sudah di verifikasi sampai pada PPK";
         } else {
-        $data['id_spt'] = $uri3;
-        $data['data'] = $rowx;
-        $data['no_surat_keluar'] = $surat_keluar->no_surat_keluar;
-        $data['bulan_surat_keluar'] = $pc_tgl_surat_keluar[1];
-        $data['tahun_surat_keluar'] = $pc_tgl_surat_keluar[0];
-        $data['tanggal_surat_keluar'] = $surat_keluar->tanggal;
-        $data['nama_ppk'] = $ppk->nama;
-        $data['nip_ppk'] = $ppk->nip;
-        $data['list'] = $list_pegawai;
-        $this->load->view('sitas/preview/sppd',$data);
-        $html = ob_get_contents();
-        ob_end_clean(); 
-        require './asset/html2pdf_v5.2-master/vendor/autoload.php';
-        $pdf = new Spipu\Html2Pdf\Html2Pdf('P','F4','en');
-        $pdf->WriteHTML($html);
-        $pdf->Output();
+          $surat_keluar = $this->model_sitas->rowDataBy("no_surat_keluar,tanggal","surat_keluar","id_surat_keluar=$rowx->id_surat_keluar")->row();
+          $pc_tgl_surat_keluar = explode("-",$surat_keluar->tanggal);
+          $ppk = $this->model_sitas->rowDataBy("nama,nip","pegawai","id_pegawai=$rowx->id_ppk")->row();
+          $list_pegawai = $this->model_sitas->listDataBy("a.*,b.nama,b.nip,b.jabatan,b.pangkat,b.gol,b.uk,b.is_internal","anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt = $uri3","b.id_peserta asc");
+          if($rowx->no_sppd == 0){
+            echo "SPPD belum dibuat";
+          } else {
+          $data['id_spt'] = $uri3;
+          $data['data'] = $rowx;
+          $data['no_surat_keluar'] = $surat_keluar->no_surat_keluar;
+          $data['bulan_surat_keluar'] = $pc_tgl_surat_keluar[1];
+          $data['tahun_surat_keluar'] = $pc_tgl_surat_keluar[0];
+          $data['tanggal_surat_keluar'] = $surat_keluar->tanggal;
+          $data['nama_ppk'] = $ppk->nama;
+          $data['nip_ppk'] = $ppk->nip;
+          $data['list'] = $list_pegawai;
+          $this->load->view('sitas/preview/sppd',$data);
+          $html = ob_get_contents();
+          ob_end_clean(); 
+          require './asset/html2pdf_v5.2-master/vendor/autoload.php';
+          $pdf = new Spipu\Html2Pdf\Html2Pdf('P','F4','en');
+          $pdf->WriteHTML($html);
+          $pdf->Output();
+          }
         }
       }
       function pdf_lap_spt(){

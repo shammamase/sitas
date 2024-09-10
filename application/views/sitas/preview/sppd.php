@@ -26,49 +26,52 @@ foreach($list as $ls){
     <tr style="border-right:1px solid"><td style="border-right:1px solid"></td><td style="border-right:1px solid" colspan="3">DALAM NEGERI BAGI PEJABAT NEGARA,</td></tr>
     <tr style="border-right:1px solid"><td style="border-right:1px solid"></td><td style="border-right:1px solid" colspan="3">PEGAWAI NEGERI, DAN PEGAWAI </td></tr>
     <tr style="border-right:1px solid"><td style="border-right:1px solid"></td><td style="border-right:1px solid;border-bottom:1px solid" colspan="3">TIDAK TETAP</td></tr>
-    <tr><td></td><td>Kode No.</td><td>:</td><td>KU.140/H.4.2/<?= $pc_tgl_sppd[1] ?>/<?= $pc_tgl_sppd[0] ?></td></tr>
-    <tr><td></td><td>Nomor</td><td>:</td><td><?= $no ?></td></tr>
+    <!--<tr><td></td><td>Kode No.</td><td>:</td><td>KU.140/H.4.2/<?= $pc_tgl_sppd[1] ?>/<?= $pc_tgl_sppd[0] ?></td></tr>-->
+    <tr><td></td><td>Kode No.</td><td>:</td><td><?= $data->kode_pembiayaan ?></td></tr>
+    <tr><td></td><td>Nomor</td><td>:</td><td><?= $no ?> /SP/<?= $pc_tgl_sppd[0] ?></td></tr>
 </table>
 <h3 style='text-align:center'>SURAT PERJALANAN DINAS (SPD)</h3>
-<table style='margin-left:5%;width:90%;border-collapse:collapse' border='1'>
+<table style='margin-left:2%;width:90%;border-collapse:collapse' border='1'>
     <tr>
-        <td style='padding:10px'>1. </td>
-        <td style='padding:10px'>Pejabat Pembuat Komitmen</td>
-        <td style='padding:10px'>Balai Pengujian Standar Instrumen Tanaman Pemanis<br> dan Serat (BPSI TAS)</td>
+        <td style='padding:10px;font-weight:bold'>1. </td>
+        <td style='padding:10px;font-weight:bold'>Pejabat Pembuat Komitmen</td>
+        <!--<td style='padding:10px'>Balai Pengujian Standar Instrumen Tanaman Pemanis<br> dan Serat (BPSI TAS)</td>-->
+        <td style='padding:10px'><?= $nama_ppk ?></td>
     </tr>
     <tr>
-        <td style='padding:10px'>2. </td>
-        <td style='padding:10px'>Nama/NIP Pegawai yang melaksanakan<br>perjalanan dinas</td>
+        <td style='padding:10px;font-weight:bold'>2. </td>
+        <!--<td style='padding:10px'>Nama/NIP Pegawai yang melaksanakan<br>perjalanan dinas</td>-->
+        <td style='padding:10px;font-weight:bold'>Nama/NIP Pegawai yang diperintah</td>
         <td style='padding:10px'><?= $nama ?></td>
     </tr>
     <tr>
-        <td style='padding:10px'>3. </td>
-        <td style='padding:10px'>a. Pangkat dan Golongan<br>b. Jabatan/Instansi<br>c. Tingkat Biaya Perjalanan Dinas</td>
+        <td style='padding:10px;font-weight:bold'>3. </td>
+        <td style='padding:10px;font-weight:bold'>a. Pangkat dan Golongan<br>b. Jabatan/Instansi<br>c. Tingkat Biaya Perjalanan Dinas</td>
         <td style='padding:10px'>a. <?= $pangkat_gol ?><br>b. <?= wordwrap($jabatan,30,"<br />\n") ?> <br>c. Gol C<br></td>
     </tr>
     <tr>
-        <td style='padding:10px'>4. </td>
-        <td style='padding:10px'>Maksud Perjalanan Dinas</td>
+        <td style='padding:10px;font-weight:bold'>4. </td>
+        <td style='padding:10px;font-weight:bold'>Maksud Perjalanan Dinas</td>
         <td style='padding:10px;'><?= wordwrap($data->untuk,50,"<br>") ?></td>
     </tr>
     <tr>
-        <td style='padding:10px'>5. </td>
-        <td style='padding:10px'>Alat angkutan yang dipergunakan</td>
+        <td style='padding:10px;font-weight:bold'>5. </td>
+        <td style='padding:10px;font-weight:bold'>Alat angkutan yang dipergunakan</td>
         <td style='padding:10px'><?= $data->kendaraan ?></td>
     </tr>
     <tr>
-        <td style='padding:10px'>6. </td>
-        <td style='padding:10px'>a. Tempat Berangkat<br>b. Tempat Tujuan</td>
+        <td style='padding:10px;font-weight:bold'>6. </td>
+        <td style='padding:10px;font-weight:bold'>a. Tempat Berangkat<br>b. Tempat Tujuan</td>
         <td style='padding:10px'>a. <?= wordwrap($data->ket_berangkat,20,"<br />\n") ?><br>b. <?= wordwrap($data->ket_wilayah,20,"<br />\n") ?></td>
     </tr>
     <tr>
-        <td style='padding:10px'>7. </td>
-        <td style='padding:10px'>a. Lamanya perjalanan dinas<br>b. Tanggal Berangkat<br>c. Tanggal harus kembali/tiba ditempat baru *)</td>
-        <td style='padding:10px'>a. <?= $data->lama_hari ?> HOK<br>b. <?= tgl_indoo($data->tanggal) ?> <br>c. <?= sd_tgl2($data->tanggal,$data->lama_hari) ?></td>
+        <td style='padding:10px;font-weight:bold'>7. </td>
+        <td style='padding:10px;font-weight:bold'>a. Lamanya perjalanan dinas<br>b. Tanggal Berangkat<br>c. Tanggal harus kembali/tiba ditempat baru *)</td>
+        <td style='padding:10px'>a. <?= $data->lama_hari ?> HK<br>b. <?= tgl_indoo($data->tanggal) ?> <br>c. <?= sd_tgl2($data->tanggal,$data->lama_hari) ?></td>
     </tr>
     <tr>
-        <td style='padding:10px'>8. </td>
-        <td style='padding:10px'>Pengikut : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nama</td>
+        <td style='padding:10px;font-weight:bold'>8. </td>
+        <td style='padding:10px;font-weight:bold'>Pengikut : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Nama</td>
         <td style='padding:10px'>Tanggal Lahir &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Keterangan</td>
     </tr>
     <tr>
@@ -104,6 +107,7 @@ foreach($list as $ls){
 </table>
 <div style='page-break-after:always; clear:both'></div>
 <hr/>
+<!--
 <table style='margin-left:5%;width:90%' border='0'>
     <tr><td style='width:25%'></td><td style='width:5%'>I. </td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:33%'> <?= wordwrap($data->ket_berangkat,20,"<br />\n") ?> </td><td style='width:15%'>&nbsp;</td></tr>
     <tr><td></td><td> </td><td style='width:20%'>(Tempat kedudukan) </td><td style='width:2%'></td><td style='width:33%'></td><td style='width:15%'>&nbsp;</td></tr>
@@ -114,15 +118,29 @@ foreach($list as $ls){
     <tr><td></td><td> </td><td colspan="3" style="text-align:center"><b><?= $nama_ppk ?></b></td><td></td></tr>
     <tr><td></td><td> </td><td colspan="3" style="text-align:center"><b>NIP. <?= $nip_ppk ?></b></td><td></td></tr>
 </table>
+-->
+<table style='margin-left:5%;width:90%' border='0'>
+    <tr><td style='width:3%'></td><td style='width:10%'></td><td style='width:2%'></td><td style='width:32%;text-align:right'> I.</td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:28%'> </td></tr>
+    <tr><td></td><td></td><td></td><td></td><td>(Tempat Kedudukan)</td><td></td><td> </td></tr>
+    <tr><td></td><td></td><td></td><td> </td><td>Ke </td><td>:</td><td> </td></tr>
+    <tr><td></td><td></td><td></td><td> </td><td>Pada Tanggal </td><td>:</td><td> </td></tr>
+    <tr><td></td><td style='height:70px'></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td></td><td> </td><td></td><td></td><td> </td></tr>
+</table>
 <hr/>
 <table style='margin-left:5%;width:90%' border='0'>
-    <tr><td style='width:3%'>II. </td><td style='width:10%'>Tiba di</td><td style='width:2%'>:</td><td style='width:32%'><?= wordwrap($data->ket_wilayah,20,"<br />\n") ?></td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:28%'> <?= wordwrap($data->ket_wilayah,20,"<br />\n") ?> </td></tr>
-    <tr><td></td><td>Pada Tanggal</td><td>:</td><td><?= tgl_indoo($data->tanggal) ?></td><td>Ke </td><td>:</td><td> <?= wordwrap($data->ket_berangkat,20,"<br />\n") ?> </td></tr>
-    <tr><td></td><td>Kepala</td><td>:</td><td><?= $data->instansi_tujuan ?></td><td>Tanggal </td><td>:</td><td><?= sd_tgl2($data->tanggal,$data->lama_hari) ?> </td></tr>
+    <!--<tr><td style='width:3%'>II. </td><td style='width:10%'>Tiba di</td><td style='width:2%'>:</td><td style='width:32%'><?= wordwrap($data->ket_wilayah,20,"<br />\n") ?></td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:28%'> <?= wordwrap($data->ket_wilayah,20,"<br />\n") ?> </td></tr>-->
+    <tr><td style='width:3%'>II. </td><td style='width:10%'>Tiba di</td><td style='width:2%'>:</td><td style='width:32%'> </td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:28%'> </td></tr>
+    <!--<tr><td></td><td>Pada Tanggal</td><td>:</td><td><?= tgl_indoo($data->tanggal) ?></td><td>Ke </td><td>:</td><td> <?= wordwrap($data->ket_berangkat,20,"<br />\n") ?> </td></tr>-->
+    <tr><td></td><td>Pada Tanggal</td><td>:</td><td> </td><td>Ke </td><td>:</td><td>  </td></tr>
+    <!--<tr><td></td><td>Kepala</td><td>:</td><td><?= $data->instansi_tujuan ?></td><td>Tanggal </td><td>:</td><td><?= sd_tgl2($data->tanggal,$data->lama_hari) ?> </td></tr>-->
+    <tr><td></td><td>Kepala</td><td>:</td><td><?= $data->instansi_tujuan ?></td><td>Tanggal </td><td>:</td><td> </td></tr>
     <tr><td></td><td></td><td></td><td> </td><td>Kepala </td><td>:</td><td><?= $data->instansi_tujuan ?> </td></tr>
     <tr><td></td><td style='height:50px'></td><td></td><td> </td><td></td><td></td><td></td></tr>
     <tr><td></td><td></td><td></td><td><?= $data->nama_ttd_instansi_tujuan ?></td><td></td><td></td><td><?= $data->nama_ttd_instansi_tujuan ?></td></tr>
-    <tr><td></td><td></td><td></td><td>NIP. <?= $data->nip_ttd_instansi_tujuan ?></td><td></td><td></td><td>NIP. <?= $data->nip_ttd_instansi_tujuan ?></td></tr>
+    <!--<tr><td></td><td></td><td></td><td>NIP. <?= $data->nip_ttd_instansi_tujuan ?></td><td></td><td></td><td>NIP. <?= $data->nip_ttd_instansi_tujuan ?></td></tr>-->
+    <tr><td></td><td></td><td></td><td> </td><td></td><td></td><td> </td></tr>
 </table>
 <hr/>
 <table style='margin-left:5%;width:90%' border='0'>
@@ -161,7 +179,7 @@ foreach($list as $ls){
 </table>
 <hr/>
 <table style='margin-left:5%;width:90%' border='0'>
-    <tr><td style='width:3%;vertical-align:top'>VI. </td><td colspan='6'>Catatan Lain-lain</td></tr>
+    <tr><td style='width:3%;vertical-align:top'>VII. </td><td colspan='6'>Catatan Lain-lain</td></tr>
 </table>
 <hr/>
 <table style='margin-left:5%;width:90%' border='0'>

@@ -521,6 +521,11 @@ class Primer extends CI_Controller {
 			$tgl_anggota_spt = no_anggota_spt(_POST('tanggal_spt'),_POST('lama_hari'));
 			$this->model_sitas->saveDataWithFile("surat_keluar",$data,"asset/surat_keluar","");
 			$id_surat_keluar = $this->db->insert_id();
+			if($this->input->post('is_dipa') == "on"){
+				$dipa_ya = 1;
+			} else {
+				$dipa_ya = 0;
+			}
 			$data_spt = [
 				'id_surat_masuk'=>_POST('id_surat_masuk'),
 				'id_surat_keluar'=>$id_surat_keluar,
@@ -530,11 +535,12 @@ class Primer extends CI_Controller {
 				'untuk' => _POST('perihal'),
 				'tanggal' => _POST('tanggal_spt'),
 				'lama_hari' => _POST('lama_hari'),
-				'is_dipa' => "1",
+				'is_dipa' => $dipa_ya,
 				'user' => _POST('user'),
 				'tanggal_input' => _POST('tanggal_input'),
 				'keterangan' => null
 			];
+			print_r($data_spt);
 			$this->model_sitas->saveData('spt', $data_spt);
 			$id_spt = $this->db->insert_id();
 			foreach($this->input->post('tujuan_surat') as $tsx){
@@ -717,42 +723,102 @@ class Primer extends CI_Controller {
 	}
 	function kirim_pesan(){
 		cek_session_admin1();
-		$no_wa = $_GET['no_wa'];
-		$pesan = $_GET['pesan'];
-		$url = $_GET['ctrl'];
 		$id_spt = $_GET['id_spt'];
 		$kode_unik = $_GET['kode_unik'];
 		if(get_kode_uniks($id_spt)==$kode_unik){
-			$spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,untuk,tanggal,lama_hari,tanggal_input",
+			$spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,untuk,tanggal,lama_hari,tanggal_input,is_dipa,pj",
 							"spt","id_spt=$id_spt")->row();
-			
-			$peg_spt = $this->model_sitas->listDataBy("b.nama",
+			if($spt->is_dipa == 1){
+				$pj = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai = $spt->pj")->row();
+				$no_wa = substr_replace($pj->no_hp,"62",0,1);
+				$links = base_url()."primer?redir=status_spt/".$id_spt."/".$kode_unik;
+        		$pesan = "Layanan BSIP TAS Ada pengajuan SPT silahkan klik link $links";
+				$url = "daftar_spt";
+				$data_spt = array('ajukan'=>1);
+				$this->model_sitas->update_data("spt","id_spt",$id_spt,$data_spt);
+			} else {
+				$no_wa = $_GET['no_wa'];
+				$pesan = $_GET['pesan'];
+				$url = $_GET['ctrl'];
+				$peg_spt = $this->model_sitas->listDataBy("b.nama",
 							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
 							"a.id_spt=$id_spt","a.id_anggota asc");
-			$data_peg = array();
-			foreach($peg_spt as $ps){
-				array_push($data_peg,$ps->nama);
+				$data_peg = array();
+				foreach($peg_spt as $ps){
+					array_push($data_peg,$ps->nama);
+				}
+				$untuk = implode(",",$data_peg);
+				$narasi_tgl = sd_tgl($spt->tanggal,$spt->lama_hari);
+				$data_sk = array(
+					'id_surat_masuk'=>$spt->id_surat_masuk,
+					'id_sub_arsip'=>$spt->id_sub_arsip,
+					'tujuan_surat'=>$untuk,
+					'lokasi_tujuan_surat'=>"SPT",
+					'tanggal'=>$spt->tanggal_input,
+					'sifat'=>1,
+					'lampiran'=>0,
+					'perihal'=>$spt->untuk." ".$narasi_tgl,
+					'isi_surat'=>"SPT"
+				);
+				$this->model_sitas->saveData("surat_keluar",$data_sk);
+				$id_surat_keluar = $this->db->insert_id();
+				$data_spt = array('id_surat_keluar'=>$id_surat_keluar);
+				$this->model_sitas->update_data("spt","id_spt",$id_spt,$data_spt);
 			}
-			$untuk = implode(",",$data_peg);
-			$narasi_tgl = sd_tgl($spt->tanggal,$spt->lama_hari);
-			$data_sk = array(
-				'id_surat_masuk'=>$spt->id_surat_masuk,
-				'id_sub_arsip'=>$spt->id_sub_arsip,
-				'tujuan_surat'=>$untuk,
-				'lokasi_tujuan_surat'=>"SPT",
-				'tanggal'=>$spt->tanggal_input,
-				'sifat'=>1,
-				'lampiran'=>0,
-				'perihal'=>$spt->untuk." ".$narasi_tgl,
-				'isi_surat'=>"SPT"
-			);
-			$this->model_sitas->saveData("surat_keluar",$data_sk);
-			$id_surat_keluar = $this->db->insert_id();
-			$data_spt = array('id_surat_keluar'=>$id_surat_keluar);
-			$this->model_sitas->update_data("spt","id_spt",$id_spt,$data_spt);
-			$this->model_sitas->kirim_wa_gateway($no_wa,$pesan); 
+			//echo $no_wa."---".$pesan;
+			$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+			redirect('primer/'.$url);
+		} else {
+			echo "Sorry Yee WKWKWK";
 		}
-		redirect('primer/'.$url);
+	}
+	function status_spt(){
+		cek_session_admin1();
+		$uri3 = $this->uri->segment(3);
+		$uri4 = $this->uri->segment(4);
+		if(get_kode_uniks($uri3) == $uri4){
+			$spt = $this->model_sitas->rowDataBy("a.id_surat_keluar,a.id_subdetil,a.untuk,a.lama_hari,a.ket_berangkat,a.ket_wilayah,a.tanggal,a.pj,
+					a.no_sppd,a.verif_pj,a.status_verif_pa,a.status_verif_ppk,a.keterangan,a.keterangan_pa,a.keterangan_ppk,b.transportasi",
+					"spt a inner join transportasi_spt b on a.id_transport=b.id_transport","a.id_spt = $uri3")->row();
+			$pengendali_anggaran = $this->model_sitas->rowDataBy("id_pegawai","verifikator","menu = 'spt' and tingkat = 1")->row();
+			$ppk = $this->model_sitas->rowDataBy("id_pegawai","verifikator","menu = 'spt' and tingkat = 2")->row();
+			if($spt->verif_pj == 1){
+				$is_verif_pj = 1;
+			} else {
+				$is_verif_pj = 0;
+			}
+			if($spt->status_verif_pa == 1){
+				$is_verif_pa = 1;
+			} else {
+				$is_verif_pa = 0;
+			}
+			if($spt->status_verif_ppk == 1){
+				$is_verif_ppk = 1;
+			} else {
+				$is_verif_ppk = 0;
+			}
+			$data['pegawai_spt'] = $this->model_sitas->listDataBy("b.nama,b.nip,b.jabatan,b.gol",
+									"anggota_spt a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.id_spt = $uri3",
+									"a.id_anggota");
+			$data['spt'] = $spt;
+			$data['pos'] = $this->model_sitas->rowDataBy("a.vol,a.satuan,a.harga_satuan,b.kd_detil,c.kd_subkomp,c.subkomp,
+							d.kd_komponen,e.kd_ro",
+							"a_subdetil9 a inner join a_detil8 b on a.id_detil=b.id_detil 
+								inner join a_subkomp7 c on b.id_subkomp=c.id_subkomp inner join a_komponen6 d on c.id_komponen = d.id_komponen
+								inner join a_ro5 e on d.id_ro = e.id_ro",
+							"a.id_subdetil = $spt->id_subdetil")->row();
+			$data['id_pegawai_login'] = $this->model_sitas->get_user()->id_pegawai;
+			$data['id_pj'] = $spt->pj;
+			$data['id_pa'] = $pengendali_anggaran;
+			$data['id_ppk'] = $ppk;
+			$data['arr_disetujui'] = array($spt->pj,$pengendali_anggaran->id_pegawai,$ppk->id_pegawai);
+			$data['total_verif'] = $is_verif_pj + $is_verif_pa + $is_verif_ppk;
+			$data['uri3'] = $uri3;
+			$data['uri4'] = $uri4;
+			$this->template->load('sitas/template_form','sitas/status_spt',$data);
+		} else {
+			echo "Sorry YEeee WKWKWKW";
+		}
 	}
 	function ajukan_surat_keluar(){
 		cek_session_admin1();
@@ -771,6 +837,7 @@ class Primer extends CI_Controller {
 		$this->model_sitas->update_data("surat_keluar","id_surat_keluar",$uri3,$data);
 		$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/buat_surat');
+		//echo $no_wa."---".$pesan;
 	}
 	function list_ver_surat_keluar1(){
 		cek_session_admin1();
@@ -851,6 +918,7 @@ class Primer extends CI_Controller {
         $pesan = "*Layanan LinTAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/list_ver_surat_keluar1');
+		//echo $no_wa."---".$pesan;
 	}
 	function tolak_surat1(){
 	    cek_session_admin1();
@@ -877,12 +945,29 @@ class Primer extends CI_Controller {
 		$get_buat_surat = $this->model_sitas->get_peg_by_user($qw_user_petugas->username);
 		$tgl = date('Y-m-d H:i:s');
 	    $id_spt = $_POST['id_buat_surat'];
+		$id_spt_asli = $_POST['id_spt'];
 	    $ket = $_POST['keterangan'];
+		$qw_surat_keluar = $this->model_sitas->rowDataBy("isi_surat","surat_keluar","id_surat_keluar = $id_spt")->row();
 	    $this->db->query("update surat_keluar set keterangan = '$ket', waktu_verif = '$tgl', id_verif = $user->id_pegawai where id_surat_keluar = $id_spt");
 		$no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
         $links = base_url('primer?redir=buat_surat_keluar');
         $pesan = "*Layanan LinTAS* Pemberian nomor surat, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		//echo $no_wa."---".$pesan."<br><br>";
+		if($qw_surat_keluar->isi_surat == "SPT"){
+			$qw_petugas_spt = $this->model_sitas->listDataBy("b.is_internal,c.nama,c.no_hp,d.tanggal,d.lama_hari,d.untuk,d.ket_wilayah",
+			"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai 
+			inner join pegawai c on b.id_pegawai=c.id_pegawai inner join spt d on a.id_spt=d.id_spt",
+			"a.id_spt = $id_spt_asli","a.id_anggota asc");
+			foreach($qw_petugas_spt as $qps){
+				$pesan_untuk_petugas = "*Layanan LinTAS* Anda mendapatkan Surat Perintah Tugas perihal ".$qps->untuk." di ".$qps->ket_wilayah.". Pada tanggal ".sd_tgl($qps->tanggal,$qps->lama_hari);
+				if($qps->is_internal == 1){
+					$no_wa_petugas = substr_replace($qps->no_hp,62,0,1);
+					$this->model_sitas->kirim_wa_gateway($no_wa_petugas,$pesan_untuk_petugas);
+					//echo $no_wa_petugas."---".$pesan_untuk_petugas."<br>";
+				}
+			}
+		}
 		redirect('primer/verif_surat');
 	}
 	function tolak_surat(){
@@ -1089,9 +1174,19 @@ class Primer extends CI_Controller {
         }
 		$qw_surat_masuk = $this->db->query("select id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf from surat_masuk order by id_surat_masuk desc limit 200")->result();
 		$data['list'] = $this->model_sitas->listDataBy("*","spt","tanggal_input like '%$tahun%' and is_dipa = 0","id_spt desc");
-        $data['list_sm'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$tahun%' and id_pegawai_disposisi != 0","id_surat_masuk desc limit 200");
+        //$data['list_sm'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal like '%$tahun%' and id_pegawai_disposisi != 0","id_surat_masuk desc limit 200");
 		$data['peg'] = $this->model_sitas->listData("*","pegawai","id_pegawai ASC");
 		$data['list_sm'] = $qw_surat_masuk;
+		$data['transportasi'] = $this->model_sitas->listData("*","transportasi_spt","id_transport");
+		$data['subkomp'] = $this->model_sitas->listDataBy("a.id_subkomp,a.kd_subkomp,a.subkomp",
+							"a_subkomp7 a inner join a_komponen6 b on a.id_komponen=b.id_komponen
+								inner join a_ro5 c on b.id_ro=c.id_ro
+								inner join a_kro4 d on c.id_kro=d.id_kro
+								inner join a_aktivitas3 e on d.id_aktivitas=e.id_aktivitas
+								inner join a_program2 f on e.id_program=f.id_program
+								inner join a_trs_alokasi1 g on f.id_alokasi=g.id_alokasi",
+								"g.ta = '2024'","a.id_subkomp");
+		$data['pegawai'] = $this->model_sitas->listData("id_pegawai,nama","pegawai","id_pegawai");
 		if(empty($uri3)){
             $data['spt'] = $this->model_sitas->cek_anggota_spt($get_tgl,$get_lama);
             $data['tgl_ini'] = date('Y-m-d');
@@ -1113,6 +1208,8 @@ class Primer extends CI_Controller {
             }
 			*/
             $data['user'] = "";
+			$data['tempat_berangkat'] = "Malang";
+			$data['ket_wilayah'] = "";
             $data['tanggal_input'] = date('Y-m-d');
             $data['npj'] = "--Pilih Pegawai--";
             $data['pj'] = "";
@@ -1159,6 +1256,8 @@ class Primer extends CI_Controller {
             $data['npj'] = "";//$get_pj->nama;
             $data['id_pj'] = $row->pj;
             $data['user'] = $row->user;
+			$data['tempat_berangkat'] = $row->tempat_berangkat;
+			$data['ket_wilayah'] = $row->ket_wilayah;
             $data['id_spt'] = $row->id_spt;
             $data['arr'] = $get_spt_peg;
             $data['status'] = "edit";
@@ -1174,72 +1273,86 @@ class Primer extends CI_Controller {
 		$id_peg_selected = $this->input->post('peg');
 		$anggota_spt_existing = $this->model_sitas->get_anggota_spt_by_id_spt($id_spt);
 		$menimbang = _POST('menimbang');
-		//$menimbang = "";
 		$status = _POST('status');
 		$is_dipa = $this->input->post('is_dipa') ? 1 : 0;
-		/*
-		$id_pj = _POST('pj');
-		$pj = explode(", ",$id_pj);
-		$id_pj = $pj[0];
-		*/
-		$data = [
-			'id_surat_masuk'=>_POST('id_surat_masuk'),
-			'id_sub_arsip'=>_POST('id_arsip'),
-			'menimbang' => $menimbang,
-			'dasar' => $this->input->post('dasar'),
-			'untuk' => _POST('untuk'),
-			'tanggal' => _POST('tanggal'),
-			'lama_hari' => _POST('lamanya'),
-			'is_dipa' => $is_dipa,
-			//'pj'       => $id_pj,
-			'user' => _POST('user'),
-			'tanggal_input' => _POST('tanggal_input'),
-			'keterangan' => null
-
-		];
+			if($is_dipa == 1){
+				$data = [
+					'id_surat_masuk'=>_POST('id_surat_masuk'),
+					'id_sub_arsip'=>_POST('id_arsip'),
+					'menimbang' => $menimbang,
+					'dasar' => $this->input->post('dasar'),
+					'untuk' => _POST('untuk'),
+					'tanggal' => _POST('tanggal'),
+					'lama_hari' => _POST('lamanya'),
+					'is_dipa' => $is_dipa,
+					'ket_berangkat' => _POST('tempat_berangkat'),
+					'ket_wilayah' => _POST('ket_wilayah'),
+					'id_transport' => _POST('id_transport'),
+					'id_subdetil' => _POST('id_subdetil'),
+					'pj' => _POST('pj'),
+					'user' => _POST('user'),
+					'tanggal_input' => _POST('tanggal_input'),
+					'keterangan' => null
+				];
+			} else {
+				$data = [
+					'id_surat_masuk'=>_POST('id_surat_masuk'),
+					'id_sub_arsip'=>_POST('id_arsip'),
+					'menimbang' => $menimbang,
+					'dasar' => $this->input->post('dasar'),
+					'untuk' => _POST('untuk'),
+					'tanggal' => _POST('tanggal'),
+					'lama_hari' => _POST('lamanya'),
+					'is_dipa' => $is_dipa,
+					'user' => _POST('user'),
+					'tanggal_input' => _POST('tanggal_input'),
+					'keterangan' => null
+				];
+			}
     	$tgl_anggota_spt = no_anggota_spt(_POST('tanggal'),_POST('lamanya'));
     	if($status != "edit"){
-        $this->model_sitas->saveData('spt', $data);
-        $anggota_spt = $this->db->insert_id();
-        $id_pegawai = implode(",",$this->input->post('peg'));
-        $pegawai = explode(",",$id_pegawai);
-        $data2 = array();
-        foreach($pegawai as $peg){
-            array_push($data2, array(
-                'id_spt' => $anggota_spt,
-				//'id_spt'=> 1,
-                'id_pegawai' => $peg,
-                'tanggal_spt' => $tgl_anggota_spt,
-            ));
-        }
-        $this->model_sitas->saveDataBanyak('anggota_spt', $data2);
-        redirect('primer/daftar_spt');
-		/*
-		print_r($data);
-		echo "<br>";
-		print_r($data2);
-		*/
+			$this->model_sitas->saveData('spt', $data);
+			$anggota_spt = $this->db->insert_id();
+			//$anggota_spt = 1;
+			$id_pegawai = implode(",",$this->input->post('peg'));
+			$pegawai = explode(",",$id_pegawai);
+			$data2 = array();
+			foreach($pegawai as $peg){
+				array_push($data2, array(
+					'id_spt' => $anggota_spt,
+					//'id_spt'=> 1,
+					'id_pegawai' => $peg,
+					'tanggal_spt' => $tgl_anggota_spt,
+				));
+			}
+			$this->model_sitas->saveDataBanyak('anggota_spt', $data2);
+			redirect('primer/daftar_spt');
+			/*
+			print_r($data);
+			echo "<br>";
+			print_r($data2);
+			*/
     	} else {
-        foreach ($anggota_spt_existing as $anggota) {
-            if (!in_array($anggota->id_pegawai, $id_peg_selected)) {
-                $this->model_sitas->delete_spt("anggota_spt", "id_anggota", $anggota->id_anggota);
-            }
-        }
-        foreach ($id_peg_selected as $id_pegawai) {
-            $data_anggota_spt = array(
-                'id_spt' => $id_spt,
-                'id_pegawai' => $id_pegawai,
-                'tanggal_spt' => $tgl_anggota_spt,
-            );
-            $existing_anggota_spt = $this->model_sitas->get_existing_anggota_spt($id_spt, $id_pegawai);
-            if ($existing_anggota_spt) {
-                $this->model_sitas->update_data("anggota_spt", "id_anggota", $existing_anggota_spt->id_anggota, $data_anggota_spt);
-            } else {
-                $this->model_sitas->saveData('anggota_spt', $data_anggota_spt);
-            }
-        }
-        $this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
-        redirect('primer/daftar_spt');
+			foreach ($anggota_spt_existing as $anggota) {
+				if (!in_array($anggota->id_pegawai, $id_peg_selected)) {
+					$this->model_sitas->delete_spt("anggota_spt", "id_anggota", $anggota->id_anggota);
+				}
+			}
+			foreach ($id_peg_selected as $id_pegawai) {
+				$data_anggota_spt = array(
+					'id_spt' => $id_spt,
+					'id_pegawai' => $id_pegawai,
+					'tanggal_spt' => $tgl_anggota_spt,
+				);
+				$existing_anggota_spt = $this->model_sitas->get_existing_anggota_spt($id_spt, $id_pegawai);
+				if ($existing_anggota_spt) {
+					$this->model_sitas->update_data("anggota_spt", "id_anggota", $existing_anggota_spt->id_anggota, $data_anggota_spt);
+				} else {
+					$this->model_sitas->saveData('anggota_spt', $data_anggota_spt);
+				}
+			}
+			$this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
+			redirect('primer/daftar_spt');
     	}
   	}	
 	function delete_spt(){
@@ -1266,7 +1379,10 @@ class Primer extends CI_Controller {
 	}
 	function no_sppd(){
 		$id_spt = _POST('id');
-		$no_current = $this->db->query("select is_dipa,ket_berangkat,ket_wilayah,instansi_pembiayaan,kode_pembiayaan,no_sppd,kendaraan,instansi_tujuan,nama_ttd_instansi_tujuan,nip_ttd_instansi_tujuan,id_ppk,tgl_sppd from spt where id_spt = $id_spt")->row();
+		$no_current = $this->db->query("select a.id_transport,a.id_subdetil,a.is_dipa,a.ket_berangkat,a.ket_wilayah,
+						a.instansi_pembiayaan,a.kode_pembiayaan,a.no_sppd,a.kendaraan,a.instansi_tujuan,a.nama_ttd_instansi_tujuan,
+						a.nip_ttd_instansi_tujuan,a.id_ppk,a.tgl_sppd,b.transportasi 
+						from spt a inner join transportasi_spt b on a.id_transport=b.id_transport where a.id_spt = $id_spt")->row();
 		$no_max = $this->db->query("select max(no_sppd) as nox from spt")->row();
 		$spt_last = $this->db->query("select id_spt from spt where no_sppd != 0 order by id_spt desc")->row();
 		$pjb_ppk = $this->model_sitas->rowDataBy("id_pegawai","struktur_organisasi","id_struktur = 5")->row();
@@ -1286,7 +1402,11 @@ class Primer extends CI_Controller {
 			$id_ppk = $pjb_ppk->id_pegawai;
 		}
 		$data['nox'] = $nomor_sppd;
-		$data['kendaraan'] = $no_current->kendaraan;
+		if($no_current->id_transport == 0){
+			$data['kendaraan'] = $no_current->kendaraan;
+		} else {
+			$data['kendaraan'] = $no_current->transportasi;
+		}
 		$data['ket_wilayah'] = $no_current->ket_wilayah;
 		if($no_current->ket_berangkat==""){
 			$data['ket_berangkat'] = "BPSI TAS";
@@ -1302,7 +1422,17 @@ class Primer extends CI_Controller {
 		} else {
 			$data['instansi_pembiayaan'] = $no_current->instansi_pembiayaan;
 		}
-		$data['kode_pembiayaan'] = $no_current->kode_pembiayaan;
+		if($no_current->id_subdetil == 0){
+			$data['kode_pembiayaan'] = $no_current->kode_pembiayaan;
+		} else {
+			$pos = $this->model_sitas->rowDataBy("a.vol,a.satuan,a.harga_satuan,b.kd_detil,c.kd_subkomp,c.subkomp,
+							d.kd_komponen,e.kd_ro",
+							"a_subdetil9 a inner join a_detil8 b on a.id_detil=b.id_detil 
+								inner join a_subkomp7 c on b.id_subkomp=c.id_subkomp inner join a_komponen6 d on c.id_komponen = d.id_komponen
+								inner join a_ro5 e on d.id_ro = e.id_ro",
+							"a.id_subdetil = $no_current->id_subdetil")->row();
+			$data['kode_pembiayaan'] = $pos->kd_ro.".".$pos->kd_komponen.".".$pos->kd_subkomp.".".$pos->kd_detil;
+		}
 		$data['instansi_tujuan'] = $no_current->instansi_tujuan;
 		$data['nama_ttd_instansi_tujuan'] = $no_current->nama_ttd_instansi_tujuan;
 		$data['nip_ttd_instansi_tujuan'] = $no_current->nip_ttd_instansi_tujuan;
@@ -1319,9 +1449,9 @@ class Primer extends CI_Controller {
 		$ket_berangkat = _POST('ket_berangkat');
 		$instansi_pembiayaan = _POST('instansi_pembiayaan');
 		$kode_pembiayaan = _POST('kode_pembiayaan');
-		$instansi_tujuan = _POST('instansi_tujuan');
-		$nama_ttd_yg_dikunjungi = _POST('nama_ttd_yg_dikunjungi');
-		$nip_ttd_yg_dikunjungi = _POST('nip_ttd_yg_dikunjungi');
+		//$instansi_tujuan = _POST('instansi_tujuan');
+		//$nama_ttd_yg_dikunjungi = _POST('nama_ttd_yg_dikunjungi');
+		//$nip_ttd_yg_dikunjungi = _POST('nip_ttd_yg_dikunjungi');
 		$id_ppk = _POST('id_ppk');
 		$tgl_sppd = _POST('tgl_sppd');
 		$id_spt = _POST('id_spt');
@@ -1331,9 +1461,9 @@ class Primer extends CI_Controller {
 					'ket_wilayah'=>$ket_wilayah,
 					'instansi_pembiayaan'=>$instansi_pembiayaan,
 					'kode_pembiayaan'=>$kode_pembiayaan,
-					'instansi_tujuan'=>$instansi_tujuan,
-					'nama_ttd_instansi_tujuan'=>$nama_ttd_yg_dikunjungi,
-					'nip_ttd_instansi_tujuan'=>$nip_ttd_yg_dikunjungi,
+					//'instansi_tujuan'=>$instansi_tujuan,
+					//'nama_ttd_instansi_tujuan'=>$nama_ttd_yg_dikunjungi,
+					//'nip_ttd_instansi_tujuan'=>$nip_ttd_yg_dikunjungi,
 					'id_ppk'=>$id_ppk,
 					'tgl_sppd'=>$tgl_sppd
 				];

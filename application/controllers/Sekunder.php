@@ -362,4 +362,115 @@ class Sekunder extends CI_Controller {
         $this->model_sitas->update_data("file","id_file",$id_file,$data);
         redirect('primer/drive/'.$qwx->url);
     }
+    function get_subkomponen(){
+        $id_subkomp = _POST('id_subkomp');
+        $data["subdetil"] = $this->model_sitas->listDataBy("a.id_subdetil,a.id_detil,a.subdetil,b.kd_detil,b.detil",
+                            "a_subdetil9 a
+                            inner join a_detil8 b on a.id_detil=b.id_detil
+                            inner join a_subkomp7 c on b.id_subkomp=c.id_subkomp",
+                            "c.id_subkomp = $id_subkomp and b.kd_detil like '%524%'","a.id_subdetil");
+        $this->load->view('sitas/get_subkomponen',$data);
+    }
+    function tolak_status_spt(){
+        cek_session_admin1();
+        date_default_timezone_set('Asia/Jakarta');
+        $id_spt = _POST('id_spt');
+        $kd_spt = _POST('kd_spt');
+        if(get_kode_uniks($id_spt) == $kd_spt){
+            $spt = $this->model_sitas->rowDataBy("user,pj","spt","id_spt = $id_spt")->row();
+            $pengendali_anggaran = $this->model_sitas->rowDataBy("id_pegawai","verifikator","menu = 'spt' and tingkat = 1")->row();
+			$ppk = $this->model_sitas->rowDataBy("id_pegawai","verifikator","menu = 'spt' and tingkat = 2")->row();
+            $get_user_log = $this->model_sitas->get_user();
+            $get_user = $this->model_sitas->get_user_by($spt->user);
+            if($get_user_log->id_pegawai == $spt->pj){
+                $data = array('verif_pj'=>2,'waktu_verif_pj'=>date('Y-m-d H:i:s'),'keterangan'=>_POST('keterangan'));
+            }
+            if($get_user_log->id_pegawai == $pengendali_anggaran->id_pegawai){
+                $data = array('status_verif_pa'=>2,'id_verif_pa'=>_POST('verifikator'),'waktu_verif_pa'=>date('Y-m-d H:i:s'),'keterangan_pa'=>_POST('keterangan'));
+            }
+            if($get_user_log->id_pegawai == $ppk->id_pegawai){
+                $data = array('status_verif_ppk'=>2,'id_verif_ppk'=>_POST('verifikator'),'waktu_verif_ppk'=>date('Y-m-d H:i:s'),'keterangan_ppk'=>_POST('keterangan'));
+            }
+            $this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
+            $no_wa = substr_replace($get_user->no_hp,"62",0,1);
+			$links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
+        	$pesan = "*Layanan BSIP TAS* Pengajuan SPT anda ditolak, untuk detailnya silahkan klik link $links";
+            $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+            //echo $no_wa."---".$pesan;
+            redirect('primer/status_spt/'.$id_spt.'/'.$kd_spt);
+        } else {
+            echo "Sorry Yee wkwkwkw";
+        }
+    }
+    function setuju_status_spt(){
+        cek_session_admin1();
+        date_default_timezone_set('Asia/Jakarta');
+        $id_spt = _POST('id_spt');
+        $kd_spt = _POST('kd_spt');
+        if(get_kode_uniks($id_spt) == $kd_spt){
+            $spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,tanggal,lama_hari,tanggal_input,pj,untuk",
+                    "spt","id_spt = $id_spt")->row();
+            $pengendali_anggaran = $this->model_sitas->rowDataBy("a.id_pegawai,b.no_hp",
+                                    "verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                                    "a.menu = 'spt' and a.tingkat = 1")->row();
+			$ppk = $this->model_sitas->rowDataBy("a.id_pegawai,b.no_hp",
+                    "verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                    "a.menu = 'spt' and a.tingkat = 2")->row();
+            $get_user_log = $this->model_sitas->get_user();
+            if($get_user_log->id_pegawai == $spt->pj){
+                $data = array('verif_pj'=>1,'waktu_verif_pj'=>date('Y-m-d H:i:s'),'keterangan'=>_POST('keterangan'));
+                $data_sk = array();
+                $no_wa = substr_replace($pengendali_anggaran->no_hp,"62",0,1);
+                $links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
+        	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
+            }
+            if($get_user_log->id_pegawai == $pengendali_anggaran->id_pegawai){
+                $data = array('status_verif_pa'=>1,'id_verif_pa'=>_POST('verifikator'),'waktu_verif_pa'=>date('Y-m-d H:i:s'),'keterangan_pa'=>_POST('keterangan'));
+                $data_sk = array();
+                $no_wa = substr_replace($ppk->no_hp,"62",0,1);
+                $links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
+        	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
+            }
+            if($get_user_log->id_pegawai == $ppk->id_pegawai){
+                $petugas_terima_sk = $this->model_sitas->rowDataBy("b.no_hp",
+                                        "petugas_terima a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                                        "menu = 'surat_keluar'")->row();
+                $peg_spt = $this->model_sitas->listDataBy("b.nama",
+							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+							"a.id_spt=$id_spt","a.id_anggota asc");
+				$data_peg = array();
+				foreach($peg_spt as $ps){
+					array_push($data_peg,$ps->nama);
+				}
+				$untuk = implode(",",$data_peg);
+                $narasi_tgl = sd_tgl($spt->tanggal,$spt->lama_hari);
+				$data_sk = array(
+					'id_surat_masuk'=>$spt->id_surat_masuk,
+					'id_sub_arsip'=>$spt->id_sub_arsip,
+					'tujuan_surat'=>$untuk,
+					'lokasi_tujuan_surat'=>"SPT",
+					'tanggal'=>$spt->tanggal_input,
+					'sifat'=>1,
+					'lampiran'=>0,
+					'perihal'=>$spt->untuk." ".$narasi_tgl,
+					'isi_surat'=>"SPT"
+				);
+                $this->model_sitas->saveData("surat_keluar",$data_sk);
+				$id_surat_keluar = $this->db->insert_id();
+                //$id_surat_keluar = 0;
+                $data = array('id_surat_keluar'=>$id_surat_keluar,'status_verif_ppk'=>1,
+                                'id_verif_ppk'=>_POST('verifikator'),'waktu_verif_ppk'=>date('Y-m-d H:i:s'),
+                                'keterangan_ppk'=>_POST('keterangan'));
+                $no_wa = substr_replace($petugas_terima_sk->no_hp,"62",0,1);
+                $links = base_url()."primer?redir=buat_surat";
+        	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT silahkan klik link $links";
+            }
+            $this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
+            $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+            //echo $no_wa."---".$pesan;
+            redirect('primer/status_spt/'.$id_spt.'/'.$kd_spt);
+        } else {
+            echo "Sorry Yee wkwkwkw";
+        }
+    }
 }
