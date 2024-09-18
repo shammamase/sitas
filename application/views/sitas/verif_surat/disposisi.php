@@ -339,12 +339,14 @@
     const cb3 = document.getElementById('cb3');
     const cb4 = document.getElementById('cb4');
     const cb5 = document.getElementById('cb5');
+    const cb7 = document.getElementById('cb7');
     const selectBox = document.getElementById('selectBox');
     cb1.addEventListener('change', updateSelect);
     cb2.addEventListener('change', updateSelect);
     cb3.addEventListener('change', updateSelect);
     cb4.addEventListener('change', updateSelect);
     cb5.addEventListener('change', updateSelect);
+    cb7.addEventListener('change', updateSelect);
     function updateSelect(){
         if(cb1.checked){
             selectBox.querySelector('option[value="1"]').setAttribute('selected', 'selected');
@@ -370,6 +372,11 @@
             selectBox.querySelector('option[value="5"]').setAttribute('selected', 'selected');
         } else {
             selectBox.querySelector('option[value="5"]').removeAttribute('selected');
+        }
+        if(cb7.checked){
+            selectBox.querySelector('option[value="10"]').setAttribute('selected', 'selected');
+        } else {
+            selectBox.querySelector('option[value="10"]').removeAttribute('selected');
         }
     }
   </script>
