@@ -122,6 +122,22 @@
             $sifat = $this->model_sitas->rowDataBy("*","sifat_surat","id_sifat = $row->id_sifat")->row();
             $links = base_url()."sijuara/disposisi_detail/".$row->id_surat_masuk;
             $pesan = "*Layanan Aplikasi* Ada Surat Masuk, lebih detailnya silahkan klik link $links";
+            $cek_surat_keluar = $this->model_sitas->rowDataBy("id_surat_keluar","surat_keluar","id_surat_masuk = $row->id_surat_masuk")->num_rows();
+            if($cek_surat_keluar > 0){
+                $get_surat_keluar = $this->model_sitas->rowDataBy("id_sub_arsip,no_surat_keluar,tanggal,sifat","surat_keluar","id_surat_masuk = $row->id_surat_masuk")->row();
+                $kode_arsip_kl = $this->model_sitas->rowDataBy("kode_sub_arsip","klasifikasi_sub_arsip","id_sub_arsip = $get_surat_keluar->id_sub_arsip")->row();
+                $sifat_kl = $this->model_sitas->rowDataBy("kode","sifat_surat","id_sifat = $get_surat_keluar->sifat")->row();
+                $exp_tgl = explode("-",$get_surat_keluar->tanggal); 
+                $narasi = "Telah ditindak lanjuti dengan mengeluarkan surat : <b>"
+                            .$sifat_kl->kode."-".$get_surat_keluar->no_surat_keluar."/"
+                            .$kode_arsip_kl->kode_sub_arsip."/H.4.2/".$exp_tgl[1]."/".$exp_tgl[0]."</b>";
+            } else {
+                $get_surat_keluar = array();
+                $kode_arsip_kl = array();
+                $sifat_kl = array();
+                $exp_tgl = array();
+                $narasi = "-";
+            }
      ?>
       <tr>
         <td><?php echo $no ?></td>
@@ -133,7 +149,9 @@
         <td><?= tgl_indoo($row->tanggal_masuk) ?></td>
         <td><?= tgl_indoo($row->tanggal) ?></td>
         <td>(<?= $row->diteruskan ?>)<br><?= $row->disposisi ?></td>
-        <td><?= $row->isi_disposisi ?></td>
+        <td>
+          <?= $row->isi_disposisi ?><br><?= $narasi ?>
+        </td>
         <td>
         <a class='btn btn-success btn-xs' title='Edit' href="<?php echo base_url() ?>primer/buat_surat_masuk?id_sm=<?php echo $row->id_surat_masuk ?>"><i class='fas fa-edit'></i> Edit</a>
             <?php
