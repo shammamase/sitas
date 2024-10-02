@@ -1818,25 +1818,89 @@ class Primer extends CI_Controller {
 		$links = base_url('primer?redir=sm_detail/').$id_surat_masuk;
 		$pesan = "*Layanan LinTAS* Anda menerima disposisi surat dari $pengirim->struktur, silahkan klik link berikut $links\nCatatan : $catatan";
 		$data_ins = array();
-		foreach($diteruskan as $rp){
-		  $pegx = $this->model_sitas->rowDataBy("id_pegawai","pegawai","no_hp=$rp")->row();
-		  array_push($data_ins,array(
-			'id_surat_masuk'=>$id_surat_masuk,
-			'id_pegawai_kirim_disposisi'=>$user->id_pegawai,
-			'id_pegawai_terima_disposisi'=>$pegx->id_pegawai,
-			'catatan_disposisi'=>$catatan
-		  ));
-		  $no_wa = substr_replace("$rp","62",0,1);
-		  $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-		}
-		$cek_surat_masuk = $this->model_sitas->rowDataBy("id_surat_masuk","disposisi_tk_bawah","id_surat_masuk=$id_surat_masuk")->num_rows();
-		if($cek_surat_masuk > 0){
-			$this->db->query("delete from disposisi_tk_bawah where id_surat_masuk=$id_surat_masuk");
-			$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+		//$peg = implode(",",$this->input->post('pegawai'));
+		$peg = $this->input->post('pegawai');
+		if(empty($diteruskan)){
+			if(empty($peg)){
+				$data['judul'] = "Gagal !!!";
+				$data['pesan'] = "Anda belum memilih pegawai yang akan menerima disposisi";
+				$data['back'] = site_url('primer/sm_detail/'.$id_surat_masuk);
+				$this->template->load('sitas/template_form','sitas/pesan_galat',$data);
+			} else {
+				foreach($peg as $pegw){
+					$pegxx = $this->model_sitas->rowDataBy("id_pegawai","pegawai","no_hp='$pegw'")->row();
+					array_push($data_ins,array(
+						'id_surat_masuk'=>$id_surat_masuk,
+						'id_pegawai_kirim_disposisi'=>$user->id_pegawai,
+						'id_pegawai_terima_disposisi'=>$pegxx->id_pegawai,
+						'catatan_disposisi'=>$catatan
+					));
+					$no_wa2 = substr_replace("$pegw","62",0,1);
+					$this->model_sitas->kirim_wa_gateway($no_wa2,$pesan);
+				}
+				$cek_surat_masuk = $this->model_sitas->rowDataBy("id_surat_masuk","disposisi_tk_bawah","id_surat_masuk=$id_surat_masuk")->num_rows();
+				if($cek_surat_masuk > 0){
+					$this->db->query("delete from disposisi_tk_bawah where id_surat_masuk=$id_surat_masuk");
+					$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+				} else {
+					$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+				}
+				redirect('primer/buat_surat_masuk');
+			}
 		} else {
-			$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+			if(empty($peg)){
+				foreach($diteruskan as $rp){
+					$pegx = $this->model_sitas->rowDataBy("id_pegawai","pegawai","no_hp='$rp'")->row();
+					array_push($data_ins,array(
+					  'id_surat_masuk'=>$id_surat_masuk,
+					  'id_pegawai_kirim_disposisi'=>$user->id_pegawai,
+					  'id_pegawai_terima_disposisi'=>$pegx->id_pegawai,
+					  'catatan_disposisi'=>$catatan
+					));
+					$no_wa = substr_replace("$rp","62",0,1);
+					$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+				}
+				$cek_surat_masuk = $this->model_sitas->rowDataBy("id_surat_masuk","disposisi_tk_bawah","id_surat_masuk=$id_surat_masuk")->num_rows();
+				if($cek_surat_masuk > 0){
+					$this->db->query("delete from disposisi_tk_bawah where id_surat_masuk=$id_surat_masuk");
+					$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+				} else {
+					$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+				}
+				redirect('primer/buat_surat_masuk');  
+			} else {
+				  foreach($diteruskan as $rp){
+					$pegx = $this->model_sitas->rowDataBy("id_pegawai","pegawai","no_hp='$rp'")->row();
+					array_push($data_ins,array(
+					  'id_surat_masuk'=>$id_surat_masuk,
+					  'id_pegawai_kirim_disposisi'=>$user->id_pegawai,
+					  'id_pegawai_terima_disposisi'=>$pegx->id_pegawai,
+					  'catatan_disposisi'=>$catatan
+					));
+					$no_wa = substr_replace("$rp","62",0,1);
+					$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+				  }
+				  foreach($peg as $pegw){
+					  $pegxx = $this->model_sitas->rowDataBy("id_pegawai","pegawai","no_hp='$pegw'")->row();
+					  array_push($data_ins,array(
+						  'id_surat_masuk'=>$id_surat_masuk,
+						  'id_pegawai_kirim_disposisi'=>$user->id_pegawai,
+						  'id_pegawai_terima_disposisi'=>$pegxx->id_pegawai,
+						  'catatan_disposisi'=>$catatan
+					  ));
+					  $no_wa2 = substr_replace("$pegw","62",0,1);
+					  $this->model_sitas->kirim_wa_gateway($no_wa2,$pesan);
+				  }
+				  	$cek_surat_masuk = $this->model_sitas->rowDataBy("id_surat_masuk","disposisi_tk_bawah","id_surat_masuk=$id_surat_masuk")->num_rows();
+					if($cek_surat_masuk > 0){
+						$this->db->query("delete from disposisi_tk_bawah where id_surat_masuk=$id_surat_masuk");
+						$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+					} else {
+						$this->db->insert_batch('disposisi_tk_bawah',$data_ins);
+					}
+					redirect('primer/buat_surat_masuk');
+			}
 		}
-		redirect('primer/buat_surat_masuk');
 	}
 	function file_disposisi(){
 		ob_start();    

@@ -229,19 +229,19 @@
                       <textarea name="catatan" class="form-control"><?= $catatan ?></textarea>
                     </div>
                   </div>
-                  <!--
+                  
                   <div style="margin-top:20px" class="col-md-12 col-12">
-                      <select id="selectBox" multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2" required>
+                      <select id="selectBox" multiple name="pegawai[]" data-placeholder="Pilih Pegawai" class="form-control select2">
                         <?php
                         foreach($peg as $pg){
                         ?>
-                        <option value="<?= $pg->id_pegawai ?>"><?= $pg->nama ?></option>
+                        <option value="<?= $pg->no_hp ?>"><?= $pg->nama ?></option>
                         <?php
                         }
                         ?>
                       </select>
                   </div>
-                  -->
+                  
                   </div>
               </div>
               <button type="submit" name="submit" class="btn btn-primary btn-block">Submit</button>
