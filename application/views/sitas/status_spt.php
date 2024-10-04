@@ -214,7 +214,8 @@ if($id_pegawai_login == $id_ppk->id_pegawai){
                     </table>
                     <?php
                     }
-                } else if($id_pegawai_login == $id_pa->id_pegawai){
+                }
+                if($id_pegawai_login == $id_pa->id_pegawai){
                     if($total_verif == 1){
                     ?>
                     <table class="mt-1">
@@ -225,7 +226,8 @@ if($id_pegawai_login == $id_ppk->id_pegawai){
                     </table>
                     <?php
                     }
-                } else if($id_pegawai_login == $id_ppk->id_pegawai){
+                }
+                if($id_pegawai_login == $id_ppk->id_pegawai){
                     if($total_verif == 2){
                     ?>
                     <table class="mt-1">

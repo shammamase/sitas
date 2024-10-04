@@ -423,15 +423,15 @@ class Sekunder extends CI_Controller {
                 $no_wa = substr_replace($pengendali_anggaran->no_hp,"62",0,1);
                 $links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
         	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
-            }
-            if($get_user_log->id_pegawai == $pengendali_anggaran->id_pegawai){
+                echo "verif sebagai pj";
+            } else if($get_user_log->id_pegawai == $pengendali_anggaran->id_pegawai){
                 $data = array('status_verif_pa'=>1,'id_verif_pa'=>_POST('verifikator'),'waktu_verif_pa'=>date('Y-m-d H:i:s'),'keterangan_pa'=>_POST('keterangan'));
                 $data_sk = array();
                 $no_wa = substr_replace($ppk->no_hp,"62",0,1);
                 $links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
         	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
-            }
-            if($get_user_log->id_pegawai == $ppk->id_pegawai){
+                echo "verif sebagai pengendali anggaran";
+            } else if($get_user_log->id_pegawai == $ppk->id_pegawai){
                 $petugas_terima_sk = $this->model_sitas->rowDataBy("b.no_hp",
                                         "petugas_terima a inner join pegawai b on a.id_pegawai=b.id_pegawai",
                                         "menu = 'surat_keluar'")->row();
@@ -464,11 +464,12 @@ class Sekunder extends CI_Controller {
                 $no_wa = substr_replace($petugas_terima_sk->no_hp,"62",0,1);
                 $links = base_url()."primer?redir=buat_surat";
         	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT silahkan klik link $links";
+                echo "verif sebagai ppk";
             }
             $this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
-            $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
-            //echo $no_wa."---".$pesan;
-            redirect('primer/status_spt/'.$id_spt.'/'.$kd_spt);
+            //$this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+            echo $no_wa."---".$pesan;
+            //redirect('primer/status_spt/'.$id_spt.'/'.$kd_spt);
         } else {
             echo "Sorry Yee wkwkwkw";
         }

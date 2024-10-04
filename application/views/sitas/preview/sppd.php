@@ -107,6 +107,7 @@ foreach($list as $ls){
 </table>
 <div style='page-break-after:always; clear:both'></div>
 <hr/>
+<div style="position:absolute;border-left:1px solid black;height:996px;top:9px;left:365px"></div>
 <!--
 <table style='margin-left:5%;width:90%' border='0'>
     <tr><td style='width:25%'></td><td style='width:5%'>I. </td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:33%'> <?= wordwrap($data->ket_berangkat,20,"<br />\n") ?> </td><td style='width:15%'>&nbsp;</td></tr>
@@ -120,8 +121,16 @@ foreach($list as $ls){
 </table>
 -->
 <table style='margin-left:5%;width:90%' border='0'>
-    <tr><td style='width:3%'></td><td style='width:10%'></td><td style='width:2%'></td><td style='width:32%;text-align:right'> I.</td><td style='width:20%'>Berangkat dari </td><td style='width:2%'>:</td><td style='width:28%'> </td></tr>
-    <tr><td></td><td></td><td></td><td></td><td>(Tempat Kedudukan)</td><td></td><td> </td></tr>
+    <tr>
+        <td style='width:3%'></td>
+        <td style='width:10%;color:#ffffff'>Tiba di</td>
+        <td style='width:2%'>:</td>
+        <td style='width:32%;text-align:right'> I.</td>
+        <td style='width:20%'>Berangkat dari </td>
+        <td style='width:2%'>:</td>
+        <td style='width:28%'> </td>
+    </tr>
+    <tr><td></td><td style="color:#ffffff">Pada Tanggal</td><td></td><td></td><td>(Tempat Kedudukan)</td><td></td><td> </td></tr>
     <tr><td></td><td></td><td></td><td> </td><td>Ke </td><td>:</td><td> </td></tr>
     <tr><td></td><td></td><td></td><td> </td><td>Pada Tanggal </td><td>:</td><td> </td></tr>
     <tr><td></td><td style='height:70px'></td><td></td><td></td><td></td><td></td><td></td></tr>
