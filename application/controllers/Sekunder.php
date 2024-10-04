@@ -474,4 +474,41 @@ class Sekunder extends CI_Controller {
             echo "Sorry Yee wkwkwkw";
         }
     }
+    function profil(){
+        cek_session_admin1();
+        $user = $this->model_sitas->get_user();
+        $data['nama'] = $user->nama;
+        $data['nip'] = $user->nip;
+        $data['jabatan'] = $user->jabatan;
+        $data['pangkat'] = $user->pangkat;
+        $data['gol'] = $user->gol;
+        $data['no_hp'] = $user->no_hp;
+        $data['id_pegawai'] = $user->id_pegawai;
+        $data['alert'] = "";
+        $this->template->load('sitas/template_form','sitas/profil',$data);
+    }
+    function update_profil(){
+        cek_session_admin1();
+        $id_pegawai = _POST('id_pegawai');
+        $data_peg = array(
+                    'nip' => _POST('nip'),
+                    'jabatan' => _POST('jabatan'),
+                    'pangkat' => _POST('pangkat'),
+                    'gol' => _POST('gol'),
+                    'no_hp' => _POST('no_hp'),
+                );
+        $data_user = array('nip' => _POST('nip'));
+        $this->model_sitas->update_data("pegawai","id_pegawai",$id_pegawai,$data_peg);
+        $this->model_sitas->update_data("user","id_pegawai",$id_pegawai,$data_user);
+        $user = $this->model_sitas->get_user();
+        $data['nama'] = $user->nama;
+        $data['nip'] = $user->nip;
+        $data['jabatan'] = $user->jabatan;
+        $data['pangkat'] = $user->pangkat;
+        $data['gol'] = $user->gol;
+        $data['no_hp'] = $user->no_hp;
+        $data['id_pegawai'] = $user->id_pegawai;
+        $data['alert'] = "<div class='alert alert-success'><strong>Berhasil!</strong> Update Data Pegawai.</div>";
+        $this->template->load('sitas/template_form','sitas/profil',$data);
+    }
 }

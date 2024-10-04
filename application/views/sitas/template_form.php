@@ -92,7 +92,7 @@
                   <img src="<?php echo base_url(); ?>/asset/users.gif" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                  <a style="font-size:15px" href="#" class="d-block"><?php echo $users->nama; ?></a>
+                  <a style="font-size:15px" href="<?= site_url('sekunder/profil') ?>" class="d-block"><?php echo $users->nama; ?></a>
                 </div>
               </div>
               <nav class="mt-2">
