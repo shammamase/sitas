@@ -383,13 +383,13 @@ class Sekunder extends CI_Controller {
             $get_user_log = $this->model_sitas->get_user();
             $get_user = $this->model_sitas->get_user_by($spt->user);
             if($get_user_log->id_pegawai == $spt->pj){
-                $data = array('verif_pj'=>2,'waktu_verif_pj'=>date('Y-m-d H:i:s'),'keterangan'=>_POST('keterangan'));
+                $data = array('ajukan'=>0,'verif_pj'=>2,'waktu_verif_pj'=>date('Y-m-d H:i:s'),'keterangan'=>_POST('keterangan'));
             }
             if($get_user_log->id_pegawai == $pengendali_anggaran->id_pegawai){
-                $data = array('status_verif_pa'=>2,'id_verif_pa'=>_POST('verifikator'),'waktu_verif_pa'=>date('Y-m-d H:i:s'),'keterangan_pa'=>_POST('keterangan'));
+                $data = array('ajukan'=>0,'status_verif_pa'=>2,'id_verif_pa'=>_POST('verifikator'),'waktu_verif_pa'=>date('Y-m-d H:i:s'),'keterangan_pa'=>_POST('keterangan'));
             }
             if($get_user_log->id_pegawai == $ppk->id_pegawai){
-                $data = array('status_verif_ppk'=>2,'id_verif_ppk'=>_POST('verifikator'),'waktu_verif_ppk'=>date('Y-m-d H:i:s'),'keterangan_ppk'=>_POST('keterangan'));
+                $data = array('ajukan'=>0,'status_verif_ppk'=>2,'id_verif_ppk'=>_POST('verifikator'),'waktu_verif_ppk'=>date('Y-m-d H:i:s'),'keterangan_ppk'=>_POST('keterangan'));
             }
             $this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
             $no_wa = substr_replace($get_user->no_hp,"62",0,1);
@@ -408,7 +408,7 @@ class Sekunder extends CI_Controller {
         $id_spt = _POST('id_spt');
         $kd_spt = _POST('kd_spt');
         if(get_kode_uniks($id_spt) == $kd_spt){
-            $spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,tanggal,lama_hari,tanggal_input,pj,untuk",
+            $spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,tanggal,lama_hari,tanggal_input,pj,untuk,verif_pj,status_verif_pa,status_verif_ppk",
                     "spt","id_spt = $id_spt")->row();
             $pengendali_anggaran = $this->model_sitas->rowDataBy("a.id_pegawai,b.no_hp",
                                     "verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai",
@@ -417,21 +417,20 @@ class Sekunder extends CI_Controller {
                     "verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai",
                     "a.menu = 'spt' and a.tingkat = 2")->row();
             $get_user_log = $this->model_sitas->get_user();
-            if($get_user_log->id_pegawai == $spt->pj){
+            $total_verif = $this->model_cek->hitung_jumlah_verif($spt->verif_pj,$spt->status_verif_pa,$spt->status_verif_ppk);
+            if($total_verif == 0){
                 $data = array('verif_pj'=>1,'waktu_verif_pj'=>date('Y-m-d H:i:s'),'keterangan'=>_POST('keterangan'));
                 $data_sk = array();
                 $no_wa = substr_replace($pengendali_anggaran->no_hp,"62",0,1);
                 $links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
         	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
-                //echo "verif sebagai pj";
-            } else if($get_user_log->id_pegawai == $pengendali_anggaran->id_pegawai){
+            } else if($total_verif == 1) {
                 $data = array('status_verif_pa'=>1,'id_verif_pa'=>_POST('verifikator'),'waktu_verif_pa'=>date('Y-m-d H:i:s'),'keterangan_pa'=>_POST('keterangan'));
                 $data_sk = array();
                 $no_wa = substr_replace($ppk->no_hp,"62",0,1);
                 $links = base_url()."primer?redir=status_spt/".$id_spt."/".$kd_spt;
         	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
-                //echo "verif sebagai pengendali anggaran";
-            } else if($get_user_log->id_pegawai == $ppk->id_pegawai){
+            } else if($total_verif == 2){
                 $petugas_terima_sk = $this->model_sitas->rowDataBy("b.no_hp",
                                         "petugas_terima a inner join pegawai b on a.id_pegawai=b.id_pegawai",
                                         "menu = 'surat_keluar'")->row();
@@ -464,7 +463,6 @@ class Sekunder extends CI_Controller {
                 $no_wa = substr_replace($petugas_terima_sk->no_hp,"62",0,1);
                 $links = base_url()."primer?redir=buat_surat";
         	    $pesan = "*Layanan BSIP TAS* Ada pengajuan SPT silahkan klik link $links";
-                //echo "verif sebagai ppk";
             }
             $this->model_sitas->update_data("spt","id_spt",$id_spt,$data);
             $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);

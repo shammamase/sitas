@@ -734,7 +734,18 @@ class Primer extends CI_Controller {
 				$links = base_url()."primer?redir=status_spt/".$id_spt."/".$kode_unik;
         		$pesan = "Layanan BSIP TAS Ada pengajuan SPT silahkan klik link $links";
 				$url = "daftar_spt";
-				$data_spt = array('ajukan'=>1);
+				$data_spt = array(
+							'ajukan'=>1,
+							'verif_pj'=>0,
+							'waktu_verif_pj'=>NULL,
+							'keterangan'=>NULL,
+							'status_verif_pa'=>0,
+							'waktu_verif_pa'=>"",
+							'keterangan_pa'=>"",
+							'status_verif_ppk'=>0,
+							'waktu_verif_ppk'=>"",
+							'keterangan_ppk'=>"",
+						);
 				$this->model_sitas->update_data("spt","id_spt",$id_spt,$data_spt);
 			} else {
 				$no_wa = $_GET['no_wa'];
