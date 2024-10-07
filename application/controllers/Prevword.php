@@ -182,8 +182,8 @@ class Prevword extends CI_Controller {
             */
             // Simpan sebagai dokumen Word
             $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
-            $objWriter->save('asset/file_temp/myDocumentSPT.docx');
-            redirect('asset/file_temp/myDocumentSPT.docx');
+            $objWriter->save('asset/file_temp/myDocumentSPT'.$uri3.'.docx');
+            redirect('asset/file_temp/myDocumentSPT'.$uri3.'.docx');
         } else {
             echo "Anda tidak mempunyai akses";
         }
