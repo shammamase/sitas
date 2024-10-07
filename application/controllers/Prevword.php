@@ -150,16 +150,23 @@ class Prevword extends CI_Controller {
             $katax->addTextBreak();
             $katax->addText('Ditandatangani secara elektronik oleh',$badanx);
             $katax->addTextBreak();
-            $katax->addText('${jabatan_pengirim}',$badanx);
+            $katax->addText('${jabatan_pengirim},',$badanx);
             $katax->addTextBreak();
-            $katax->addText('                       ',$badanx);
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addText('  ${ttd_pengirim}',$badanx);
+            //$katax->addText('                       ',$badanx);
+            $katax->addText('',$badanx);
             $katax->addImage('./asset/bsre.png',array(
                 'width'         => 70,
                 'height'         => 34,
-                'wrappingStyle'  => 'square'
+                'wrappingStyle'  => 'infront',
+                'positioning' => 'absolute',
             ));
             $katax->addTextBreak();
-            $katax->addText('${ttd_pengirim}',$badanx);
+            $katax->addTextBreak();
+            $katax->addTextBreak();
             $katax->addTextBreak();
             $katax->addText('${nama_pengirim}',$badanx);
             $katax->addTextBreak();
