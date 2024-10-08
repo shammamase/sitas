@@ -2434,7 +2434,7 @@ class Primer extends CI_Controller {
 		$data['list_surat'] = $this->model_sitas->listDataBy("a.id_surat_keluar,a.perihal",
 								"surat_keluar a inner join spt b on a.id_surat_keluar=b.id_surat_keluar
 								 inner join anggota_spt c on b.id_spt=c.id_spt",
-								"c.id_pegawai=$user->id_pegawai","a.id_surat_keluar desc");
+								"c.id_pegawai=$user->id_pegawai and b.is_dipa = 0","a.id_surat_keluar desc");
 		$this->template->load('sitas/template_form','sitas/lap_gratifikasi',$data);
 	}
     function logout(){

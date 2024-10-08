@@ -239,7 +239,13 @@ if($id_pegawai_login == $id_ppk->id_pegawai){
                     <?php
                     }
                 }
-        } 
+        } else {
+            if($total_verif <= 2){
+            ?>
+                <a href="<?= site_url('sekunder/send_info_spt/').$uri3.'/'.$uri4 ?>" class="btn btn-primary">Kirim Ke Verifikator</a>
+                <?php
+            }
+        }  
     ?>
   </div>
   <!-- /.card-body -->

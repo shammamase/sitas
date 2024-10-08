@@ -472,6 +472,42 @@ class Sekunder extends CI_Controller {
             echo "Sorry Yee wkwkwkw";
         }
     }
+    function send_info_spt(){
+        cek_session_admin1();
+        $uri3 = $this->uri->segment(3);
+        $uri4 = $this->uri->segment(4);
+        if(get_kode_uniks($uri3) == $uri4){
+            $spt = $this->model_sitas->rowDataBy("id_surat_masuk,id_sub_arsip,tanggal,lama_hari,tanggal_input,pj,untuk,verif_pj,status_verif_pa,status_verif_ppk",
+                    "spt","id_spt = $uri3")->row();
+            $pj = $this->model_sitas->rowDataBy("no_hp","pegawai","id_pegawai = $spt->pj")->row();
+            $pengendali_anggaran = $this->model_sitas->rowDataBy("a.id_pegawai,b.no_hp",
+                                    "verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                                    "a.menu = 'spt' and a.tingkat = 1")->row();
+			$ppk = $this->model_sitas->rowDataBy("a.id_pegawai,b.no_hp",
+                    "verifikator a inner join pegawai b on a.id_pegawai=b.id_pegawai",
+                    "a.menu = 'spt' and a.tingkat = 2")->row();
+            $get_user_log = $this->model_sitas->get_user();
+            $total_verif = $this->model_cek->hitung_jumlah_verif($spt->verif_pj,$spt->status_verif_pa,$spt->status_verif_ppk);
+            if($total_verif == 0){
+                $no_wa = substr_replace($pj->no_hp,"62",0,1);
+                echo "kirim ke PJ";
+            } else if($total_verif == 1) {
+                $no_wa = substr_replace($pengendali_anggaran->no_hp,"62",0,1);
+                echo "kirim ke PA";
+            } else if($total_verif == 2){
+                $no_wa = substr_replace($ppk->no_hp,"62",0,1);
+                echo "kirim ke PPK";
+            }
+            $links = base_url()."primer?redir=status_spt/".$uri3."/".$uri4;
+        	$pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
+            $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+            //echo $no_wa."---".$pesan;
+            redirect('primer/status_spt/'.$uri3.'/'.$uri4);
+        } else {
+            echo "Sorry YEEE";
+        }
+
+    }
     function profil(){
         cek_session_admin1();
         $user = $this->model_sitas->get_user();
