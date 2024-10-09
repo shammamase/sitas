@@ -836,7 +836,8 @@ class Primer extends CI_Controller {
 		$uri3 = $this->uri->segment(3);
 		$uri_kd = md5($uri3);
 		$get_verif_awal = $this->model_sitas->get_verifikator_awal();
-		$links = base_url('primer?redir=verif_surat_detail1/'.$uri_kd.'/'.$uri3);
+		//$links = base_url('primer?redir=verif_surat_detail1/'.$uri_kd.'/'.$uri3);
+		$links = base_url('primer?redir=list_ver_surat_keluar1');
         $no_wa = substr_replace($get_verif_awal->no_hp,"62",0,1);
         $pesan = "*Layanan LinTAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links ";
 		$data = array(
@@ -904,12 +905,21 @@ class Primer extends CI_Controller {
 				$data['spt'] = $qw_spt2;
 				$data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
 							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$qw_spt2->id_spt","a.id_anggota asc");
-				$this->template->load('sitas/template_form','sitas/verif_surat/verif_spt1',$data);
+				if($qw_spt->id_verif1 == 0){
+					$this->template->load('sitas/template_form','sitas/verif_surat/verif_spt1',$data);
+				} else {
+					$this->template->load('sitas/template_form','sitas/verif_surat/sudah_setuju');
+				}	
 			} else {
 				$qw_spt2 = "";
 				$data['spt'] = $qw_spt;
 				$data['peg'] = array();
-				$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat1',$data);
+				if($qw_spt->id_verif1 == 0){
+					$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat1',$data);
+				} else {
+					$this->template->load('sitas/template_form','sitas/verif_surat/sudah_setuju');
+				}
+				
 			}
 		} else {
 			$this->load->view('sitas/verif_surat/no_akses');
@@ -925,7 +935,8 @@ class Primer extends CI_Controller {
 	    $ket = $_POST['keterangan'];
 	    $this->db->query("update surat_keluar set keterangan = '$ket', waktu_verif1 = '$tgl', id_verif1 = $user->id_pegawai where id_surat_keluar = $id_spt");
 	    $no_wa = substr_replace($get_verif_akhir->no_hp,62,0,1);
-        $links = base_url('primer?redir=verif_surat_detail/'.md5($id_spt).'/'.$id_spt);
+        //$links = base_url('primer?redir=verif_surat_detail/'.md5($id_spt).'/'.$id_spt);
+		$links = base_url('primer?redir=verif_surat');
         $pesan = "*Layanan LinTAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links";
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		redirect('primer/list_ver_surat_keluar1');
@@ -1025,12 +1036,20 @@ class Primer extends CI_Controller {
 				$data['spt'] = $qw_spt2;
 				$data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
 							"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$qw_spt2->id_spt","a.id_anggota asc");
-				$this->template->load('sitas/template_form','sitas/verif_surat/verif_spt',$data);
+				if($qw_spt->id_verif == 0){
+					$this->template->load('sitas/template_form','sitas/verif_surat/verif_spt',$data);
+				} else {
+					$this->template->load('sitas/template_form','sitas/verif_surat/sudah_setuju');
+				}
 			} else {
 				$qw_spt2 = "";
 				$data['spt'] = $qw_spt;
 				$data['peg'] = array();
-				$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat',$data);
+				if($qw_spt->id_verif == 0){
+					$this->template->load('sitas/template_form','sitas/verif_surat/verif_surat',$data);
+				} else {
+					$this->template->load('sitas/template_form','sitas/verif_surat/sudah_setuju');
+				}
 			}
 		} else {
 			$this->load->view('sitas/verif_surat/no_akses');
