@@ -1286,7 +1286,7 @@ class Primer extends CI_Controller {
             $data['npj'] = "";//$get_pj->nama;
             $data['id_pj'] = $row->pj;
             $data['user'] = $row->user;
-			$data['tempat_berangkat'] = $row->tempat_berangkat;
+			$data['tempat_berangkat'] = $row->ket_berangkat;
 			$data['ket_wilayah'] = $row->ket_wilayah;
             $data['id_spt'] = $row->id_spt;
             $data['arr'] = $get_spt_peg;
