@@ -286,4 +286,41 @@ class Preview extends CI_Controller {
           $pdf->WriteHTML($html);    
           $pdf->Output();
     }
+    public function pengajuan_spt(){
+      //ob_start();
+      $uri3 = $this->uri->segment(3);
+		  $uri4 = $this->uri->segment(4);
+		  if(get_kode_uniks($uri3) == $uri4){
+        $spt = $this->model_sitas->rowDataBy("a.id_surat_keluar,a.id_subdetil,a.untuk,a.lama_hari,a.id_transport,a.ket_berangkat,a.ket_wilayah,a.tanggal,a.pj,
+					a.no_sppd,a.verif_pj,a.status_verif_pa,a.status_verif_ppk,a.keterangan,a.keterangan_pa,a.keterangan_ppk,b.transportasi",
+					"spt a inner join transportasi_spt b on a.id_transport=b.id_transport","a.id_spt = $uri3")->row();
+          $data['pegawai_spt'] = $this->model_sitas->listDataBy("b.nama,b.nip,b.jabatan,b.gol",
+									"anggota_spt a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.id_spt = $uri3",
+									"a.id_anggota");
+			  $data['spt'] = $spt;
+			  $data['pos'] = $this->model_sitas->rowDataBy("a.vol,a.satuan,a.harga_satuan,b.kd_detil,c.kd_subkomp,c.subkomp,
+							d.kd_komponen,e.kd_ro",
+							"a_subdetil9 a inner join a_detil8 b on a.id_detil=b.id_detil 
+								inner join a_subkomp7 c on b.id_subkomp=c.id_subkomp inner join a_komponen6 d on c.id_komponen = d.id_komponen
+								inner join a_ro5 e on d.id_ro = e.id_ro",
+							"a.id_subdetil = $spt->id_subdetil")->row();
+        $data['transport'] = $this->model_sitas->listData("*","transportasi_spt","id_transport");
+        if($spt->status_verif_ppk == 1){
+          $this->load->view('sitas/preview/pengajuan_spt',$data);
+          /*
+          $html = ob_get_contents();        
+          ob_end_clean();            
+          require './asset/html2pdf_v5.2-master/vendor/autoload.php';        
+          $pdf = new Spipu\Html2Pdf\Html2Pdf('L','A4','en');    
+          $pdf->WriteHTML($html);    
+          $pdf->Output();
+          */
+        } else {
+          echo "Belum melewati verifikasi PPK";
+        }
+      } else {
+        echo "Sorry Yeeee";
+      }
+      
+}
 }

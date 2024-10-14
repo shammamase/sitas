@@ -245,6 +245,11 @@ if($id_pegawai_login == $id_ppk->id_pegawai){
                 <a href="<?= site_url('sekunder/send_info_spt/').$uri3.'/'.$uri4 ?>" class="btn btn-primary">Kirim Ke Verifikator</a>
                 <?php
             }
+        }
+        if($total_verif == 3){
+        ?>
+        <a target="_blank" href="<?= site_url('preview/pengajuan_spt/').$uri3.'/'.$uri4 ?>" class="btn btn-danger btn-block">Download Pengajuan SPT</a>
+        <?php
         }  
     ?>
   </div>

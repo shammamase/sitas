@@ -241,7 +241,7 @@
                        ?>
                        <tr style="cursor:pointer" class="pilih" data-dismiss="modal" 
                        data-id_surat_masuk="<?= $lm->id_surat_masuk ?>" data-no_surat_masuk="<?= $lm->no_surat_masuk ?>"
-                       data-asal_surat="Berdasarkan surat dari <?= $lm->asal_surat ?>" data-tanggal=" tanggal <?= $lm->tanggal ?> , Nomor Surat " data-perihal=", perihal <?= $lm->perihal ?>"
+                       data-asal_surat="Berdasarkan surat dari <?= $lm->asal_surat ?>" data-tanggal=" tanggal <?= tgl_indoo($lm->tanggal) ?> , Nomor Surat " data-perihal=", perihal <?= $lm->perihal ?>"
                        data-file_pdf="<?= base_url() ?>asset/surat_masuk/<?= $lm->file_pdf ?>"
                        >
                            <td><?= $nor ?></td>
