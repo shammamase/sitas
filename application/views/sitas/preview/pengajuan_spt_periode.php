@@ -122,11 +122,11 @@
         <td style="text-align:center">Kepala Balai</td>
     </tr>
     <tr>
-        <td style="height:60px"></td>
-        <td></td>
-        <td></td>
-        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-        <td></td>
+        <td style="height:60px;text-align:center"><img style="height:48px;width:auto" src="<?= base_url() ?>asset/icons8-check-64.png"></td>
+        <td style="text-align:center"><img style="height:48px;width:auto" src="<?= base_url() ?>asset/icons8-check-64.png"></td>
+        <td style="text-align:center"><img style="height:48px;width:auto" src="<?= base_url() ?>asset/icons8-check-64.png"></td>
+        <td style="text-align:center"><img style="height:48px;width:auto" src="<?= base_url() ?>asset/icons8-check-64.png"></td>
+        <td style="text-align:center"><img style="height:48px;width:auto" src="<?= base_url() ?>asset/icons8-check-64.png"></td>
     </tr>
     <tr>
         <td style="text-align:center" colspan="5">Maksud Perjalanan</td>
