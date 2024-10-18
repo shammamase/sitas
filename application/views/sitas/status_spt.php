@@ -37,6 +37,7 @@ if($id_pegawai_login == $id_ppk->id_pegawai){
             </td>
         </tr>
     </table>
+    <?= $pdf_sm ?>
     <table id="example2" class="table table-bordered table-striped">
       <thead>
       <tr>

@@ -268,6 +268,23 @@
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="#" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Laporan
+                        <i class="fas fa-angle-left right"></i>
+                      </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>report/pengajuan_spt" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Pengajuan SPT</p>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/logbook" class="nav-link">
                       <i class="fa fa-list"></i>
                       <p>

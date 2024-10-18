@@ -788,7 +788,7 @@ class Primer extends CI_Controller {
 		$uri3 = $this->uri->segment(3);
 		$uri4 = $this->uri->segment(4);
 		if(get_kode_uniks($uri3) == $uri4){
-			$spt = $this->model_sitas->rowDataBy("a.id_surat_keluar,a.id_subdetil,a.untuk,a.lama_hari,a.ket_berangkat,a.ket_wilayah,a.tanggal,a.pj,
+			$spt = $this->model_sitas->rowDataBy("a.id_surat_masuk,a.id_surat_keluar,a.id_subdetil,a.untuk,a.lama_hari,a.ket_berangkat,a.ket_wilayah,a.tanggal,a.pj,
 					a.no_sppd,a.verif_pj,a.status_verif_pa,a.status_verif_ppk,a.keterangan,a.keterangan_pa,a.keterangan_ppk,b.transportasi",
 					"spt a inner join transportasi_spt b on a.id_transport=b.id_transport","a.id_spt = $uri3")->row();
 			$pengendali_anggaran = $this->model_sitas->rowDataBy("id_pegawai","verifikator","menu = 'spt' and tingkat = 1")->row();
@@ -808,6 +808,13 @@ class Primer extends CI_Controller {
 			} else {
 				$is_verif_ppk = 0;
 			}
+			if($spt->id_surat_masuk == 0){
+				$get_surat_masuk = array();
+				$pdf_sm = "";
+			} else {
+				$get_surat_masuk = $this->model_sitas->rowDataBy("file_pdf","surat_masuk","id_surat_masuk=$spt->id_surat_masuk")->row();
+				$pdf_sm = "Berdasarkan surat masuk <a target='_blank' href='".base_url()."asset/surat_masuk/".$get_surat_masuk->file_pdf."' class='btn btn-danger btn-xs'><i class='fa fa-file-pdf'></i> PDF</a>";
+			}
 			$data['pegawai_spt'] = $this->model_sitas->listDataBy("b.nama,b.nip,b.jabatan,b.gol",
 									"anggota_spt a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.id_spt = $uri3",
 									"a.id_anggota");
@@ -826,6 +833,7 @@ class Primer extends CI_Controller {
 			$data['total_verif'] = $is_verif_pj + $is_verif_pa + $is_verif_ppk;
 			$data['uri3'] = $uri3;
 			$data['uri4'] = $uri4;
+			$data['pdf_sm'] = $pdf_sm;
 			$this->template->load('sitas/template_form','sitas/status_spt',$data);
 		} else {
 			echo "Sorry YEeee WKWKWKW";
