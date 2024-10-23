@@ -108,6 +108,8 @@ class Primer extends CI_Controller {
 	function buat_surat_masuk(){
 		cek_session_admin1();
 		$thn = $this->session->tahun;
+		$arr_akses = array(1,12,13,26,31,42,43,63);
+		$get_user_sm = $this->model_sitas->get_user();
 		$id_pjs = $this->model_sitas->rowDataBy("*","pejabat_verifikator","level = 'akhir'")->row();
 		$list_kode = $this->model_sitas->listData("*","klasifikasi_sub_arsip","id_sub_arsip");
 		$agenda = $this->model_sitas->rowDataDesc("no_agenda","surat_masuk","id_surat_masuk");
@@ -191,7 +193,12 @@ class Primer extends CI_Controller {
 		$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
 		$data['rec'] = $this->model_sitas->listDataBy("*","surat_masuk","tanggal_masuk like '%$thn%'","id_surat_masuk desc");
 		$data['sif'] = $this->model_sitas->listData("*","sifat_surat","id_sifat asc");
-		$this->template->load('sitas/template_form','sitas/buat_surat_masuk',$data);
+		if(in_array($get_user_sm->id_pegawai, $arr_akses)){
+			$this->template->load('sitas/template_form','sitas/buat_surat_masuk',$data);
+		} else {
+			$this->load->view('sitas/verif_surat/no_akses');
+		}
+		
     }
 	public function save_surat_masuk(){
         date_default_timezone_set('Asia/Jakarta');
@@ -365,10 +372,12 @@ class Primer extends CI_Controller {
 			$data['isi_file_lamp'] = "";
 		}
 	}
+	$data['verif'] = $this->model_sitas->listDataBy("a.id_pegawai,b.nama","struktur_organisasi a inner join pegawai b on a.id_pegawai=b.id_pegawai","a.id_struktur in (2,3,4)","a.id_struktur");
 	$data['rec'] = $this->model_sitas->listDataBy("*","surat_keluar","tanggal like '%$thn%' and isi_surat != '' and file_pdf = ''","id_surat_keluar desc"); 
 	$this->template->load('sitas/template_form','sitas/buat_surat',$data);
   }
   function save_surat1(){
+	//$verif = _POST('verif');
 	$status = _POST('status');
 	$id_surat_keluar = _POST('id_buat_surat');
 	$jml_lampiran = _POST('jml_lampiran');
@@ -562,6 +571,8 @@ class Primer extends CI_Controller {
   function buat_surat_keluar(){
 		date_default_timezone_set('Asia/Jakarta');
 		cek_session_admin1();
+		$arr_akses = array(1,12,13,26,31,42,43,63);
+		$get_user_sk = $this->model_sitas->get_user();
 		$user = $this->session->username;
 		$verif = $this->model_sitas->rowDataBy("id_pegawai","pejabat_verifikator","level='akhir'")->row();
 		$thn = $this->session->tahun;
@@ -689,7 +700,11 @@ class Primer extends CI_Controller {
 		$data['ars'] = $this->model_sitas->listData("a.id_sub_arsip,a.kode_sub_arsip,a.sub_arsip,b.arsip",
 								"klasifikasi_sub_arsip a
 								inner join klasifikasi_arsip b on a.id_arsip=b.id_arsip","a.id_sub_arsip asc");
-		$this->template->load('sitas/template_form','sitas/buat',$data); 
+		if(in_array($get_user_sk->id_pegawai, $arr_akses)){
+			$this->template->load('sitas/template_form','sitas/buat',$data);
+		} else {
+			$this->load->view('sitas/verif_surat/no_akses');
+		}
     }
 	function delete_surat_keluar(){
 		$uri = $this->uri->segment(3);

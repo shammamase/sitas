@@ -70,6 +70,21 @@
               <label>Isi Surat: <div id="srt_msk"></div></label>
               <textarea name="isi_surat" id="summernote"><?= $isi_surat ?></textarea>
             </div>
+            <!--
+            <div class="form-group">
+              <label>Verifikator:</label>
+              <select class="form-control select2" name="verif" style="width: 100%;" required>
+                    <option value="">-Pilih Verifikator-</option>
+                    <?php
+                        foreach($verif as $vr){
+                        ?>
+                        <option value="<?= $vr->no_hp ?>"><?= $vr->nama ?></option>
+                        <?php
+                        }
+                    ?>
+                  </select>
+            </div>
+            -->
             <div class="form-group">
               <label>Tembusan (Pisahkan dengan koma jika tembusan lebih dari 1)</label>
               <input type="text" class="form-control" name="tembusan" value="<?= $tembusan ?>">
