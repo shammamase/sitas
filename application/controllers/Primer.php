@@ -1143,12 +1143,15 @@ class Primer extends CI_Controller {
 		$id_pjs = $this->model_sitas->rowDataBy("*","petugas_terima","menu = 'surat_keluar'")->row();
 		//$data['kabalai'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
 		$data['petugas'] = $this->model_sitas->rowDataBy("nip,nama,no_hp","pegawai","id_pegawai = $id_pjs->id_pegawai")->row();
-        if(in_array($get_user_spt->id_pegawai,$arr_akses)){
+        $data['rec'] = $this->model_sitas->listDataBy("*","spt","tanggal like '%$thn%'","id_spt desc");
+		/*
+		if(in_array($get_user_spt->id_pegawai,$arr_akses)){
 			$data['rec'] = $this->model_sitas->listDataBy("*","spt","tanggal like '%$thn%'","id_spt desc");
 		} else {
 			$data['rec'] = $this->model_sitas->listDataBy("a.*",
 							"spt a inner join anggota_spt b on a.id_spt=b.id_spt","a.tanggal like '%$thn%' and b.id_pegawai = '$get_user_spt->id_pegawai'","a.id_spt desc");
 		}
+	    */
 		$this->template->load('sitas/template_form','sitas/daftar_spt',$data);
 	}
 	function buat_sptxx(){
