@@ -70,21 +70,21 @@
               <label>Isi Surat: <div id="srt_msk"></div></label>
               <textarea name="isi_surat" id="summernote"><?= $isi_surat ?></textarea>
             </div>
-            <!--
+            
             <div class="form-group">
-              <label>Verifikator:</label>
-              <select class="form-control select2" name="verif" style="width: 100%;" required>
+              <label>Verifikator Draft:</label>
+              <select class="form-control select2" id="verif_srt" name="verif" style="width: 100%;" required>
                     <option value="">-Pilih Verifikator-</option>
                     <?php
                         foreach($verif as $vr){
                         ?>
-                        <option value="<?= $vr->no_hp ?>"><?= $vr->nama ?></option>
+                        <option value="<?= $vr->id_pegawai ?>"><?= $vr->nama ?></option>
                         <?php
                         }
                     ?>
                   </select>
             </div>
-            -->
+            
             <div class="form-group">
               <label>Tembusan (Pisahkan dengan koma jika tembusan lebih dari 1)</label>
               <input type="text" class="form-control" name="tembusan" value="<?= $tembusan ?>">
@@ -190,6 +190,19 @@
             <span class="badge badge-pill badge-success">di setujui verifikator akhir</span><br>
             <b>Keterangan :</b><?= $row->keterangan ?>
           <?php } ?>
+          <br>
+          <?php 
+            if($row->user == NULL){
+              $konseptor = "";
+            } else {
+              if($row->isi_surat == "SPT"){
+                $konseptor = "";
+              } else {
+                $konseptor = "Konseptor : ".ucwords(strtolower($this->model_sitas->get_user_by($row->user)->nama));
+              }
+            }
+            echo $konseptor;
+           ?>
         </td>
         <td>
             <?php if($row->lokasi_tujuan_surat!="SPT"){ ?> 
@@ -253,17 +266,18 @@
                        <?php
                        $nor = 1;
                        foreach($list_sm as $lm){
+                         $pc_id_dispo = explode(",",$lm->id_pegawai_disposisi);
                        ?>
                        <tr style="cursor:pointer" class="pilih" data-dismiss="modal" 
                        data-id_surat_masuk="<?= $lm->id_surat_masuk ?>" data-no_surat_masuk="<?= $lm->no_surat_masuk ?>"
                        data-asal_surat="Berdasarkan surat dari <?= $lm->asal_surat ?>" data-tanggal=" tanggal <?= tgl_indoo($lm->tanggal) ?> , Nomor Surat " data-perihal=", perihal <?= $lm->perihal ?>"
-                       data-file_pdf="<?= base_url() ?>asset/surat_masuk/<?= $lm->file_pdf ?>"
+                       data-file_pdf="<?= base_url() ?>asset/surat_masuk/<?= $lm->file_pdf ?>" data-dispox="<?= $pc_id_dispo[0] ?>"
                        >
                            <td><?= $nor ?></td>
                            <td><?= $lm->no_surat_masuk ?></td>
                            <td><?= $lm->asal_surat ?></td>
                            <td><?= tgl_indoo($lm->tanggal) ?></td>
-                           <td><?= $lm->perihal ?></td>
+                           <td><?= $lm->perihal ?> - <?= $pc_id_dispo[0] ?></td>
                        </tr>
                        <?php
                        $nor++;
@@ -351,6 +365,7 @@
       $("#modalku").on('click','.pilih',function (e) {
           var textValue = "<p>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</p>";
           const pdf_sm = document.createElement("a");
+          var verify_srt = document.getElementById("verif_srt").value = $(this).attr('data-dispox');
           pdf_sm.innerHTML = "<i class='fas fa-file-pdf'></i> Lihat Surat Masuk";
           pdf_sm.classList.add('btn', 'btn-danger', 'btn-xs');
           pdf_sm.setAttribute('data-toggle', 'modal');
@@ -361,6 +376,7 @@
           //document.getElementById("summernote").value = $(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal');
           document.getElementById("filex_pdf").src = $(this).attr('data-file_pdf');
           $('#summernote').summernote('code', textValue);
+          $(verify_srt).trigger('change');
       });
 
       function buatTextarea(){

@@ -16,7 +16,7 @@
             </div>
             <div class="form-group">
               <label>Kode Klasifikasi:</label>
-              <select class="form-control select2" name="id_sub_arsip" required>
+              <select class="form-control select2" style="width: 100%;" name="id_sub_arsip" required>
               <option value="<?= $id_sub_arsip ?>"><?= $kode_klasifikasi ?></option>
               <?php foreach($list_kode as $ls_kd){ ?>
                 <option value="<?= $ls_kd->id_sub_arsip ?>">

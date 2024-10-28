@@ -160,6 +160,8 @@ class Sekunder extends CI_Controller {
 	}
     function master_pegawai(){
         cek_session_admin1();
+        $arr_akses = array(1,12,13,26,31,42,43,63);
+		$get_user_peg = $this->model_sitas->get_user();
         $uri3 = $this->uri->segment(3);
         $uri4 = $this->uri->segment(4);
         if(empty($uri3)){
@@ -193,8 +195,13 @@ class Sekunder extends CI_Controller {
                 $data['id_pegawai'] = 0;
             }
         }
-        $data['rec'] = $this->model_sitas->listData("*","pegawai","id_pegawai asc");
-        $this->template->load('sitas/template_form','sitas/master/pegawai',$data);
+        $data['rec'] = $this->model_sitas->listDataBy("a.*","pegawai a inner join peserta_spt b on a.id_pegawai=b.id_pegawai",
+                        "b.is_internal = 1","a.id_pegawai asc");
+        if(in_array($get_user_peg->id_pegawai, $arr_akses)){
+            $this->template->load('sitas/template_form','sitas/master/pegawai',$data);
+        } else {
+            $this->load->view('sitas/verif_surat/no_akses');
+        }
     }
     function save_pegawai(){
         cek_session_admin1();
@@ -272,6 +279,163 @@ class Sekunder extends CI_Controller {
             $this->model_sitas->saveData('user',$data);
         }
         redirect('sekunder/master_pegawai');
+    }
+    function master_peserta_spt(){
+        cek_session_admin1();
+        $arr_akses = array(1,12,13,26,31,42,43,63);
+		$get_user_spt = $this->model_sitas->get_user();
+        $uri3 = $this->uri->segment(3);
+        $uri4 = $this->uri->segment(4);
+        if(empty($uri3)){
+            $data['is_internal_opsi'] = array('Internal'=>1,'Eksternal'=>0);
+            $data['nama'] = "";
+            $data['nip'] = "";
+            $data['jabatan'] = "";
+            $data['pangkat'] = "";
+            $data['gol'] = "";
+            $data['no_hp'] = "";
+            $data['uk'] = "Balai Pengujian Standar Instrumen Tanaman Pemanis dan Serat";
+            $data['status'] = "tambah";
+            $data['id_pegawai'] = 0;
+        } else {
+            if(get_kode_uniks($uri3) == $uri4){
+                $peg = $this->model_sitas->rowDataBy("a.id_pegawai,a.nama,a.nip,a.jabatan,a.pangkat,a.gol,a.no_hp,
+                        b.pangkat as pkt,b.gol as gl,b.nip as np,b.jabatan as jb,b.uk,b.is_internal",
+                        "pegawai a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_pegawai=$uri3")->row();
+                if($peg->is_internal == 1){
+                    $data['is_internal_opsi'] = array('Internal'=>1,'Eksternal'=>0);
+                    $data['nip'] = $peg->nip;
+                    $data['jabatan'] = $peg->jabatan;
+                    $data['pangkat'] = $peg->pangkat;
+                    $data['gol'] = $peg->gol;
+                } else {
+                    $data['is_internal_opsi'] = array('Eksternal'=>0,'Internal'=>1);
+                    $data['nip'] = $peg->np;
+                    $data['jabatan'] = $peg->jb;
+                    $data['pangkat'] = $peg->pkt;
+                    $data['gol'] = $peg->gl;
+                }
+                $data['nama'] = $peg->nama;
+                $data['no_hp'] = $peg->no_hp;
+                $data['status'] = "edit";
+                $data['id_pegawai'] = $peg->id_pegawai;
+                $data['uk'] = $peg->uk;
+            } else {
+                $data['nama'] = "Sori Yeeee";
+                $data['nip'] = "Sori Yeeee";
+                $data['jabatan'] = "Sori Yeeee";
+                $data['pangkat'] = "Sori Yeeee";
+                $data['gol'] = "Sori Yeeee";
+                $data['no_hp'] = "Sori Yeeee";
+                $data['status'] = "tambah";
+                $data['id_pegawai'] = 0;
+                $data['uk'] = "Sori Yeeee";
+            }
+        }
+        $data['rec'] = $this->model_sitas->listData("a.id_pegawai,a.nama,a.nip,a.jabatan,a.pangkat,a.gol,a.no_hp,
+                        b.pangkat as pkt,b.gol as gl,b.nip as np,b.jabatan as jb,b.is_internal",
+                        "pegawai a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_pegawai asc");
+        if(in_array($get_user_spt->id_pegawai, $arr_akses)){
+            $this->template->load('sitas/template_form','sitas/master/peserta_spt',$data);
+        } else {
+            $this->load->view('sitas/verif_surat/no_akses');
+        } 
+    }
+    function save_peserta_spt(){
+        cek_session_admin1();
+        if(_POST('is_internal') == 1){
+            $data_peg = array(
+                'nama' => _POST('nama'),
+                'nip' => _POST('nip'),
+                'jabatan' => _POST('jabatan'),
+                'pangkat' => _POST('pangkat'),
+                'gol' => _POST('gol'),
+                'no_hp' => _POST('no_hp')
+            );
+            if(_POST('status') == "tambah"){
+                $this->db->insert('pegawai',$data_peg);
+                $data_spt = array(
+                    'id_pegawai'=>$this->db->insert_id(),
+                    'nama'=>_POST('nama'),
+                    'uk'=>_POST('uk'),
+                    'is_internal'=>1
+                );
+                $this->db->insert('peserta_spt',$data_spt);
+            } else {
+                $this->db->where('id_pegawai',_POST('id_pegawai'));
+                $this->db->update('pegawai',$data_peg);
+                $data_spt = array(
+                    'nama'=>_POST('nama'),'pangkat' => '','gol' => '','nip' => '','jabatan' => '',
+                    'uk'=>_POST('uk'),'is_internal'=>1
+                );
+                $this->db->where('id_pegawai',_POST('id_pegawai'));
+                $this->db->update('peserta_spt',$data_spt);
+            }
+        } else {
+            $data_peg = array(
+                'nama' => _POST('nama'),
+                'nip' => '',
+                'jabatan' => '',
+                'pangkat' => '',
+                'gol' => '',
+                'no_hp' => _POST('no_hp')
+            );
+            if(_POST('status') == "tambah"){
+                $this->db->insert('pegawai',$data_peg);
+                $data_spt = array(
+                    'id_pegawai'=>$this->db->insert_id(),
+                    'nama'=>_POST('nama'),
+                    'pangkat' => _POST('pangkat'),
+                    'gol' => _POST('gol'),
+                    'nip' => _POST('nip'),
+                    'jabatan' => _POST('jabatan'),
+                    'uk'=>_POST('uk'),
+                    'is_internal'=>0
+                );
+                $this->db->insert('peserta_spt',$data_spt);
+            } else {
+                $this->db->where('id_pegawai',_POST('id_pegawai'));
+                $this->db->update('pegawai',$data_peg);
+                $data_spt = array(
+                    'nama'=>_POST('nama'),'pangkat' => _POST('pangkat'),
+                    'gol' => _POST('gol'),'nip' => _POST('nip'),'jabatan' => _POST('jabatan'),
+                    'uk' => _POST('uk'), 'is_internal'=>0
+                );
+                $this->db->where('id_pegawai',_POST('id_pegawai'));
+                $this->db->update('peserta_spt',$data_spt);
+            }
+        }
+       redirect('sekunder/master_peserta_spt');
+    }
+    function hapus_peserta_spt(){
+        $uri3 = $this->uri->segment(3);
+        $uri4 = $this->uri->segment(4);
+        if(get_kode_uniks($uri3)==$uri4){
+            $this->model_sitas->hapus_data("pegawai","id_pegawai=$uri3");
+            $this->model_sitas->hapus_data("peserta_spt","id_pegawai=$uri3");
+            redirect('sekunder/master_peserta_spt');
+        } else {
+            echo "Sori Yeeee";
+        }
+    }
+    function master_penerima_surat(){
+        cek_session_admin1();
+        $arr_akses = array(26,42,43,63);
+		$get_user_penerima_surat = $this->model_sitas->get_user();
+        if(in_array($get_user_penerima_surat->id_pegawai, $arr_akses)){
+            $data['row'] = $this->model_sitas->rowDataBy("a.id_pegawai,a.nama",
+                            "pegawai a inner join petugas_terima b on a.id_pegawai=b.id_pegawai","b.menu = 'surat_keluar'")->row();
+            $data['list'] = $this->model_sitas->listDataBy("id_pegawai,nama","pegawai","id_pegawai in (42,43,63)","id_pegawai");
+            $this->template->load('sitas/template_form','sitas/master/penerima_surat',$data);
+        } else {
+            $this->load->view('sitas/verif_surat/no_akses');
+        } 
+    }
+    function save_petugas_surat_keluar(){
+        cek_session_admin1();
+        $data = array('id_pegawai'=>_POST('id_pegawai'));
+        $this->model_sitas->update_data("petugas_terima","menu","surat_keluar",$data);
+        redirect('sekunder/master_penerima_surat');
     }
     function save_lap_gratifikasi(){
         cek_session_admin1();
@@ -545,4 +709,40 @@ class Sekunder extends CI_Controller {
         $data['alert'] = "<div class='alert alert-success'><strong>Berhasil!</strong> Update Data Pegawai.</div>";
         $this->template->load('sitas/template_form','sitas/profil',$data);
     }
+    function setuju_surat_awal(){
+	    cek_session_admin1();
+		date_default_timezone_set('Asia/Jakarta');
+		$user = $this->model_sitas->get_user();
+		$tgl = date('Y-m-d H:i:s');
+	    $id_spt = $_POST['id_buat_surat'];
+	    $get_verif_awal = $this->model_sitas->get_verifikator_awal();
+	    $ket = $_POST['keterangan'];
+        $this->db->query("update surat_keluar 
+                            set is_setuju = 1, ket_pemeriksa_awal = '$ket', waktu_verif1 = '', id_verif1 = 0,
+                            alasan_tolak = '', ajukan = 1
+                            where id_surat_keluar = $id_spt");
+	    $no_wa = substr_replace($get_verif_awal->no_hp,62,0,1);
+		$links = base_url('primer?redir=list_ver_surat_keluar1');
+        $pesan = "*Layanan LinTAS* Ada surat yang akan diverifikasi, silahkan klik link berikut $links";
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		redirect('primer/list_draft_surat');
+		//echo $no_wa."---".$pesan;
+	}
+	function tolak_surat_awal(){
+	    cek_session_admin1();
+		date_default_timezone_set('Asia/Jakarta');
+		$user = $this->model_sitas->get_user();
+		$tgl = date('Y-m-d H:i:s');
+	    $id_spt = $_POST['id_buat_surat'];
+	    $qw_surat = $this->model_sitas->rowDataBy("user","surat_keluar","id_surat_keluar = $id_spt")->row();
+		$get_buat_surat = $this->model_sitas->get_peg_by_user($qw_surat->user);
+	    $ket = $_POST['alasan_tolak'];
+	    $this->db->query("update surat_keluar set ket_pemeriksa_awal = '$ket' where id_surat_keluar = $id_spt");
+	    $no_wa = substr_replace($get_buat_surat->no_hp,62,0,1);
+        $links = base_url('primer?redir=buat_surat');
+        $pesan = "*Layanan LinTAS* Pengajuan surat ditolak dengan alasan $ket, silahkan klik link berikut $links";
+        $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
+		redirect('primer/list_draft_surat');
+        //echo $no_wa."---".$pesan;
+	}
 }

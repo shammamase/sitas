@@ -75,6 +75,12 @@
     $users = $this->model_sitas->get_user();
     $username = $this->session->username;
     $get_verif_awal = $this->model_sitas->get_verifikator_awal();
+    $arr_pjb = array();
+    $get_struktur = $this->model_sitas->listDataBy("id_pegawai","struktur_organisasi",
+                    "id_struktur in (2,3,4)","id_struktur asc");
+    foreach($get_struktur as $gst){
+      array_push($arr_pjb,$gst->id_pegawai);
+    }
   ?>
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
@@ -126,7 +132,7 @@
                     </ul>
                   </li>
                   <?php } ?>
-                  <?php if($username == "agnestiyan"){ ?>
+                  
                   <li class="nav-item">
                     <a href="#" class="nav-link">
                       <i class="fa fa-list"></i>
@@ -142,9 +148,21 @@
                           <p>Pegawai</p>
                         </a>
                       </li>
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>sekunder/master_peserta_spt" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Peserta SPT</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>sekunder/master_penerima_surat" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Penerima Surat</p>
+                        </a>
+                      </li>
                     </ul>
                   </li>
-                  <?php } ?>
+                  
                   <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/pejabat_tanda_tangan" class="nav-link">
                       <i class="fa fa-list"></i>
@@ -153,6 +171,16 @@
                       </p>
                     </a>
                   </li>
+                  <?php if(in_array($users->id_pegawai,$arr_pjb)){ ?>
+                  <li class="nav-item">
+                    <a href="<?php echo base_url(); ?>primer/list_draft_surat" class="nav-link">
+                      <i class="fa fa-list"></i>
+                      <p>
+                        Verif Draft Surat
+                      </p>
+                    </a>
+                  </li>
+                  <?php } ?>
                   <li class="nav-item">
                     <a href="<?php echo base_url(); ?>primer/buat_surat_masuk" class="nav-link">
                       <i class="fa fa-list"></i>
