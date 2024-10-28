@@ -62,21 +62,22 @@
                     ?>
                   </select>
             </div>
-            <div style="display:none" id="wadah_tempat_berangkat" class="form-group">
+            <div style="display:<?= $wadah_tempat_berangkat ?>" id="wadah_tempat_berangkat" class="form-group">
               <label>Tempat Berangkat :</label>
-              <input class="form-control" id="tempat_berangkat" name="tempat_berangkat" value="<?= $tempat_berangkat ?>" disabled required>
+              <input class="form-control" id="tempat_berangkat" name="tempat_berangkat" value="<?= $tempat_berangkat ?>" <?= $is_disabled_tempat_berangkat ?> required>
             </div>
-            <div style="display:none" id="wadah_tempat_tujuan" class="form-group">
+            <div style="display:<?= $wadah_tempat_tujuan ?>" id="wadah_tempat_tujuan" class="form-group">
               <label>Tempat Tujuan :</label>
-              <input class="form-control" id="ket_wilayah" name="ket_wilayah" value="<?= $ket_wilayah ?>" disabled required>
+              <input class="form-control" id="ket_wilayah" name="ket_wilayah" value="<?= $ket_wilayah ?>" <?= $is_disabled_tempat_tujuan ?> required>
             </div>
             <div class="form-group">
                   <label>Untuk: <div id="srt_msk"></div></label>
                   <textarea class="form-control" name="untuk" required><?= $untuk ?></textarea>
             </div>
-            <div style="display:none" id="wadah_transportasi" class="form-group">
+            <div style="display:<?= $wadah_transportasi ?>" id="wadah_transportasi" class="form-group">
                   <label>Transpostasi:</label>
-                  <select class="form-control select2" id="transportasi" name="id_transport" style="width: 100%;" disabled required>
+                  <select class="form-control select2" id="transportasi" name="id_transport" style="width: 100%;" <?= $is_disabled_transportasi ?> required>
+                    <option value="<?= $id_transportasi ?>"><?= $lbl_transportasi ?></option>
                     <?php
                         foreach($transportasi as $trsp){
                         ?>
@@ -86,10 +87,10 @@
                     ?>
                   </select>
             </div>
-            <div style="display:none" id="wadah_anggaran" class="form-group">
+            <div style="display:<?= $wadah_anggaran ?>" id="wadah_anggaran" class="form-group">
                   <label>Anggaran Kegiatan:</label>
-                  <select class="form-control select2bs4" id="id_subkomp" style="width: 100%;" disabled required>
-                  <option value="">Pilih Kegiatan</option>
+                  <select class="form-control select2bs4" id="id_subkomp" style="width: 100%;" <?= $is_disabled_anggaran ?> required>
+                  <option value="<?= $id_subkomp ?>"><?= $lbl_kegiatan ?></option>
                     <?php
                         foreach($subkomp as $skmp){
                         ?>
@@ -99,16 +100,16 @@
                     ?>
                   </select>
             </div>
-            <div style="display:none" id="wadah_mak" class="form-group">
+            <div style="display:<?= $wadah_mak ?>" id="wadah_mak" class="form-group">
                   <label>MAK (Mata Anggaran Kegiatan):</label>
-                  <select class="form-control select2" id="id_subdetil" name="id_subdetil" style="width: 100%;" disabled required>
-                    <option value=""></option>
+                  <select class="form-control select2" id="id_subdetil" name="id_subdetil" style="width: 100%;" <?= $is_disabled_mak ?> required>
+                    <option value="<?= $id_subdetil ?>"><?= $lbl_mak ?></option>
                   </select>
             </div>
-            <div style="display:none" id="wadah_pj" class="form-group">
+            <div style="display:<?= $wadah_pj ?>" id="wadah_pj" class="form-group">
                   <label>PJ Kegiatan:</label>
-                  <select class="form-control select2" id="id_pj" name="pj" style="width: 100%;" disabled required>
-                  <option value="">Pilih Pegawai</option>
+                  <select class="form-control select2" id="id_pj" name="pj" style="width: 100%;" <?= $is_disabled_pj ?> required>
+                  <option value="<?= $id_pj ?>"><?= $lbl_pj ?></option>
                     <?php
                         foreach($pegawai as $pegx){
                         ?>

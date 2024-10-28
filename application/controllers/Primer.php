@@ -1294,7 +1294,27 @@ class Primer extends CI_Controller {
 			$data['tgl_no'] = "";
 			$data['id_surat_masuk'] = 0;
 			$data['li_dasar'] = "'<li>Peraturan Menteri Pertanian Nomor 13 Tahun 2023 tentang Organisasi dan Tata Kerja Unit Pelaksana Teknis Lingkup Badan Standardisasi Instrumen Pertanian</li>'";
-        } else {
+			$data['wadah_tempat_berangkat'] = "none";
+			$data['wadah_tempat_tujuan'] = "none";
+			$data['is_disabled_tempat_berangkat'] = "disabled";
+			$data['is_disabled_tempat_tujuan'] = "disabled";
+			$data['wadah_transportasi'] = "none";
+			$data['is_disabled_transportasi'] = "disabled";
+			$data['wadah_anggaran'] = "none";
+			$data['is_disabled_anggaran'] = "disabled";
+			$data['wadah_mak'] = "none";
+			$data['is_disabled_mak'] = "disabled";
+			$data['wadah_pj'] = "none";
+			$data['is_disabled_pj'] = "disabled";
+			$data['id_transportasi'] = "";
+			$data['lbl_transportasi'] = "---";
+			$data['id_subkomp'] = "";
+			$data['lbl_kegiatan'] = "Pilih Kegiatan";
+			$data['id_subdetil'] = "";
+			$data['lbl_mak'] = "";
+			$data['id_pj'] = "";
+			$data['lbl_pj'] = "Pilih Pegawai";
+		} else {
 			$row = $this->model_sitas->rowDataBy("*","spt","id_spt = $uri3")->row();
             //$get_pj = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai = $row->pj")->row();
             $get_spt_peg = $this->model_sitas->listDataBy("a.id_pegawai,b.nama","anggota_spt a inner join pegawai b on a.id_pegawai=b.id_pegawai",
@@ -1310,9 +1330,52 @@ class Primer extends CI_Controller {
             $data['untuk'] = $row->untuk;
 			$data['dasar'] = $row->dasar;
 			if($row->is_dipa == 1){
+				$qw_subkomp = $this->model_sitas->rowDataBy("a.id_subdetil,a.subdetil,b.kd_detil,c.id_subkomp,c.subkomp",
+								"a_subdetil9 a inner join a_detil8 b on a.id_detil=b.id_detil
+								inner join a_subkomp7 c on b.id_subkomp=c.id_subkomp","a.id_subdetil = $row->id_subdetil")->row();
+				$data['lbl_transportasi'] = $this->model_sitas->rowDataBy("transportasi","transportasi_spt","id_transport = $row->id_transport")->row()->transportasi;
+				$data['id_transportasi'] = $row->id_transport;
+				$data['lbl_kegiatan'] = $qw_subkomp->subkomp;
+				$data['id_subkomp'] = $qw_subkomp->id_subkomp;
+				$data['id_subdetil'] = $qw_subkomp->id_subdetil;
+				$data['lbl_mak'] = $qw_subkomp->kd_detil."-".$qw_subkomp->subdetil;
+				$data['id_pj'] = $row->pj;
+				$data['lbl_pj'] = $this->model_sitas->rowDataBy("nama","pegawai","id_pegawai = $row->pj")->row()->nama;
 				$data['ceck'] = "checked";
+				$data['wadah_tempat_berangkat'] = "";
+				$data['wadah_tempat_tujuan'] = "";
+				$data['is_disabled_tempat_berangkat'] = "";
+				$data['is_disabled_tempat_tujuan'] = "";
+				$data['wadah_transportasi'] = "";
+				$data['is_disabled_transportasi'] = "";
+				$data['wadah_anggaran'] = "";
+				$data['is_disabled_anggaran'] = "";
+				$data['wadah_mak'] = "";
+				$data['is_disabled_mak'] = "";
+				$data['wadah_pj'] = "";
+				$data['is_disabled_pj'] = "";
 			} else {
+				$data['lbl_transportasi'] = "";
+				$data['id_transportasi'] = "";
+				$data['lbl_kegiatan'] = "";
+				$data['id_subkomp'] = "";
+				$data['id_subdetil'] = "";
+				$data['lbl_mak'] = "";
+				$data['id_pj'] = "";
+				$data['lbl_pj'] = "Pilih Pegawai";
 				$data['ceck'] = "";
+				$data['wadah_tempat_berangkat'] = "none";
+				$data['wadah_tempat_tujuan'] = "none";
+				$data['is_disabled_tempat_berangkat'] = "disabled";
+				$data['is_disabled_tempat_tujuan'] = "disabled";
+				$data['wadah_transportasi'] = "none";
+				$data['is_disabled_transportasi'] = "disabled";
+				$data['wadah_anggaran'] = "none";
+				$data['is_disabled_anggaran'] = "disabled";
+				$data['wadah_mak'] = "none";
+				$data['is_disabled_mak'] = "disabled";
+				$data['wadah_pj'] = "none";
+				$data['is_disabled_pj'] = "disabled";
 			}
 			$data['verif'] = 0;
 			/*
