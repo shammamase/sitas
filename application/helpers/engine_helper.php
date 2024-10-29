@@ -44,3 +44,14 @@
             return 'errors';
         }
     }
+
+    function set_cors() {
+        header("Access-Control-Allow-Origin: *"); // Ganti * dengan domain yang diizinkan jika perlu
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+        header("Access-Control-Allow-Headers: Content-Type, Authorization");
+        
+        // Jika Anda ingin menangani preflight request (OPTIONS)
+        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+            exit; // Keluarkan jika ini adalah preflight request
+        }
+    }

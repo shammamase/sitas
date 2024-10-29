@@ -51,4 +51,5 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'primer';
 $route['404_override'] = '';
+$route['api/kirim_pesan'] = 'end_api/send_message';
 $route['translate_uri_dashes'] = FALSE;
