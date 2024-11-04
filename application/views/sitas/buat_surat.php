@@ -68,6 +68,19 @@
             </div>
             <div class="form-group">
               <label>Isi Surat: <div id="srt_msk"></div></label>
+              <div>
+                <?php
+                $no_tmpl = 1;
+                foreach($qw_tmpl as $tmpl){
+                ?>
+                <a class="btn btn-primary btn-xs pilih_tmp" data-id="<?= $tmpl->id_template ?>">
+                  <i class="fa fa-file"></i> Template <?= $no_tmpl ?>
+                </a>
+                <?php
+                  $no_tmpl++;
+                } 
+                ?>
+              </div><br>
               <textarea name="isi_surat" id="summernote"><?= $isi_surat ?></textarea>
             </div>
             
@@ -213,6 +226,7 @@
             <a class='btn btn-info btn-xs' title='Preview' href="<?= base_url() ?>primer/prev_surat/<?= $row->id_surat_keluar ?>"><i class='fas fa-eye'></i> Preview</a>
             <a class='btn btn-danger btn-xs' title='Delete Data' href="<?php echo base_url() ?>primer/delete_surat/<?php echo $row->id_surat_keluar ?>" onclick="return confirm('Apa anda yakin untuk hapus Data ini?')"><i class='fa fa-trash'></i> Hapus</a>
             <a class='btn btn-warning btn-xs' target="_blank" title='File PDF' href="<?= base_url() ?>preview/pdf_surat/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
+            <a class='btn btn-primary btn-xs' title='Preview Word' target="_blank" href="<?= base_url() ?>prevword/tmpl_surat/<?= get_kode_uniks($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-word'></i> WORD</a>
             <a class='btn btn-warning btn-xs' title='Upload' href="<?php echo base_url() ?>primer/buat_surat_keluar/<?= $row->id_surat_keluar ?>"><i class='fas fa-upload'></i> Upload</a>
             <?php } else { ?>
               <a class='btn btn-danger btn-xs' title='Preview PDF' target="_blank" href="<?= base_url() ?>preview/pdf_spt/<?= md5($row->id_surat_keluar) ?>/<?= $row->id_surat_keluar ?>"><i class='fas fa-file-pdf'></i> PDF</a>
@@ -277,7 +291,7 @@
                            <td><?= $lm->no_surat_masuk ?></td>
                            <td><?= $lm->asal_surat ?></td>
                            <td><?= tgl_indoo($lm->tanggal) ?></td>
-                           <td><?= $lm->perihal ?> - <?= $pc_id_dispo[0] ?></td>
+                           <td><?= $lm->perihal ?></td>
                        </tr>
                        <?php
                        $nor++;
@@ -325,6 +339,36 @@
           </div>
       </div>
   </div>
+  <?php
+    $kons_lamp = 5; 
+    for($i_lamp = 1; $i_lamp<=$kons_lamp; $i_lamp++){ 
+  ?>
+  <div class="modal fade lihatSurat<?= $i_lamp ?>" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Template Lampiran</h4>
+            </div>
+            <div class="modal-body">
+            <?php
+                $no_lampr = 1;
+                foreach($qw_lampr as $lampr){
+                ?>
+                <a class="btn btn-primary btn-xs pilih_lamp<?= $i_lamp ?>" data-id="<?= $lampr->id_template ?>" data-dismiss="modal">
+                  <i class="fa fa-file"></i> Template <?= $no_lampr ?>
+                </a>
+                <?php
+                  $no_lampr++;
+                } 
+                ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <?php } ?>
   <script>
     const checkbox = document.getElementById("pilih_metode");
     const pilih1 = document.getElementById("pilih1");
@@ -352,6 +396,7 @@
     });
   </script>
   <script>
+      let smr_surat_masuk = "tes saja ya tob";
       $(document).ready(function(){
           $("#surat_masuk").click(function(){
               var el_mdl = document.querySelectorAll('[data-target="#modal_vw_sm"]');
@@ -361,9 +406,57 @@
                   el_mdl[0].parentNode.removeChild(el_mdl[0]);
               }
           });
+          $('.pilih_tmp').click(function(){
+            var rowId = $(this).attr('data-id');
+            $.ajax({
+                type : 'post',
+                url : '<?= base_url() ?>sekunder/pilih_surat',
+                data : 'id_template='+ rowId,
+                success : function(data){
+                    if(smr_surat_masuk === "tes saja ya tob"){
+                      $('#summernote').summernote('code', data);
+                    } else {
+                      $('#summernote').summernote('code', data);
+                      var kontent = $('#summernote').summernote('code');
+                      // Buat elemen jQuery dari konten
+                      var $content = $('<div>').html(kontent);
+                      $content.find('p').first().html(smr_surat_masuk);
+                      var finalHTML = $content.html();
+                      $('#summernote').summernote('code', finalHTML);
+                    }
+                    //$('.ambilData').html(data);
+                    //$('#summernote').summernote('code', data);
+                    //var kontent = $('#summernote').summernote('code');
+                    // Buat elemen jQuery dari konten
+                    //var $content = $('<div>').html(kontent);
+                    //$content.find('p').first().html(smr_surat_masuk);
+                    //var finalHTML = $content.html();
+                    //$('#summernote').summernote('code', finalHTML);
+                    // Ambil paragraf pertama
+                    //var firstParagraph = $content.find('p').first().html(smr_surat_masuk);
+
+                    //console.log(firstParagraph); // Output: ini adalah paragraf 1
+                    //console.log(smr_surat_masuk);
+                }
+            });
+          });
+          <?php for($y_lamp = 1; $y_lamp<=$kons_lamp; $y_lamp++){ ?>
+          $('.pilih_lamp<?= $y_lamp ?>').click(function(){
+            var rowId = $(this).attr('data-id');
+            $.ajax({
+                type : 'post',
+                url : '<?= base_url() ?>sekunder/pilih_lampiran',
+                data : 'id_template='+ rowId,
+                success : function(data){
+                    //$('.ambilData').html(data);
+                    $('#summernote<?= $y_lamp ?>').summernote('code', data);
+                }
+            });
+          });
+          <?php } ?>
       });
       $("#modalku").on('click','.pilih',function (e) {
-          var textValue = "<p>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</p>";
+          var textValue = "<p style='text-align:justify'>"+$(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal')+"</p>";
           const pdf_sm = document.createElement("a");
           var verify_srt = document.getElementById("verif_srt").value = $(this).attr('data-dispox');
           pdf_sm.innerHTML = "<i class='fas fa-file-pdf'></i> Lihat Surat Masuk";
@@ -377,8 +470,10 @@
           document.getElementById("filex_pdf").src = $(this).attr('data-file_pdf');
           $('#summernote').summernote('code', textValue);
           $(verify_srt).trigger('change');
+          smr_surat_masuk = $(this).attr('data-asal_surat')+""+$(this).attr('data-tanggal')+""+$(this).attr('data-no_surat_masuk')+""+$(this).attr('data-perihal');
+          console.log(smr_surat_masuk);
       });
-
+      console.log(smr_surat_masuk);
       function buatTextarea(){
         // hapus dulu textarea yg telah dibuat
             var textareas = document.getElementsByClassName("lampx")
@@ -393,11 +488,20 @@
             div_form.setAttribute("class","form-group lampx");
             var lblx = document.createElement("label");
             lblx.innerHTML = "Lampiran ke-" + (i+1);
+            var div_lamp = document.createElement("div");
+            div_lamp.setAttribute("class","wadah_tmp_lamp mb-2");
+            var tombol_lamp = document.createElement("a");
+            tombol_lamp.setAttribute("class","btn btn-primary btn-xs");
+            tombol_lamp.setAttribute("data-target",".lihatSurat" + (i+1));
+            tombol_lamp.setAttribute("data-toggle","modal");
+            tombol_lamp.textContent = "Template Lampiran";
             var textarea = document.createElement("textarea");
             textarea.setAttribute("class","form-control");
             textarea.setAttribute("name", "lampiran[]");
             textarea.setAttribute("id","summernote" + (i+1));
+            div_lamp.appendChild(tombol_lamp);
             div_form.appendChild(lblx);
+            div_form.appendChild(div_lamp);
             div_form.appendChild(textarea);
             document.getElementById("contextarea").appendChild(div_form);
         }

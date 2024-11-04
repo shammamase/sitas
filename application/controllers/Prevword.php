@@ -189,12 +189,167 @@ class Prevword extends CI_Controller {
         }
     }
 
+    function tmpl_surat(){
+        $uri3 = $this->uri->segment(3);
+        $uri4 = $this->uri->segment(4);
+        if(get_kode_uniks($uri4) == $uri3){
+            $id_spt = $uri4;
+            require_once 'vendor/autoload.php';
+            $qw_spt = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar=$id_spt")->row();
+            
+            $awal_no_surat = "B-";
+            $no_surat = $qw_spt->no_surat_keluar;
+            $no_sub = $this->model_sitas->rowDataBy("*","klasifikasi_sub_arsip","id_sub_arsip = $qw_spt->id_sub_arsip")->row();
+            $sifat = $this->model_sitas->rowDataBy("sifat,kode","sifat_surat","id_sifat = $qw_spt->sifat")->row();
+            $pc_tgl = explode("-",$qw_spt->tanggal_input);
+            $bln = $pc_tgl[1];
+            $thn = $pc_tgl[0];
+            if($qw_spt->lampiran > 0){
+                $vw_lamp = $qw_spt->lampiran." berkas";
+            } else {
+                $vw_lamp = "-";
+            }
+            $get_paragraf = $this->model_cek->ambil_isi_p($qw_spt->isi_surat);
+            $get_tabel = $this->model_cek->ambil_isi_table($qw_spt->isi_surat);
+            $phpWord = new \PhpOffice\PhpWord\PhpWord();
+            $sectionStyle = array(
+                'orientation' => 'portrait',
+                'marginTop' => 900,
+                'marginLeft' => 300,
+                'marginRight' => 700,
+                'marginBottom' => 200,
+                'pageSizeH' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(29.7),
+                'pageSizeW' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(21)
+            );
+            $badanx = ['name' => 'Arial', 'size' => 11];
+            $badanxx = ['name' => 'Arial', 'size' => 10];
+            $badanCalibri = ['name' => 'Arial', 'size' => 10];
+            $headTbl2 = ['name' => 'Arial', 'size' => 10, 'bold' => true];
+            $justix = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH];
+            $rata_tengah = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
+            $rata_kiri_1_5_lineSpace = [
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT,
+                    //'lineSpacing' => 1.5,
+                    'spaceAfter' => 0,
+                    'indentation' => ['left'=>720],
+                ];
+            $section = $phpWord->addSection($sectionStyle);
+            $header = $section->addHeader();
+            $header->addImage('./asset/kop_surat1.png',array(
+                                    'width'         => 580,
+                                    //'height'         => 100,
+                                    'marginTop'     => -2,
+                                    //'marginLeft'    => -7,
+                                    'alignment'     => 'left',
+                                    'wrappingStyle' => 'behind'
+                                ));
+            $tabStyle = [
+                'tabs' => [new \PhpOffice\PhpWord\Style\Tab('left', 2000),
+                            new \PhpOffice\PhpWord\Style\Tab('left', 8900)],
+                'indentation' => ['left'=>720],
+                'spaceAfter' => 0
+            ];
+            $tableStyle = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'cellMarginLeft' => 120,'cellMarginRight' => 80];
+            $tableStyle2 = ['borderSize' => 6,'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,'cellMarginLeft' => 120,'cellMarginRight' => 80];
+            $section->addText("Nomor\t: ".$awal_no_surat."-".$no_surat."/".$no_sub->kode_sub_arsip."/H.4.2/".$bln."/".$thn."\t".tgl_indoo($qw_spt->tanggal_input), 
+                        array('name' => 'Arial', 'size' => 11), $tabStyle);
+            $section->addText("Sifat\t: ".$sifat->sifat, array('name' => 'Arial', 'size' => 11), $tabStyle);
+            $section->addText("Lampiran\t: ".$vw_lamp, array('name' => 'Arial', 'size' => 11), $tabStyle);
+            $section->addText("Hal\t: ".$qw_spt->perihal, array('name' => 'Arial', 'size' => 11), $tabStyle);
+            $section->addTextBreak(2);
+            $section->addText("Yth. ".$qw_spt->tujuan_surat,$badanx,$rata_kiri_1_5_lineSpace);
+            $section->addText($qw_spt->lokasi_tujuan_surat,$badanx,['indentation' => ['left'=>720],'spaceAfter' => 0]);
+            $section->addTextBreak(2);
+            foreach($get_paragraf as $gpr){
+                if($gpr == "table"){
+                    $tab_to_arr = $this->model_cek->konversi_tbl_word($get_tabel);
+                    $table_p = $section->addTable($tableStyle);
+                    foreach($tab_to_arr as $tta){
+                        $pica = explode("#",$tta);
+                        $section->addText($pica[0]."\t".$pica[1]." ".$pica[2], array('name' => 'Arial', 'size' => 11), 
+                        [
+                            'tabs' => [new \PhpOffice\PhpWord\Style\Tab('left', 2000),
+                                        new \PhpOffice\PhpWord\Style\Tab('left', 8900)],
+                            'indentation' => ['left'=>720],
+                            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH,
+                            'spaceAfter' => 0,
+                            'spaceBefore' => 0,
+                            'lineHeight' => 1.5
+                        ]);
+                        }
+                    $section->addTextBreak(1);
+                } else {
+                    $tab_to_arr = array();
+                    $section->addText($gpr,$badanx,[
+                        'indentation' => ['left'=>720],
+                        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH,
+                        'lineHeight' => 1.5,
+                        'spaceAfter' => 0,
+                    ]);
+                }
+            }
+            /*
+            $section->addText(
+                'Nomor : '.$awal_no_surat.$no_surat.'/TU.040/H.4.2/'.$bln.'/'.$thn,
+                array('name' => 'Bookman Old Style', 'size' => 11, 'bold' => true),
+                array('alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, 
+                    'spaceBefore' => \PhpOffice\PhpWord\Shared\Converter::cmToTwip(0.01))
+            );
+            */
+            $section->addTextBreak(1);
+            $table4 = $section->addTable($tableStyle);
+            $table4->addRow();
+            $table4->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(10))->addText('',$badanx);
+            $tutup = $table4->addCell(\PhpOffice\PhpWord\Shared\Converter::cmToTwip(9.03));
+            $katax = $tutup->addTextRun();
+            $katax->addTextBreak();
+            $katax->addText('Ditandatangani secara elektronik oleh',$badanx);
+            $katax->addTextBreak();
+            $katax->addText('${jabatan_pengirim},',$badanx);
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addText('  ${ttd_pengirim}',$badanx);
+            //$katax->addText('                       ',$badanx);
+            $katax->addText('',$badanx);
+            $katax->addImage('./asset/bsre.png',array(
+                'width'         => 70,
+                'height'         => 34,
+                'wrappingStyle'  => 'infront',
+                'positioning' => 'absolute',
+            ));
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addTextBreak();
+            $katax->addText('${nama_pengirim}',$badanx);
+            $katax->addTextBreak();
+            $katax->addText('NIP ${nip_pengirim}',$badanx);
+            // Simpan sebagai dokumen Word
+            $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+            $objWriter->save('asset/file_temp/myDocumentSPT_Surat'.$uri3.'.docx');
+            redirect('asset/file_temp/myDocumentSPT_surat'.$uri3.'.docx');
+        } else {
+            echo "Anda tidak mempunyai akses";
+        }
+    }
+
     function tes_jo(){
         $id_spt = $this->uri->segment(3);
-        $qw_spt = $this->model_sitas->rowDataBy("*","spt","id_surat_keluar=$id_spt")->row();
-        $tes = clir_ul_li($qw_spt->dasar);
-        foreach($tes as $ts){
-            echo $ts."<br>";
+        $qw_spt = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar=$id_spt")->row();
+        $get_paragraf = $this->model_cek->ambil_isi_p($qw_spt->isi_surat);
+        $get_tabel = $this->model_cek->ambil_isi_table($qw_spt->isi_surat);
+        foreach($get_paragraf as $gpr){
+            if($gpr == "table"){
+                $tab_to_arr = $this->model_cek->konversi_tbl_word($get_tabel);
+                foreach($tab_to_arr as $tta){
+                    
+                }
+            } else {
+                $tab_to_arr = array();
+                echo $gpr."<br>";
+            }
         }
         //$this->load->view('sitas/preview/tes_print');
     }

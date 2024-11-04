@@ -745,4 +745,78 @@ class Sekunder extends CI_Controller {
 		redirect('primer/list_draft_surat');
         //echo $no_wa."---".$pesan;
 	}
+    function buat_template(){
+        cek_session_admin1();
+        $uri3 = $this->uri->segment(3);
+        if(empty($uri3)){
+            $row = array();
+            $data['isi_surat'] = "";
+            $data['ceck'] = "";
+            $data['id_template'] = 0;
+        } else {
+            $row = $this->model_sitas->rowDataBy("*","template_surat","id_template=$uri3")->row();
+            if($row->is_lampiran == 1){
+                $val = "checked";
+            } else {
+                $val = "";
+            }
+            $data['isi_surat'] = $row->isi;
+            $data['ceck'] = $val;
+            $data['id_template'] = $row->id_template;
+        }
+        $data['list'] = $this->model_sitas->listData("*","template_surat","id_template");
+        $this->template->load('sitas/template_form','sitas/buat_template',$data);
+    }
+    function save_template_surat(){
+        cek_session_admin1();
+        if(empty($_POST['is_lampiran'])){
+            $is_lampiran = 0;
+        } else {
+            $is_lampiran = 1;
+        }
+        $data = array(
+            'isi'=>$this->input->post('isi_surat'),
+            'is_lampiran'=>$is_lampiran
+        );
+        if(_POST('id_template') == 0){
+            $this->model_sitas->saveData("template_surat",$data);
+        } else {
+            $this->model_sitas->update_data("template_surat","id_template",_POST('id_template'),$data);
+        }
+        redirect('sekunder/buat_template');
+    }
+    function delete_template(){
+        cek_session_admin1();
+        $uri3 = $this->uri->segment(3);
+        $this->model_sitas->hapus_data("template_surat","id_template=$uri3");
+        redirect('sekunder/buat_template');
+    }
+    function lihat_surat(){
+        cek_session_admin1();
+        $id_template = _POST('id_template');
+        $data['get'] = $this->model_sitas->rowDataBy("*","template_surat","id_template=$id_template")->row();
+        $this->load->view('sitas/lihat_tmpl_surat',$data);
+    }
+    function lihat_lampiran(){
+        cek_session_admin1();
+        $id_template = _POST('id_template');
+        $data['get'] = $this->model_sitas->rowDataBy("*","template_surat","id_template=$id_template")->row();
+        $this->load->view('sitas/lihat_tmpl_lamp',$data);
+    }
+    function pilih_template(){
+        $data['list'] = $this->model_sitas->listData("*","template_surat","id_template");
+        $this->template->load('sitas/template_form','sitas/pilih_template',$data);
+    }
+    function pilih_surat(){
+        cek_session_admin1();
+        $id_template = _POST('id_template');
+        $data['get'] = $this->model_sitas->rowDataBy("*","template_surat","id_template=$id_template")->row();
+        $this->load->view('sitas/pilih_tmpl_surat',$data);
+    }
+    function pilih_lampiran(){
+        cek_session_admin1();
+        $id_template = _POST('id_template');
+        $get = $this->model_sitas->rowDataBy("*","template_surat","id_template=$id_template")->row();
+        echo $get->isi;
+    }
 }

@@ -244,6 +244,8 @@ class Primer extends CI_Controller {
 	date_default_timezone_set("Asia/Jakarta");
 	$qw_surat_masuk = $this->model_sitas->listData("id_surat_masuk,no_surat_masuk,asal_surat,tanggal,perihal,file_pdf,id_pegawai_disposisi",
 						"surat_masuk","id_surat_masuk desc limit 200");
+	$data['qw_tmpl'] = $this->model_sitas->listDataBy("id_template,isi,is_border","template_surat","is_lampiran=0","id_template");
+	$data['qw_lampr'] = $this->model_sitas->listDataBy("id_template,isi,is_border","template_surat","is_lampiran=1","id_template");
 	$data['list_sm'] = $qw_surat_masuk;
 	$data['tanggal'] = date('Y-m-d');
 	$data['lampiran'] = "";
