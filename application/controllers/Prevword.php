@@ -329,7 +329,7 @@ class Prevword extends CI_Controller {
             // Simpan sebagai dokumen Word
             $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
             $objWriter->save('asset/file_temp/myDocumentSPT_Surat'.$uri3.'.docx');
-            redirect('asset/file_temp/myDocumentSPT_surat'.$uri3.'.docx');
+            redirect('asset/file_temp/myDocumentSPT_Surat'.$uri3.'.docx');
         } else {
             echo "Anda tidak mempunyai akses";
         }
