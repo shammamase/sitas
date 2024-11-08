@@ -197,7 +197,7 @@ class Prevword extends CI_Controller {
             require_once 'vendor/autoload.php';
             $qw_spt = $this->model_sitas->rowDataBy("*","surat_keluar","id_surat_keluar=$id_spt")->row();
             
-            $awal_no_surat = "B-";
+            $awal_no_surat = "B";
             $no_surat = $qw_spt->no_surat_keluar;
             $no_sub = $this->model_sitas->rowDataBy("*","klasifikasi_sub_arsip","id_sub_arsip = $qw_spt->id_sub_arsip")->row();
             $sifat = $this->model_sitas->rowDataBy("sifat,kode","sifat_surat","id_sifat = $qw_spt->sifat")->row();

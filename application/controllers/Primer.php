@@ -2335,7 +2335,11 @@ class Primer extends CI_Controller {
 		    $data['lap_spt'] = $model_lap;
 			$data['user'] = $this->model_sitas->rowDataBy("a.nama,a.nip","pegawai a inner join user b on a.id_pegawai=b.id_pegawai",
 								"b.username='$user'")->row();
-			$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_lap_spt',$data);
+			if($model_lap->verif_kabalai == 0){
+				$this->template->load('sitas/verif_surat/template_form','sitas/verif_surat/verif_lap_spt',$data);
+			} else {
+				$this->template->load('sitas/template_form','sitas/verif_surat/sudah_setuju');
+			}
 		} else {
 			$this->load->view('sitas/verif_surat/no_akses');
 		}
