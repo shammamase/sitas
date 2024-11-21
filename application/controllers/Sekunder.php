@@ -654,19 +654,21 @@ class Sekunder extends CI_Controller {
             $total_verif = $this->model_cek->hitung_jumlah_verif($spt->verif_pj,$spt->status_verif_pa,$spt->status_verif_ppk);
             if($total_verif == 0){
                 $no_wa = substr_replace($pj->no_hp,"62",0,1);
-                echo "kirim ke PJ";
+                //echo "kirim ke PJ";
             } else if($total_verif == 1) {
                 $no_wa = substr_replace($pengendali_anggaran->no_hp,"62",0,1);
-                echo "kirim ke PA";
+                //echo "kirim ke PA";
             } else if($total_verif == 2){
                 $no_wa = substr_replace($ppk->no_hp,"62",0,1);
-                echo "kirim ke PPK";
+                //echo "kirim ke PPK";
             }
             $links = base_url()."primer?redir=status_spt/".$uri3."/".$uri4;
         	$pesan = "*Layanan BSIP TAS* Ada pengajuan SPT yang akan diverifikasi oleh anda, untuk detailnya silahkan klik link $links";
             $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
             //echo $no_wa."---".$pesan;
-            redirect('primer/status_spt/'.$uri3.'/'.$uri4);
+            $data['uri3'] = $uri3;
+            $data['uri4'] = $uri4;
+            $this->load->view('sitas/sweetalert/kirim_spt',$data);
         } else {
             echo "Sorry YEEE";
         }

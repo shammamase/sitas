@@ -1013,12 +1013,13 @@ class Primer extends CI_Controller {
         $this->model_sitas->kirim_wa_gateway($no_wa,$pesan);
 		//echo $no_wa."---".$pesan."<br><br>";
 		if($qw_surat_keluar->isi_surat == "SPT"){
+			$links = base_url()."preview/pdf_spt/".md5($id_spt)."/".$id_spt;
 			$qw_petugas_spt = $this->model_sitas->listDataBy("b.is_internal,c.nama,c.no_hp,d.tanggal,d.lama_hari,d.untuk,d.ket_wilayah",
 			"anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai 
 			inner join pegawai c on b.id_pegawai=c.id_pegawai inner join spt d on a.id_spt=d.id_spt",
 			"a.id_spt = $id_spt_asli","a.id_anggota asc");
 			foreach($qw_petugas_spt as $qps){
-				$pesan_untuk_petugas = "*Layanan LinTAS* Anda mendapatkan Surat Perintah Tugas perihal ".$qps->untuk." di ".$qps->ket_wilayah.". Pada tanggal ".sd_tgl($qps->tanggal,$qps->lama_hari);
+				$pesan_untuk_petugas = "*Layanan LinTAS* Anda mendapatkan Surat Perintah Tugas perihal ".$qps->untuk." di ".$qps->ket_wilayah.". Pada tanggal ".sd_tgl($qps->tanggal,$qps->lama_hari).". Berikut link pdfnya $links";
 				if($qps->is_internal == 1){
 					$no_wa_petugas = substr_replace($qps->no_hp,62,0,1);
 					$this->model_sitas->kirim_wa_gateway($no_wa_petugas,$pesan_untuk_petugas);

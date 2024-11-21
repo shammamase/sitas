@@ -120,4 +120,7 @@ class Nonlogin extends CI_Controller
     $this->model_sitas->kirim_wa_gateway($nox,$pesan);
     redirect('nonlogin/buku_tamu');
   }
+  public function tes_saja(){
+    $this->load->view('sitas/sweetalert/status_spt');
+  }
 }
