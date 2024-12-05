@@ -59,14 +59,18 @@ class Preview extends CI_Controller {
 		$params['savename'] = FCPATH.$config['imagedir'].$image_name; //simpan image QR CODE ke folder assets/images/
 		$this->ciqrcode->generate($params); // fungsi untuk generate QR CODE
         $qw_spt = $this->model_sitas->rowDataBy("*","spt","id_surat_keluar=$id_spt")->row();
-        $qw_sk = $this->model_sitas->rowDataBy("no_surat_keluar,id_verif","surat_keluar","id_surat_keluar=$id_spt")->row();
+        $qw_sk = $this->model_sitas->rowDataBy("no_surat_keluar,id_verif,file_pdf","surat_keluar","id_surat_keluar=$id_spt")->row();
         $data['spt'] = $qw_spt;
         $data['sk'] = $qw_sk;
         $data['peg'] = $this->model_sitas->listDataBy("a.id_pegawai,a.tanggal_spt,b.nama,b.pangkat,b.gol,b.nip,b.jabatan,b.uk,b.is_internal",
                         "anggota_spt a inner join peserta_spt b on a.id_pegawai=b.id_pegawai","a.id_spt=$qw_spt->id_spt","a.id_anggota asc");
         $data['no_surat'] = "";
-		$this->load->view('sitas/preview/print',$data);    
-        $html = ob_get_contents();        
+		if($qw_sk->file_pdf != ""){
+      redirect('asset/surat_keluar/'.$qw_sk->file_pdf);
+    } else {
+      $this->load->view('sitas/preview/print',$data);   
+    } 
+    $html = ob_get_contents();        
 		ob_end_clean();            
 		require './asset/html2pdf_v5.2-master/vendor/autoload.php';        
 		$pdf = new Spipu\Html2Pdf\Html2Pdf('P','F4','en');    

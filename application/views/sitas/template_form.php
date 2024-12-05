@@ -316,6 +316,18 @@
                           <p>Pengajuan SPT</p>
                         </a>
                       </li>
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>report/surat_masuk" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Surat Masuk</p>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="<?php echo base_url(); ?>report/surat_keluar" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                          <p>Surat Keluar</p>
+                        </a>
+                      </li>
                     </ul>
                   </li>
                   <li class="nav-item">

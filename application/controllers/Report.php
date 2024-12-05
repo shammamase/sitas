@@ -68,4 +68,49 @@ class Report extends CI_Controller {
             //print_r($obj_list);
         }
     }
+    function surat_masuk(){
+        cek_session_admin1();
+        $data['thn'] = $this->session->tahun;
+        $data['bln'] = array("01","02","03","04","05","06","07","08","09","10","11","12");
+        $this->template->load('sitas/template_form','sitas/report/surat_masuk',$data);
+    }
+    function print_surat_masuk(){
+        if(empty(_POST('tanggal'))){
+            redirect('report/surat_masuk');
+        } else {
+            $tanggal = _POST('tanggal');
+            $arr_spt = array();
+            $query = $this->model_sitas->listDataBy("a.perihal,a.no_agenda,a.no_surat_masuk,c.sifat,a.asal_surat
+                        ,a.tanggal_masuk,a.tanggal,a.disposisi,a.diteruskan,a.isi_disposisi,b.kode_sub_arsip,a.file_pdf",
+                        "surat_masuk a inner join klasifikasi_sub_arsip b on a.id_sub_arsip=b.id_sub_arsip
+                        inner join sifat_surat c on a.id_sifat=c.id_sifat",
+                        "a.tanggal like '%$tanggal%'",
+                        "a.id_surat_masuk");
+            $data['qwx'] = $query;
+            $this->load->view('sitas/preview/list_surat_masuk',$data);
+            //print_r($obj_list);
+        }
+    }
+    function surat_keluar(){
+        cek_session_admin1();
+        $data['thn'] = $this->session->tahun;
+        $data['bln'] = array("01","02","03","04","05","06","07","08","09","10","11","12");
+        $this->template->load('sitas/template_form','sitas/report/surat_keluar',$data);
+    }
+    function print_surat_keluar(){
+        if(empty(_POST('tanggal'))){
+            redirect('report/surat_keluar');
+        } else {
+            $tanggal = _POST('tanggal');
+            $arr_spt = array();
+            $query = $this->model_sitas->listDataBy("a.perihal,a.no_surat_keluar,c.kode,c.sifat,a.tujuan_surat,a.lokasi_tujuan_surat
+                        ,a.tanggal,b.kode_sub_arsip,a.file_pdf",
+                        "surat_keluar a inner join klasifikasi_sub_arsip b on a.id_sub_arsip=b.id_sub_arsip
+                        inner join sifat_surat c on a.sifat=c.id_sifat",
+                        "a.tanggal like '%$tanggal%'",
+                        "a.id_surat_keluar");
+            $data['qwx'] = $query;
+            $this->load->view('sitas/preview/list_surat_keluar',$data);
+        }
+    }
 }
